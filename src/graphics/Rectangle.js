@@ -21,10 +21,7 @@ _NS.Rectangle = function(x, y, w, h, color) {
     * @type Vector2
     */
     this.size = new _NS.Vector2(w, h);
-    /**
-    * Color
-    * @type Color
-    */
+
     this.setColor(color);
 };
 _NS.Rectangle.prototype = new _NS.Shape(4);
@@ -55,27 +52,8 @@ _NS.Rectangle.prototype.setBounds = function (x1, y1, x2, y2) {
 * @param {Color} color - Fill color
 */
 _NS.Rectangle.prototype.setColor = function (color) {
-    /**
-    * Top-left color
-    * @type Color
-    */
-    this.color1 = color || new _NS.Color();
-    /**
-    * Top-right color
-    * @type Color
-    */
-    this.color2 = this.color1;
-    /**
-    * Bottom-right color
-    * @type Color
-    */
-    this.color3 = this.color1;
-    /**
-    * Bottom-left color
-    * @type Color
-    */
-    this.color4 = this.color1;
-
+    color = color || new _NS.Color();
+    
     this.setPointColor(0, color);
     this.setPointColor(1, color);
     this.setPointColor(2, color);
@@ -92,10 +70,10 @@ _NS.Rectangle.prototype.setColor = function (color) {
 * @param {Color} color4 - Bottom-left color
 */
 _NS.Rectangle.prototype.setColors = function (color1, color2, color3, color4) {
-    this.color1 = color1 || new _NS.Color();
-    this.color2 = color2 || new _NS.Color();
-    this.color3 = color3 || new _NS.Color();
-    this.color4 = color4 || new _NS.Color();
+    color1 = color1 || new _NS.Color();
+    color2 = color2 || new _NS.Color();
+    color3 = color3 || new _NS.Color();
+    color4 = color4 || new _NS.Color();
 
     this.setPointColor(0, color1);
     this.setPointColor(1, color2);
