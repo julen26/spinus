@@ -1,0 +1,152 @@
+var _NS = _NS || {};
+
+/**
+* Constructs Transform objects
+* @class Represents a 4x4 matrix
+*/
+_NS.Transform = function() {
+    /**
+    * 4x4 matrix
+    * @type float[]
+    */
+    this.matrix = [];
+    this.matrix[0] = 1.0; this.matrix[4] = 0.0; this.matrix[8]  = 0.0; this.matrix[12] = 0.0;
+    this.matrix[1] = 0.0; this.matrix[5] = 1.0; this.matrix[9]  = 0.0; this.matrix[13] = 0.0;
+    this.matrix[2] = 0.0; this.matrix[6] = 0.0; this.matrix[10] = 1.0; this.matrix[14] = 0.0;
+    this.matrix[3] = 0.0; this.matrix[7] = 0.0; this.matrix[11] = 0.0; this.matrix[15] = 1.0;
+};
+
+/**
+* Sets the matrix
+*
+* @method
+* @param {float} a00 - 0,0 component
+* @param {float} a01 - 0,1 component
+* @param {float} a02 - 0,2 component
+* @param {float} a10 - 1,0 component
+* @param {float} a11 - 1,1 component
+* @param {float} a12 - 1,2 component
+* @param {float} a20 - 2,0 component
+* @param {float} a21 - 2,1 component
+* @param {float} a22 - 2,2 component
+*/
+_NS.Transform.prototype.set = function (a00, a01, a02,
+                                        a10, a11, a12,
+                                        a20, a21, a22) {
+    this.matrix[0] = a00; this.matrix[4] = a01; this.matrix[8]  = 0.0; this.matrix[12] = a02;
+    this.matrix[1] = a10; this.matrix[5] = a11; this.matrix[9]  = 0.0; this.matrix[13] = a12;
+    this.matrix[2] = 0.0; this.matrix[6] = 0.0; this.matrix[10] = 1.0; this.matrix[14] = 0.0;
+    this.matrix[3] = a20; this.matrix[7] = a21; this.matrix[11] = 0.0; this.matrix[15] = a22;
+};
+
+/**
+* Gets new inverse transform
+*
+* @method
+* @returns {Transform} Inverse transform or identity if determinant is zero
+*/
+_NS.Transform.prototype.getInverse = function () {
+    var det =   this.matrix[0] * (this.matrix[15] * this.matrix[5] - this.matrix[7] * this.matrix[13]) -
+                this.matrix[1] * (this.matrix[15] * this.matrix[4] - this.matrix[7] * this.matrix[12]) +
+                this.matrix[3] * (this.matrix[13] * this.matrix[4] - this.matrix[5] * this.matrix[12]);
+    if (det != 0) {
+        var inverse = new Transform();
+        inverse.set(  (this.matrix[15] * this.matrix[5] - this.matrix[7] * this.matrix[13]) / det,
+                     -(this.matrix[15] * this.matrix[4] - this.matrix[7] * this.matrix[12]) / det,
+                      (this.matrix[13] * this.matrix[4] - this.matrix[5] * this.matrix[12]) / det,
+                     -(this.matrix[15] * this.matrix[1] - this.matrix[3] * this.matrix[13]) / det,
+                      (this.matrix[15] * this.matrix[0] - this.matrix[3] * this.matrix[12]) / det,
+                     -(this.matrix[13] * this.matrix[0] - this.matrix[1] * this.matrix[12]) / det,
+                      (this.matrix[7]  * this.matrix[1] - this.matrix[3] * this.matrix[5])  / det,
+                     -(this.matrix[7]  * this.matrix[0] - this.matrix[3] * this.matrix[4])  / det,
+                      (this.matrix[5]  * this.matrix[0] - this.matrix[1] * this.matrix[4])  / det);
+    }
+    else {
+        return new Transform();
+    }
+};
+
+/**
+* Combines the given transform
+*
+* @method
+* @param {Transform} transform - Transform to combine
+* @returns {Transform} New combined transform
+*/
+_NS.Transform.prototype.combine = function (transform) {
+    var a = this.matrix;
+    var b = transform.matrix;
+    var comb = new Transform();
+    comb.set(a[0] * b[0] + a[4] * b[1] + a[12] * b[3], a[0] * b[4] + a[4] * b[5] + a[12] * b[7], a[0] * b[12] + a[4] * b[13] + a[12] * b[15],
+             a[1] * b[0] + a[5] * b[1] + a[13] * b[3], a[1] * b[4] + a[5] * b[5] + a[13] * b[7], a[1] * b[12] + a[5] * b[13] + a[13] * b[15],
+             a[3] * b[0] + a[7] * b[1] + a[15] * b[3], a[3] * b[4] + a[7] * b[5] + a[15] * b[7], a[3] * b[12] + a[7] * b[13] + a[15] * b[15]);
+    return comb;
+};
+
+/**
+* Translates the transform
+*
+* @method
+* @param {float} x - X translation
+* @param {float} y - Y translation
+* @returns {Transform} New translated transform
+*/
+_NS.Transform.prototype.translate = function (x, y) {
+    var translation = new Transform();
+    translation.set(1, 0, x,
+                    0, 1, y,
+                    0, 0, 1);
+    return this.combine(translation);
+};
+
+/**
+* Scales the transform
+*
+* @method
+* @param {float} x - X scale factor
+* @param {float} y - Y scale factor
+* @returns {Transform} New scaled transform
+*/
+_NS.Transform.prototype.scale = function (x, y) {
+    var scaling = new Transform();
+    scaling.set(x, 0, 0,
+                0, y, 0,
+                0, 0, 1);
+    return this.combine(scaling);
+};
+
+/**
+* Rotates the transform
+*
+* @method
+* @param {float} angle - Rotation angle in degrees
+* @param {float} x - X coordinate of the origin
+* @param {float} y - Y coordinate of the origin
+* @returns {Transform} New rotated transform
+*/
+_NS.Transform.prototype.rotate = function (angle, x, y) {
+    var rad = angle * Math.PI / 180.0;
+    var cos = Math.cos(rad);
+    var sin = Math.sin(rad);
+
+    var rotation = new Transform();
+    rotation.set(cos,   -sin,   x * (1 - cos) + y * sin,
+                 sin,    cos,   y * (1 - cos) - x * sin,
+                 0,      0,     1);
+    return this.combine(rotation);
+};
+
+/**
+* Transforms a 2D point
+*
+* @method
+* @param {float} x - X coordinate
+* @param {float} y - Y coordinate
+* @returns {Vector2} New transformed point
+*/
+_NS.Transform.prototype.transformPoint = function (x, y) {
+    var vec = Vector2();
+    vec.set(this.matrix[0] * x + this.matrix[4] * y + this.matrix[12],
+            this.matrix[1] * x + this.matrix[5] * y + this.matrix[13]);
+    return vec;
+};

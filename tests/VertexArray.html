@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Framework test</title>
+    
+	<script src="../src/system/Vector2.js"></script>
+    <script src="../src/graphics/Color.js"></script>
+    <script src="../src/graphics/Context.js"></script>
+    <script src="../src/graphics/Shader.js"></script>
+    <script src="../src/graphics/ShaderProgram.js"></script>
+    <script src="../src/graphics/Rectangle.js"></script>
+    <script src="../src/graphics/Vertex.js"></script>
+    <script src="../src/graphics/VertexArray.js"></script>
+    <script src="../src/graphics/PrimitiveType.js"></script>
+    <script>
+    function onload() {
+
+        var context = new _NS.Context("canvas1");
+
+        var square = new _NS.VertexArray(_NS.PrimitiveType.LineLoop);
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 0, 0)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(100, 10), new _NS.Color(255, 0, 0)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(100, 100), new _NS.Color(255, 0, 0)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 100), new _NS.Color(255, 0, 0)) );
+
+        context.draw(square);
+
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
