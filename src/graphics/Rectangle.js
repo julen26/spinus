@@ -3,6 +3,7 @@ var _NS = _NS || {};
 /**
 * Constructs Rectangle objects
 * @class Represents a Rectangle object
+* @extends Shape
 * @param {float} x - X position
 * @param {float} y - Y position
 * @param {float} w - Width
@@ -11,31 +12,22 @@ var _NS = _NS || {};
 */
 _NS.Rectangle = function(x, y, w, h, color) {
     /**
-    * X position
-    * @type float
+    * Position
+    * @type Vector2
     */
-    this.x = x || 0;
+    this.position = new _NS.Vector2(x, y);
     /**
-    * Y position
-    * @type float
+    * Size
+    * @type Vector2
     */
-    this.y = y || 0;
-    /**
-    * Width
-    * @type float
-    */
-    this.w = w || 0;
-    /**
-    * Height
-    * @type float
-    */
-    this.h = h || 0;
+    this.size = new _NS.Vector2(w, h);
     /**
     * Color
     * @type Color
     */
     this.setColor(color);
 };
+_NS.Rectangle.prototype = new _NS.Shape(4);
 
 /**
 * Sets rectangle bounds
@@ -47,10 +39,13 @@ _NS.Rectangle = function(x, y, w, h, color) {
 * @param {float} y2 - Bottom
 */
 _NS.Rectangle.prototype.setBounds = function (x1, y1, x2, y2) {
-    this.x = x1;
-    this.y = y1;
-    this.w = Math.abs(x2 - x1);
-    this.h = Math.abs(y2 - y1);
+    this.position.set(x1, y1);
+    this.size.set(Math.abs(x2 - x1), Math.abs(y2 - y1));
+
+    this.setPointPosition(0, this.position);
+    this.setPointPosition(1, new _NS.Vector2(x2, y1));
+    this.setPointPosition(2, new _NS.Vector2(x2, y2));
+    this.setPointPosition(3, new _NS.Vector2(x1, y2));
 };
 
 /**
@@ -80,6 +75,11 @@ _NS.Rectangle.prototype.setColor = function (color) {
     * @type Color
     */
     this.color4 = this.color1;
+
+    this.setPointColor(0, color);
+    this.setPointColor(1, color);
+    this.setPointColor(2, color);
+    this.setPointColor(3, color);
 };
 
 /**
@@ -96,67 +96,9 @@ _NS.Rectangle.prototype.setColors = function (color1, color2, color3, color4) {
     this.color2 = color2 || new _NS.Color();
     this.color3 = color3 || new _NS.Color();
     this.color4 = color4 || new _NS.Color();
-};
 
-/**
-* Draw rectangle in the given context
-*
-* @method
-* @param {Context} context - Context
-*/
-_NS.Rectangle.prototype.draw = function (context) {
-    if (context.mode == _NS.Context.Modes.WebGL) {
-        //Use proper shader
-        context.defaultProgram.use();
-
-        //Init attributes
-        var positionAttribute = context.defaultProgram.getAttribLocation("a_position");//context.gl.getAttribLocation(context.currentProgram.shaderProgramId, "a_position");
-        var colorAttribute = context.defaultProgram.getAttribLocation("a_color");//context.gl.getAttribLocation(context.currentProgram.shaderProgramId, "a_color");
-
-        //Init buffers
-        var vertexBuffer = context.gl.createBuffer();
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, vertexBuffer);
-
-        var x1 = this.x;
-        var x2 = this.x + this.w;
-        var y1 = this.y;
-        var y2 = this.y + this.h;
-        context.gl.bufferData(context.gl.ARRAY_BUFFER, new Float32Array([
-            x1, y1,
-            x2, y1,
-            x1, y2,
-            x2, y2
-        ]), context.gl.STATIC_DRAW);
-
-        var colorBuffer = context.gl.createBuffer();
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, colorBuffer);
-
-        context.gl.bufferData(context.gl.ARRAY_BUFFER, new Float32Array([
-             this.color1.r / 255, this.color1.g / 255, this.color1.b / 255, this.color1.a / 255,
-             this.color2.r / 255, this.color2.g / 255, this.color2.b / 255, this.color2.a / 255,
-             this.color4.r / 255, this.color4.g / 255, this.color4.b / 255, this.color4.a / 255,
-             this.color3.r / 255, this.color3.g / 255, this.color3.b / 255, this.color3.a / 255
-         ]), context.gl.STATIC_DRAW);
-
-        context.currentProgram.uniform2f("u_resolution", context.viewportWidth, context.viewportHeight);
-
-        //Bind buffer to attributes
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, vertexBuffer);
-        context.gl.enableVertexAttribArray(positionAttribute);
-        context.gl.vertexAttribPointer(positionAttribute, 2, context.gl.FLOAT, false, 0, 0);
-
-        context.gl.bindBuffer(context.gl.ARRAY_BUFFER, colorBuffer);
-        context.gl.enableVertexAttribArray(colorAttribute);
-        context.gl.vertexAttribPointer(colorAttribute, 4, context.gl.FLOAT, false, 0, 0);
-
-        //Use shader
-        context.defaultProgram.use(context);
-
-        // Draw the rectangle.
-        context.gl.drawArrays(context.gl.TRIANGLE_STRIP, 0, 4);
-    }
-    else {
-        context.ctx.fillStyle = this.color1.getRGBAString();
-        context.ctx.fillRect(this.x, this.y, this.w, this.h);
-    }
+    this.setPointColor(0, color1);
+    this.setPointColor(1, color2);
+    this.setPointColor(2, color3);
+    this.setPointColor(3, color4);
 };
