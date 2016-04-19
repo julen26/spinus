@@ -37,3 +37,33 @@ _NS.Vector2.prototype.set = function (x, y) {
 _NS.Vector2.prototype.equals = function (vector) {
     return (this.x == vector.x && this.y == vector.y);
 };
+
+/**
+* Compute the normal of a segment
+*
+* @method
+* @param {Vector2} v1 - First vertex position
+* @param {Vector2} v2 - Second vertex position
+* @return {Vector2} Normal of the segment
+*/
+_NS.Vector2.computeNormal = function (v1, v2) {
+    var normal = new _NS.Vector2(v1.y - v2.y, v2.x - v1.x);
+    var length = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
+    if (length != 0) {
+        normal.x = normal.x / length;
+        normal.y = normal.y / length;
+    }
+    return normal;
+};
+
+/**
+* Compute the dot product of two vectors
+*
+* @method
+* @param {Vector2} v1 - First vector
+* @param {Vector2} v2 - Second vector
+* @return {float} Dot product
+*/
+_NS.Vector2.dotProduct = function (v1, v2) {
+    return v1.x * v2.x + v1.y * v2.y;
+};
