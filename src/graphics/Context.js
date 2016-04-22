@@ -4,9 +4,8 @@ var _NS = _NS || {};
 * Constructs Context objects
 * @class Represents a Context object
 * @param {string} canvasId - ID of the canvas element
-* @param {enum} mode - Context mode
 */
-_NS.Context = function(canvasId, mode) {
+_NS.Context = function(canvasId) {
     /**
     * Canvas element
     * @type string
@@ -24,48 +23,18 @@ _NS.Context = function(canvasId, mode) {
     */
     this.gl = null;
 
-    /**
-    * Context mode
-    * @type Modes
-    */
-    this.mode = mode || _NS.Context.Modes.Auto;
-
     if (!this.canvas) {
         throw "Specified canvas element is missing.";
     }
 
-    switch (this.mode) {
-        case _NS.Context.Modes.WebGL:
-            if (window.WebGLRenderingContext) {
-                this.gl = this.canvas.getContext("webgl") || this.canvas.getContext("experimental-webgl");   
-            }
-            else {
-                throw "WebGL context is required and it's not supported by the browser."
-            }
-            break;
-
-        case _NS.Context.Modes.Canvas:
-            this.ctx = this.canvas.getContext("2d");
-            break;
-
-        case _NS.Context.Modes.Auto:
-            if (window.WebGLRenderingContext) {
-                this.gl = this.canvas.getContext("webgl") || this.canvas.getContext("experimental-webgl");
-                this.mode = _NS.Context.Modes.WebGL;
-            }
-            else {
-                Console.log("WebGL is not supported. Switching to canvas context.");
-                this.ctx = this.canvas.getContext("2d");
-                this.mode = _NS.Context.Modes.Canvas;
-            }
-            break;
-
-        default:
-            throw "Invalid context mode."
-            break;
+    if (window.WebGLRenderingContext) {
+        this.gl = this.canvas.getContext("webgl") || this.canvas.getContext("experimental-webgl");   
+    }
+    else {
+        throw "WebGL context is required and it's not supported by the browser."
     }
 
-    if (!this.ctx && !this.gl) {
+    if (!this.gl) {
         throw "Unable to initialize a valid context. Your browser may not support it."
     }
 
@@ -80,56 +49,41 @@ _NS.Context = function(canvasId, mode) {
     */
     this.viewportHeight = this.canvas.height;
 
-    if (this.mode == _NS.Context.Modes.WebGL) {
-        var vertexShader = new _NS.VertexShader2D(this);
-        var fragmentShader = new _NS.FragmentShader2D(this);
-        var program = new _NS.ShaderProgram(this);
-        program.attachShader(vertexShader);
-        program.attachShader(fragmentShader);
-        program.link();
-        program.use(); //this.currentProgram = program
+    var vertexShader = new _NS.VertexShader2D(this);
+    var fragmentShader = new _NS.FragmentShader2D(this);
+    var program = new _NS.ShaderProgram(this);
+    program.attachShader(vertexShader);
+    program.attachShader(fragmentShader);
+    program.link();
+    program.use(); //this.currentProgram = program
 
-        /**
-        * Default shader program
-        * @type ShaderProgram 
-        */
-        this.defaultProgram = program;
+    /**
+    * Default shader program
+    * @type ShaderProgram 
+    */
+    this.defaultProgram = program;
 
-        var vertexShaderTextured = new _NS.VertexShader2D(this, true);
-        var fragmentShaderTextured = new _NS.FragmentShader2D(this, true);
-        var programTextured = new _NS.ShaderProgram(this);
-        programTextured.attachShader(vertexShaderTextured);
-        programTextured.attachShader(fragmentShaderTextured);
-        programTextured.link();
+    var vertexShaderTextured = new _NS.VertexShader2D(this, true);
+    var fragmentShaderTextured = new _NS.FragmentShader2D(this, true);
+    var programTextured = new _NS.ShaderProgram(this);
+    programTextured.attachShader(vertexShaderTextured);
+    programTextured.attachShader(fragmentShaderTextured);
+    programTextured.link();
 
-        /**
-        * Default shader program for textured drawings
-        * @type ShaderProgram 
-        */
-        this.defaultProgramTextured = programTextured;
+    /**
+    * Default shader program for textured drawings
+    * @type ShaderProgram 
+    */
+    this.defaultProgramTextured = programTextured;
 
-        //Initialize buffer
-        this.initBuffers();
+    //Initialize buffer
+    this.initBuffers();
 
-        this.gl.viewport(0, 0, this.viewportWidth, this.viewportHeight);
-        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT); 
-    }
-};
-
-/** 
-* Enum for context modes
-* @enum {int}
-*/
-_NS.Context.Modes = {
-    /** Tries to use WebGL mode. If not supported, uses Canvas */
-    Auto : 0,
-    /** Canvas mode */
-    Canvas : 1,
-    /** WebGL mode */
-    WebGL : 2
+    this.gl.viewport(0, 0, this.viewportWidth, this.viewportHeight);
+    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.gl.enable(this.gl.BLEND);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT); 
 };
 
 /**
