@@ -90,7 +90,7 @@ _NS.Shape.prototype.computeOutline = function () {
 };
 
 _NS.Shape.prototype.draw = function (context) {
-    //this.vertexArray.draw(context);
+    this.vertexArray.draw(context);
     if (this.outlineThickness > 0) {
         this.outlineVertexArray.draw(context);
     }
