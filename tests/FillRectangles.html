@@ -29,10 +29,10 @@
 
             var rect = new _NS.Rectangle();
             rect.setColors(color1, color2, color3, color4);
-            var x1 = Math.random() * context.viewportWidth;
-            var y1 = Math.random() * context.viewportHeight;
-            var x2 = Math.random() * context.viewportWidth;
-            var y2 = Math.random() * context.viewportHeight;
+            var x1 = Math.random() * context.getViewportWidth();
+            var y1 = Math.random() * context.getViewportHeight();
+            var x2 = Math.random() * context.getViewportWidth();
+            var y2 = Math.random() * context.getViewportHeight();
             rect.setBounds(x1, y1, x2, y2);
 
             context.draw(rect);

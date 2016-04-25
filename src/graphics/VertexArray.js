@@ -11,15 +11,15 @@ _NS.VertexArray = function(type, vertexCount) {
     * Primitive type
     * @type PrimitiveType
     */
-	this.primitiveType = type || _NS.PrimitiveType.Points;
+	this.m_primitiveType = type || _NS.PrimitiveType.Points;
 	/**
     * Vertex list
     * @type Vertex[]
     */
-    this.vertices = [];
+    this.m_vertices = [];
     vertexCount = vertexCount || 0;
     for (var i = 0; i < vertexCount; i++) {
-    	this.vertices.push(new _NS.Vertex());
+    	this.m_vertices.push(new _NS.Vertex());
     }
 };
 
@@ -30,7 +30,7 @@ _NS.VertexArray = function(type, vertexCount) {
 * @return {int} Vertex count
 */
 _NS.VertexArray.prototype.getVertexCount = function () {
-	return this.vertices.length;
+	return this.m_vertices.length;
 };
 
 /**
@@ -41,7 +41,7 @@ _NS.VertexArray.prototype.getVertexCount = function () {
 * @return {Vertex} Vertex at index
 */
 _NS.VertexArray.prototype.getVertex = function (index) {
-	return this.vertices[index];
+	return this.m_vertices[index];
 };
 
 /**
@@ -50,7 +50,7 @@ _NS.VertexArray.prototype.getVertex = function (index) {
 * @method
 */
 _NS.VertexArray.prototype.clear = function () {
-	return this.vertices.clear();
+	return this.m_vertices.clear();
 };
 
 /**
@@ -60,7 +60,7 @@ _NS.VertexArray.prototype.clear = function () {
 * @param {Vertex} vertex - Vertex object to add
 */
 _NS.VertexArray.prototype.addVertex = function (vertex) {
-	return this.vertices.push(vertex);
+	return this.m_vertices.push(vertex);
 };
 
 /**
@@ -70,15 +70,35 @@ _NS.VertexArray.prototype.addVertex = function (vertex) {
 * @param {int} vertexCount - New length of the vertex list
 */
 _NS.VertexArray.prototype.resize = function (vertexCount) {
-	var sub = vertexCount - this.vertices.length;
+	var sub = vertexCount - this.m_vertices.length;
 	if (sub > 0) {
 		for (var i = 0; i < sub; i++) {
-    		this.vertices.push(new _NS.Vertex());
+    		this.m_vertices.push(new _NS.Vertex());
     	}
 	}
 	else if (sub < 0) {
-		this.vertices = this.vertices.slice(0, vertexCount);
+		this.m_vertices = this.m_vertices.slice(0, vertexCount);
 	}
+};
+
+/**
+* Gets the primitive type
+*
+* @method
+* @return {PrimitiveType} Primitive type
+*/
+_NS.VertexArray.prototype.getPrimitiveType = function () {
+    return this.m_primitiveType;
+};
+
+/**
+* Sets the primitive type
+*
+* @method
+* @param {PrimitiveType} type - Primitive type
+*/
+_NS.VertexArray.prototype.setPrimitiveType = function (type) {
+    this.m_primitiveType = type;
 };
 
 /**
@@ -88,7 +108,7 @@ _NS.VertexArray.prototype.resize = function (vertexCount) {
 * @param {Context} context - Context
 */
 _NS.VertexArray.prototype.draw = function (context) {
-    context.drawVertices(this.vertices, this.primitiveType);
+    context.drawVertices(this.m_vertices, this.m_primitiveType);
 };
 
 /**

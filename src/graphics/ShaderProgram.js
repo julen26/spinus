@@ -10,27 +10,27 @@ _NS.ShaderProgram = function(context) {
     * WebGL shader program
     * @type WebGLProgram
     */
-    this.shaderProgramId = context.gl.createProgram();
+    this.m_shaderProgramId = context.GL().createProgram();
     /**
     * Shader array
     * @type Shader[]
     */
-    this.shaders = [];
+    this.m_shaders = [];
     /**
     * Context
     * @type Context
     */
-    this.context = context;
+    this.m_context = context;
     /**
     * Hash of uniforms
     * @type Object<string, WebGLUniformLocation>
     */
-    this.uniforms = {};
+    this.m_uniforms = {};
     /**
     * Hash of attributes
     * @type Object<string, int>
     */
-    this.attributes = {};
+    this.m_attributes = {};
 };
 
 /**
@@ -40,7 +40,7 @@ _NS.ShaderProgram = function(context) {
 * @param {Shader} shader - Shader object
 */
 _NS.ShaderProgram.prototype.attachShader = function (shader) {
-    this.shaders.push(shader);
+    this.m_shaders.push(shader);
 };
 
 /**
@@ -49,10 +49,12 @@ _NS.ShaderProgram.prototype.attachShader = function (shader) {
 * @method
 */
 _NS.ShaderProgram.prototype.link = function () {
-    for (var i in this.shaders) {
-        this.context.gl.attachShader(this.shaderProgramId, this.shaders[i].shaderId);
+    var gl = this.m_context.GL();
+
+    for (var i in this.m_shaders) {
+        gl.attachShader(this.m_shaderProgramId, this.m_shaders[i].getShaderId());
     }
-    this.context.gl.linkProgram(this.shaderProgramId);
+    gl.linkProgram(this.m_shaderProgramId);
 };
 
 /**
@@ -61,8 +63,10 @@ _NS.ShaderProgram.prototype.link = function () {
 * @method
 */
 _NS.ShaderProgram.prototype.use = function () {
-    this.context.gl.useProgram(this.shaderProgramId);
-    this.context.currentProgram = this;
+    var gl = this.m_context.GL();
+
+    gl.useProgram(this.m_shaderProgramId);
+    this.m_context.setCurrentProgram(this);
 };
 
 /**
@@ -73,11 +77,13 @@ _NS.ShaderProgram.prototype.use = function () {
 * @return {WebGLUniformLocation} Location of the uniform
 */
 _NS.ShaderProgram.prototype.getUniformLocation = function (parameter) {
-    if (this.uniforms[parameter]) {
-        return this.uniforms[parameter];
+    var gl = this.m_context.GL();
+
+    if (this.m_uniforms[parameter]) {
+        return this.m_uniforms[parameter];
     }
-    this.uniforms[parameter] = this.context.gl.getUniformLocation(this.shaderProgramId, parameter);
-    return this.uniforms[parameter];
+    this.m_uniforms[parameter] = gl.getUniformLocation(this.m_shaderProgramId, parameter);
+    return this.m_uniforms[parameter];
 };
 
 /**
@@ -88,49 +94,59 @@ _NS.ShaderProgram.prototype.getUniformLocation = function (parameter) {
 * @return {int} Location of the uniform
 */
 _NS.ShaderProgram.prototype.getAttribLocation = function (parameter) {
-    if (this.attributes[parameter]) {
-        return this.attributes[parameter];
+    var gl = this.m_context.GL();
+
+    if (this.m_attributes[parameter]) {
+        return this.m_attributes[parameter];
     }
-    this.attributes[parameter] = this.context.gl.getAttribLocation(this.shaderProgramId, parameter);
-    return this.attributes[parameter];
+    this.m_attributes[parameter] = gl.getAttribLocation(this.m_shaderProgramId, parameter);
+    return this.m_attributes[parameter];
 };
 
 _NS.ShaderProgram.prototype.uniform1i = function (parameter, x) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform1i(uniform, x);
+    gl.uniform1i(uniform, x);
 };
 
 _NS.ShaderProgram.prototype.uniform1f = function (parameter, x) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform1f(uniform, x);
+    gl.uniform1f(uniform, x);
 };
 
 _NS.ShaderProgram.prototype.uniform2i = function (parameter, x, y) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform2i(uniform, x, y);
+    gl.uniform2i(uniform, x, y);
 };
 
 _NS.ShaderProgram.prototype.uniform2f = function (parameter, x, y) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform2f(uniform, x, y);
+    gl.uniform2f(uniform, x, y);
 };
 
 _NS.ShaderProgram.prototype.uniform3i = function (parameter, x, y, z) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform3i(uniform, x, y, z);
+    gl.uniform3i(uniform, x, y, z);
 };
 
 _NS.ShaderProgram.prototype.uniform3f = function (parameter, x, y, z) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform3f(uniform, x, y, z);
+    gl.uniform3f(uniform, x, y, z);
 };
 
 _NS.ShaderProgram.prototype.uniform4i = function (parameter, x, y, z, w) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform4i(uniform, x, y, z, w);
+    gl.uniform4i(uniform, x, y, z, w);
 };
 
 _NS.ShaderProgram.prototype.uniform4f = function (parameter, x, y, z, w) {
+    var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    this.context.gl.uniform4f(uniform, x, y, z, w);
+    gl.uniform4f(uniform, x, y, z, w);
 };

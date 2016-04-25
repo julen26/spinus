@@ -8,33 +8,28 @@ var _NS = _NS || {};
 _NS.Context = function(canvasId) {
     /**
     * Canvas element
-    * @type string
+    * @type HTMLElement
     */
-    this.canvas = document.getElementById(canvasId);
+    this.m_canvas = document.getElementById(canvasId);
 
-    /**
-    * Canvas rendering context
-    * @type CanvasRenderingContext2D 
-    */
-    this.ctx = null;
     /**
     * WebGL rendering context
     * @type WebGLRenderingContext 
     */
-    this.gl = null;
+    this.m_gl = null;
 
-    if (!this.canvas) {
+    if (!this.m_canvas) {
         throw "Specified canvas element is missing.";
     }
 
     if (window.WebGLRenderingContext) {
-        this.gl = this.canvas.getContext("webgl") || this.canvas.getContext("experimental-webgl");   
+        this.m_gl = this.m_canvas.getContext("webgl") || this.m_canvas.getContext("experimental-webgl");   
     }
     else {
         throw "WebGL context is required and it's not supported by the browser."
     }
 
-    if (!this.gl) {
+    if (!this.m_gl) {
         throw "Unable to initialize a valid context. Your browser may not support it."
     }
 
@@ -42,12 +37,18 @@ _NS.Context = function(canvasId) {
     * Viewport width
     * @type int 
     */
-    this.viewportWidth = this.canvas.width;
+    this.m_viewportWidth = this.m_canvas.width;
     /**
     * Viewport height
     * @type int 
     */
-    this.viewportHeight = this.canvas.height;
+    this.m_viewportHeight = this.m_canvas.height;
+
+    /**
+    * Current shader program
+    * @type ShaderProgram 
+    */
+    this.m_currentProgram = null;
 
     var vertexShader = new _NS.VertexShader2D(this);
     var fragmentShader = new _NS.FragmentShader2D(this);
@@ -55,13 +56,13 @@ _NS.Context = function(canvasId) {
     program.attachShader(vertexShader);
     program.attachShader(fragmentShader);
     program.link();
-    program.use(); //this.currentProgram = program
+    program.use(); //this.setCurrentProgram(program)
 
     /**
     * Default shader program
     * @type ShaderProgram 
     */
-    this.defaultProgram = program;
+    this.m_defaultProgram = program;
 
     var vertexShaderTextured = new _NS.VertexShader2D(this, true);
     var fragmentShaderTextured = new _NS.FragmentShader2D(this, true);
@@ -74,21 +75,102 @@ _NS.Context = function(canvasId) {
     * Default shader program for textured drawings
     * @type ShaderProgram 
     */
-    this.defaultProgramTextured = programTextured;
+    this.m_defaultProgramTextured = programTextured;
 
     //Initialize buffer
     this.initBuffers();
 
-    this.gl.viewport(0, 0, this.viewportWidth, this.viewportHeight);
-    this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    this.gl.enable(this.gl.BLEND);
-    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT); 
+    this.m_gl.viewport(0, 0, this.m_viewportWidth, this.m_viewportHeight);
+    this.m_gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.m_gl.enable(this.m_gl.BLEND);
+    this.m_gl.blendFunc(this.m_gl.SRC_ALPHA, this.m_gl.ONE_MINUS_SRC_ALPHA);
+    this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
 };
 
 /**
-* Initializes support buffers
+* Get Canvas element
+*
+* @method
+* @returns {HTMLElement} Canvas element
+*/
+_NS.Context.prototype.getCanvas = function() {
+    return this.m_canvas;
+}
 
+/**
+* Get WebGL rendering context
+*
+* @method
+* @returns {WebGLRenderingContext} WebGL rendering context
+*/
+_NS.Context.prototype.GL = function() {
+    return this.m_gl;
+}
+
+/**
+* Get viewport width
+*
+* @method
+* @returns {int} Viewport width
+*/
+_NS.Context.prototype.getViewportWidth = function() {
+    return this.m_viewportWidth;
+}
+
+/**
+* Get viewport height
+*
+* @method
+* @returns {int} Viewport height
+*/
+_NS.Context.prototype.getViewportHeight = function() {
+    return this.m_viewportHeight;
+}
+
+/**
+* Get default shader program
+*
+* @method
+* @returns {ShaderProgram} Default shader program
+*/
+_NS.Context.prototype.getDefaultProgram = function() {
+    return this.m_defaultProgram;
+}
+
+/**
+* Get default textured shader program
+*
+* @method
+* @returns {ShaderProgram} Default textured shader program
+*/
+_NS.Context.prototype.getDefaultProgramTextured = function() {
+    return this.m_defaultProgramTextured;
+}
+
+/**
+* Get shader program in use
+*
+* @method
+* @returns {ShaderProgram} Current shader program
+*/
+_NS.Context.prototype.getCurrentProgram = function() {
+    return this.m_currentProgram;
+}
+
+/**
+* Set current shader program
+*
+* @method
+* @param {ShaderProgram} program - Shader program to use
+*/
+_NS.Context.prototype.setCurrentProgram = function(program) {
+    this.m_currentProgram = program;
+}
+
+
+/**
+* Initializes support buffers
+*
 * @method
 */
 _NS.Context.prototype.initBuffers = function() {
@@ -96,22 +178,22 @@ _NS.Context.prototype.initBuffers = function() {
     * Vertex position buffer
     * @type WebGLBuffer  
     */
-    this.vertexPositionBuffer = this.gl.createBuffer();
+    this.vertexPositionBuffer = this.m_gl.createBuffer();
     /**
     * Vertex color buffer
     * @type WebGLBuffer  
     */
-    this.vertexColorBuffer = this.gl.createBuffer();
+    this.vertexColorBuffer = this.m_gl.createBuffer();
     /**
     * Vertex texture coords buffer
     * @type WebGLBuffer  
     */
-    this.vertexTexCoorsBuffer = this.gl.createBuffer();
+    this.vertexTexCoorsBuffer = this.m_gl.createBuffer();
 }
 
 /**
 * Draws a drawable object
-
+*
 * @method
 * @param {Drawable} drawable - Drawable object
 */
@@ -121,46 +203,47 @@ _NS.Context.prototype.draw = function(drawable) {
 
 /**
 * Draws vertices
-
+*
 * @method
 * @param {List} vertices - Vertices list
 * @param {PrimitiveType} type - Primitive type
 */
 _NS.Context.prototype.drawVertices = function(vertices, type) {
+    var gl = this.GL();
     //TODO: use shader
 
     //Positions
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexPositionBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
     var positions = _NS.VertexArray.getPositionArray(vertices);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
     //Colors
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexColorBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexColorBuffer);
     var colors = _NS.VertexArray.getColorArray(vertices);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors), this.gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
     //Texture coordinates
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexTexCoorsBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTexCoorsBuffer);
     var texCoords = _NS.VertexArray.getTexCoordsArray(vertices);
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(texCoords), this.gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
 
     //Bind buffer to attributes
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    var positionAttribute = this.currentProgram.getAttribLocation("a_position");
-    this.gl.enableVertexAttribArray(positionAttribute);
-    this.gl.vertexAttribPointer(positionAttribute, 2, this.gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
+    var positionAttribute = this.m_currentProgram.getAttribLocation("a_position");
+    gl.enableVertexAttribArray(positionAttribute);
+    gl.vertexAttribPointer(positionAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexColorBuffer);
-    var colorAttribute = this.currentProgram.getAttribLocation("a_color");
-    this.gl.enableVertexAttribArray(colorAttribute);
-    this.gl.vertexAttribPointer(colorAttribute, 4, this.gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexColorBuffer);
+    var colorAttribute = this.m_currentProgram.getAttribLocation("a_color");
+    gl.enableVertexAttribArray(colorAttribute);
+    gl.vertexAttribPointer(colorAttribute, 4, gl.FLOAT, false, 0, 0);
 
-    this.currentProgram.uniform2f("u_resolution", this.viewportWidth, this.viewportHeight);
+    this.m_currentProgram.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
 
     //Find WebGL primitive type
-    var modes = [this.gl.POINTS, this.gl.LINES, this.gl.LINE_STRIP, this.gl.LINE_LOOP, this.gl.TRIANGLES, this.gl.TRIANGLE_STRIP, this.gl.TRIANGLE_FAN];
+    var modes = [gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN];
     var mode = modes[type];
 
     //Draw primitives
-    this.gl.drawArrays(mode, 0, vertices.length);
+    gl.drawArrays(mode, 0, vertices.length);
 };  

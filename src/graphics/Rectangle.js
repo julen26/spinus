@@ -15,12 +15,12 @@ _NS.Rectangle = function(x, y, w, h, color) {
     * Position
     * @type Vector2
     */
-    this.position = new _NS.Vector2(x, y);
+    this.m_position = new _NS.Vector2(x, y);
     /**
     * Size
     * @type Vector2
     */
-    this.size = new _NS.Vector2(w, h);
+    this.m_size = new _NS.Vector2(w, h);
 
     this.setColor(color);
 };
@@ -36,10 +36,10 @@ _NS.Rectangle.prototype = new _NS.Shape(4);
 * @param {float} y2 - Bottom
 */
 _NS.Rectangle.prototype.setBounds = function (x1, y1, x2, y2) {
-    this.position.set(x1, y1);
-    this.size.set(Math.abs(x2 - x1), Math.abs(y2 - y1));
+    this.m_position.set(x1, y1);
+    this.m_size.set(Math.abs(x2 - x1), Math.abs(y2 - y1));
 
-    this.setPointPosition(0, this.position);
+    this.setPointPosition(0, this.m_position);
     this.setPointPosition(1, new _NS.Vector2(x2, y1));
     this.setPointPosition(2, new _NS.Vector2(x2, y2));
     this.setPointPosition(3, new _NS.Vector2(x1, y2));

@@ -10,12 +10,12 @@ _NS.Shader = function(context) {
     * WebGLShader object
     * @type WebGLShader
     */
-    this.shaderId = null;
+    this.m_shaderId = null;
     /**
     * Context
     * @type Context
     */
-    this.context = context;
+    this.m_context = context;
 };
 
 /**
@@ -30,6 +30,16 @@ _NS.Shader.Types = {
 };
 
 /**
+* Gets the internal WebGLShader object
+*
+* @method
+* @returns {WebGLShader} Internal WebGL shader object
+*/
+_NS.Shader.prototype.getShaderId = function () {
+    return this.m_shaderId;
+};
+
+/**
 * Compiles the shader source of the given type
 *
 * @method
@@ -37,17 +47,19 @@ _NS.Shader.Types = {
 * @param {Types} shaderType - Shader type
 */
 _NS.Shader.prototype.compile = function (data, shaderType) {
+    var gl = this.m_context.GL();
+
     var realType;
     if (shaderType == _NS.Shader.Types.VertexShader) {
-        realType = this.context.gl.VERTEX_SHADER;
+        realType = gl.VERTEX_SHADER;
     }
     else if (shaderType == _NS.Shader.Types.FragmentShader) {
-        realType = this.context.gl.FRAGMENT_SHADER;
+        realType = gl.FRAGMENT_SHADER;
     }
-    this.shaderId = this.context.gl.createShader(realType);
-    this.context.gl.shaderSource(this.shaderId, data);
-    this.context.gl.compileShader(this.shaderId);
-    //alert(this.context.gl.getShaderInfoLog(this.shaderId));
+    this.m_shaderId = gl.createShader(realType);
+    gl.shaderSource(this.m_shaderId, data);
+    gl.compileShader(this.m_shaderId);
+    //alert(gl.getShaderInfoLog(this.m_shaderId));
 };
 
 /**
@@ -57,6 +69,8 @@ _NS.Shader.prototype.compile = function (data, shaderType) {
 * @param {string} scriptId - ID of the script tag
 */
 _NS.Shader.prototype.loadFromScript = function (scriptId) {
+    var gl = this.m_context.GL();
+    
     var shaderScript = document.getElementByTag(scriptId);
     var shaderSource = shaderScript.text;
 
@@ -68,7 +82,7 @@ _NS.Shader.prototype.loadFromScript = function (scriptId) {
         shaderType = _NS.Shader.Types.VertexShader;
     }
 
-    this.compile(this.context.gl, shaderSource, shaderType);
+    this.compile(gl, shaderSource, shaderType);
 };
 
 /**

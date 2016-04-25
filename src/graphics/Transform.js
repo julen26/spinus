@@ -9,11 +9,11 @@ _NS.Transform = function() {
     * 4x4 matrix
     * @type float[]
     */
-    this.matrix = [];
-    this.matrix[0] = 1.0; this.matrix[4] = 0.0; this.matrix[8]  = 0.0; this.matrix[12] = 0.0;
-    this.matrix[1] = 0.0; this.matrix[5] = 1.0; this.matrix[9]  = 0.0; this.matrix[13] = 0.0;
-    this.matrix[2] = 0.0; this.matrix[6] = 0.0; this.matrix[10] = 1.0; this.matrix[14] = 0.0;
-    this.matrix[3] = 0.0; this.matrix[7] = 0.0; this.matrix[11] = 0.0; this.matrix[15] = 1.0;
+    this.m_matrix = [];
+    this.m_matrix[0] = 1.0; this.m_matrix[4] = 0.0; this.m_matrix[8]  = 0.0; this.m_matrix[12] = 0.0;
+    this.m_matrix[1] = 0.0; this.m_matrix[5] = 1.0; this.m_matrix[9]  = 0.0; this.m_matrix[13] = 0.0;
+    this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
+    this.m_matrix[3] = 0.0; this.m_matrix[7] = 0.0; this.m_matrix[11] = 0.0; this.m_matrix[15] = 1.0;
 };
 
 /**
@@ -33,10 +33,10 @@ _NS.Transform = function() {
 _NS.Transform.prototype.set = function (a00, a01, a02,
                                         a10, a11, a12,
                                         a20, a21, a22) {
-    this.matrix[0] = a00; this.matrix[4] = a01; this.matrix[8]  = 0.0; this.matrix[12] = a02;
-    this.matrix[1] = a10; this.matrix[5] = a11; this.matrix[9]  = 0.0; this.matrix[13] = a12;
-    this.matrix[2] = 0.0; this.matrix[6] = 0.0; this.matrix[10] = 1.0; this.matrix[14] = 0.0;
-    this.matrix[3] = a20; this.matrix[7] = a21; this.matrix[11] = 0.0; this.matrix[15] = a22;
+    this.m_matrix[0] = a00; this.m_matrix[4] = a01; this.m_matrix[8]  = 0.0; this.m_matrix[12] = a02;
+    this.m_matrix[1] = a10; this.m_matrix[5] = a11; this.m_matrix[9]  = 0.0; this.m_matrix[13] = a12;
+    this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
+    this.m_matrix[3] = a20; this.m_matrix[7] = a21; this.m_matrix[11] = 0.0; this.m_matrix[15] = a22;
 };
 
 /**
@@ -46,20 +46,20 @@ _NS.Transform.prototype.set = function (a00, a01, a02,
 * @returns {Transform} Inverse transform or identity if determinant is zero
 */
 _NS.Transform.prototype.getInverse = function () {
-    var det =   this.matrix[0] * (this.matrix[15] * this.matrix[5] - this.matrix[7] * this.matrix[13]) -
-                this.matrix[1] * (this.matrix[15] * this.matrix[4] - this.matrix[7] * this.matrix[12]) +
-                this.matrix[3] * (this.matrix[13] * this.matrix[4] - this.matrix[5] * this.matrix[12]);
+    var det =   this.m_matrix[0] * (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) -
+                this.m_matrix[1] * (this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) +
+                this.m_matrix[3] * (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]);
     if (det != 0) {
         var inverse = new Transform();
-        inverse.set(  (this.matrix[15] * this.matrix[5] - this.matrix[7] * this.matrix[13]) / det,
-                     -(this.matrix[15] * this.matrix[4] - this.matrix[7] * this.matrix[12]) / det,
-                      (this.matrix[13] * this.matrix[4] - this.matrix[5] * this.matrix[12]) / det,
-                     -(this.matrix[15] * this.matrix[1] - this.matrix[3] * this.matrix[13]) / det,
-                      (this.matrix[15] * this.matrix[0] - this.matrix[3] * this.matrix[12]) / det,
-                     -(this.matrix[13] * this.matrix[0] - this.matrix[1] * this.matrix[12]) / det,
-                      (this.matrix[7]  * this.matrix[1] - this.matrix[3] * this.matrix[5])  / det,
-                     -(this.matrix[7]  * this.matrix[0] - this.matrix[3] * this.matrix[4])  / det,
-                      (this.matrix[5]  * this.matrix[0] - this.matrix[1] * this.matrix[4])  / det);
+        inverse.set(  (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) / det,
+                     -(this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) / det,
+                      (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]) / det,
+                     -(this.m_matrix[15] * this.m_matrix[1] - this.m_matrix[3] * this.m_matrix[13]) / det,
+                      (this.m_matrix[15] * this.m_matrix[0] - this.m_matrix[3] * this.m_matrix[12]) / det,
+                     -(this.m_matrix[13] * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[12]) / det,
+                      (this.m_matrix[7]  * this.m_matrix[1] - this.m_matrix[3] * this.m_matrix[5])  / det,
+                     -(this.m_matrix[7]  * this.m_matrix[0] - this.m_matrix[3] * this.m_matrix[4])  / det,
+                      (this.m_matrix[5]  * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[4])  / det);
     }
     else {
         return new Transform();
@@ -74,7 +74,7 @@ _NS.Transform.prototype.getInverse = function () {
 * @returns {Transform} New combined transform
 */
 _NS.Transform.prototype.combine = function (transform) {
-    var a = this.matrix;
+    var a = this.m_matrix;
     var b = transform.matrix;
     var comb = new Transform();
     comb.set(a[0] * b[0] + a[4] * b[1] + a[12] * b[3], a[0] * b[4] + a[4] * b[5] + a[12] * b[7], a[0] * b[12] + a[4] * b[13] + a[12] * b[15],
@@ -146,7 +146,7 @@ _NS.Transform.prototype.rotate = function (angle, x, y) {
 */
 _NS.Transform.prototype.transformPoint = function (x, y) {
     var vec = Vector2();
-    vec.set(this.matrix[0] * x + this.matrix[4] * y + this.matrix[12],
-            this.matrix[1] * x + this.matrix[5] * y + this.matrix[13]);
+    vec.set(this.m_matrix[0] * x + this.m_matrix[4] * y + this.m_matrix[12],
+            this.m_matrix[1] * x + this.m_matrix[5] * y + this.m_matrix[13]);
     return vec;
 };
