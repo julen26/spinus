@@ -11,6 +11,11 @@ _NS.Shape = function(pointCount) {
     */
     this.m_outlineThickness = 0;
     /**
+    * Outline color
+    * @type Color
+    */
+    this.m_outlineColor = new _NS.Color();
+    /**
     * Vertex array that represents the fill
     * @type VertexArray
     */
@@ -21,20 +26,55 @@ _NS.Shape = function(pointCount) {
     */
     this.m_outlineVertexArray = new _NS.VertexArray(_NS.PrimitiveType.TriangleStrip, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
 
+    /**
+    * Private member to control when to update outline
+    * @type bool
+    */
+    this.m_needsUpdate = false;
+    /**
+    * Private member to control when to update outline color
+    * @type bool
+    */
+    this.m_needsColorUpdate = false;
+
     //TODO: Texture and texture rectangle
 };
 
+/**
+* Adds a new point to the shape
+*
+* @method
+* @param {Vector2} position - Position of the new point
+* @param {Color} color - Color of the new point
+*/
 _NS.Shape.prototype.addPoint = function (position, color) {
     this.m_vertexArray.addVertex(_NS.Vertex(position, color));
+    this.m_needsUpdate = true;
+    this.m_needsColorUpdate = true;
 };
 
+/**
+* Sets the position of a point
+*
+* @method
+* @param {int} index - Index of the point
+* @param {Vector2} position - New position of the point
+*/
 _NS.Shape.prototype.setPointPosition = function (index, position) {
     if (index < this.m_vertexArray.getVertexCount()) {
         var vertex = this.m_vertexArray.getVertex(index);
         vertex.position = position;
+        this.m_needsUpdate = true;
     }
 };
 
+/**
+* Sets the color of a point
+*
+* @method
+* @param {int} index - Index of the point
+* @param {Color} position - New color of the point
+*/
 _NS.Shape.prototype.setPointColor = function (index, color) {
     if (index < this.m_vertexArray.getVertexCount()) {
         var vertex = this.m_vertexArray.getVertex(index);
@@ -42,20 +82,47 @@ _NS.Shape.prototype.setPointColor = function (index, color) {
     }
 };
 
+/**
+* Sets the outline thickness
+*
+* @method
+* @param {float} outlineThickness - Outline thickness
+*/
 _NS.Shape.prototype.setOutlineThickness = function (outlineThickness) {
     this.m_outlineThickness = outlineThickness;
-    this.computeOutline();
+    this.m_needsUpdate = true;
 };
 
+/**
+* Sets the outline color
+*
+* @method
+* @param {Color} color - Color of the outline
+*/
 _NS.Shape.prototype.setOutlineColor = function (color) {
+    this.m_outlineColor = color;
+    this.m_needsColorUpdate = true;
+};
+
+/**
+* Updates the color of each vertex of the outline
+*
+* @method
+*/
+_NS.Shape.prototype.updateOutlineColor = function () {
     var count = this.m_outlineVertexArray.getVertexCount();
 
     for (var i = 0; i < count; i++) {
-        this.m_outlineVertexArray.getVertex(i).color = color;
+        this.m_outlineVertexArray.getVertex(i).color = this.m_outlineColor;
     }
 };
 
-_NS.Shape.prototype.computeOutline = function () {
+/**
+* Updates the outline vertex array
+*
+* @method
+*/
+_NS.Shape.prototype.updateOutline = function () {
     var count = this.m_vertexArray.getVertexCount();
     this.m_outlineVertexArray.resize((count * 2) + 2);
 
@@ -89,9 +156,24 @@ _NS.Shape.prototype.computeOutline = function () {
     this.m_outlineVertexArray.getVertex(count * 2 + 1).position = this.m_outlineVertexArray.getVertex(1).position;
 };
 
+/**
+* Draws the shape in the given context
+*
+* @method
+* @param {Context} context - Context
+*/
 _NS.Shape.prototype.draw = function (context) {
     this.m_vertexArray.draw(context);
     if (this.m_outlineThickness > 0) {
+        //TODO: May be done on an update step, not when drawing
+        if (this.m_needsUpdate) {
+            this.updateOutline();
+            this.m_needsUpdate = false;
+        }
+        if (this.m_needsColorUpdate) {
+            this.updateOutlineColor();
+            this.m_needsColorUpdate = false;
+        }
         this.m_outlineVertexArray.draw(context);
     }
 };
