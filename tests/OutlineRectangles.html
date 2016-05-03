@@ -14,7 +14,7 @@
     <script src="../src/graphics/Vertex.js"></script>
     <script src="../src/graphics/VertexArray.js"></script>
     <script src="../src/graphics/Shape.js"></script>
-    <script src="../src/graphics/Rectangle.js"></script>
+    <script src="../src/graphics/RectangleShape.js"></script>
     <script>
     function onload() {
 
@@ -27,7 +27,7 @@
             var color3 = _NS.Color.random();
             var color4 = _NS.Color.random();
 
-            var rect = new _NS.Rectangle();
+            var rect = new _NS.RectangleShape();
             rect.setColors(color1, color2, color3, color4);
             var x1 = Math.random() * context.getViewportWidth();
             var y1 = Math.random() * context.getViewportHeight();

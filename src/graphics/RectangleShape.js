@@ -1,8 +1,8 @@
 var _NS = _NS || {};
 
 /**
-* Constructs Rectangle objects
-* @class Represents a Rectangle object
+* Constructs RectangleShape objects
+* @class Represents a RectangleShape object
 * @extends Shape
 * @param {float} x - X position
 * @param {float} y - Y position
@@ -10,7 +10,7 @@ var _NS = _NS || {};
 * @param {float} h - Height
 * @param {Color} color - Color
 */
-_NS.Rectangle = function(x, y, w, h, color) {
+_NS.RectangleShape = function(x, y, w, h, color) {
     /**
     * Position
     * @type Vector2
@@ -24,7 +24,7 @@ _NS.Rectangle = function(x, y, w, h, color) {
 
     this.setColor(color);
 };
-_NS.Rectangle.prototype = new _NS.Shape(4);
+_NS.RectangleShape.prototype = new _NS.Shape(4);
 
 /**
 * Sets rectangle bounds
@@ -35,7 +35,7 @@ _NS.Rectangle.prototype = new _NS.Shape(4);
 * @param {float} x2 - Right
 * @param {float} y2 - Bottom
 */
-_NS.Rectangle.prototype.setBounds = function (x1, y1, x2, y2) {
+_NS.RectangleShape.prototype.setBounds = function (x1, y1, x2, y2) {
     this.m_position.set(x1, y1);
     this.m_size.set(Math.abs(x2 - x1), Math.abs(y2 - y1));
 
@@ -51,7 +51,7 @@ _NS.Rectangle.prototype.setBounds = function (x1, y1, x2, y2) {
 * @method
 * @param {Color} color - Fill color
 */
-_NS.Rectangle.prototype.setColor = function (color) {
+_NS.RectangleShape.prototype.setColor = function (color) {
     color = color || new _NS.Color();
     
     this.setPointColor(0, color);
@@ -69,7 +69,7 @@ _NS.Rectangle.prototype.setColor = function (color) {
 * @param {Color} color3 - Bottom-right color
 * @param {Color} color4 - Bottom-left color
 */
-_NS.Rectangle.prototype.setColors = function (color1, color2, color3, color4) {
+_NS.RectangleShape.prototype.setColors = function (color1, color2, color3, color4) {
     color1 = color1 || new _NS.Color();
     color2 = color2 || new _NS.Color();
     color3 = color3 || new _NS.Color();
