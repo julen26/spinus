@@ -22,7 +22,7 @@ _NS.CircleShape = function(x, y, radius, color) {
 
     this.setColor(color);
 };
-_NS.CircleShape.prototype = new _NS.Shape(32);
+_NS.CircleShape.prototype = new _NS.Shape(30);
 
 
 _NS.CircleShape.prototype.setPosition = function (position) {
@@ -44,16 +44,12 @@ _NS.CircleShape.prototype.setPointCount = function (pointCount) {
 
 _NS.CircleShape.prototype.update = function () {
     var pointCount = this.getPointCount();
-    if (pointCount > 4) {
-        var alfa = 2 * Math.PI / (pointCount - 2);
-        this.setPointPosition(0, this.m_position);
-        for (var i = 1; i < pointCount - 1; i++) {
-            var angle = alfa * (i - 1);
+    if (pointCount > 2) {
+        var alfa = 2 * Math.PI / pointCount;
+        for (var i = 0; i < pointCount; i++) {
+            var angle = alfa * i;
             var pos = new _NS.Vector2(this.m_position.x + Math.cos(angle) * this.m_radius, this.m_position.y + Math.sin(angle) * this.m_radius);
             this.setPointPosition(i, pos);
-            if (i == 1) {
-                this.setPointPosition(pointCount - 1, new _NS.Vector2(pos.x, pos.y));
-            }
         }
     }
 };
@@ -69,21 +65,5 @@ _NS.CircleShape.prototype.setColor = function (color) {
     var pointCount = this.getPointCount();
     for (var i = 0; i < pointCount; i++) {
         this.setPointColor(i, color);
-    }
-};
-
-/**
-* Sets an uniform fill color
-*
-* @method
-* @param {Color} color - Fill color
-*/
-_NS.CircleShape.prototype.setColors = function (color1, color2) {
-    color1 = color1 || new _NS.Color();
-    color2 = color2 || new _NS.Color();
-    this.setPointColor(0, color1);
-    var pointCount = this.getPointCount();
-    for (var i = 1; i < pointCount; i++) {
-        this.setPointColor(i, color2);
     }
 };

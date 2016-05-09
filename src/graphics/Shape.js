@@ -159,11 +159,16 @@ _NS.Shape.prototype.updateOutline = function () {
         var n1 = _NS.Vector2.computeNormal(vLeft.position, v.position);
         var n2 = _NS.Vector2.computeNormal(v.position, vRight.position);
 
-        //TODO: Make sure that the normals point towards the outside of the shape
-        //if (dotProduct(n1, m_vertices[0].position - p1) > 0)
-        //    n1 = -n1;
-        //if (dotProduct(n2, m_vertices[0].position - p1) > 0)
-        //    n2 = -n2;
+        //Normals must point towards outside of the shape
+        var tmp = new _NS.Vector2(this.m_vertexArray.getVertex(0).position.x - v.position.x, this.m_vertexArray.getVertex(0).position.y - v.position.y);
+        if (_NS.Vector2.dotProduct(n1, tmp) > 0) {
+            n1.x = -n1.x;
+            n1.y = -n1.y;
+        }
+        if (_NS.Vector2.dotProduct(n2, tmp) > 0) {
+            n2.x = -n2.x;
+            n2.y = -n2.y;
+        }
 
         // Combine normals to get the extrusion direction
         var factor = 1.0 + (n1.x * n2.x + n1.y * n2.y);
