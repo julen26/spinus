@@ -41,6 +41,28 @@ _NS.Shape = function(pointCount) {
 };
 
 /**
+* Resizes the point list, adding default points or removing existing ones to match the new length
+*
+* @method
+* @param {int} pointCount - New length of the point list
+*/
+_NS.Shape.prototype.setPointCount = function (pointCount) {
+    this.m_vertexArray.resize(pointCount);
+    this.m_needsUpdate = true;
+    this.m_needsColorUpdate = true;
+};
+
+/**
+* Get the number of points
+*
+* @method
+* @returns {int} Length of point list
+*/
+_NS.Shape.prototype.getPointCount = function () {
+    return this.m_vertexArray.getVertexCount();
+};
+
+/**
 * Adds a new point to the shape
 *
 * @method

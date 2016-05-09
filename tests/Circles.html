@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Outline Rectangles</title>
+    
+    <script src="../src/graphics/PrimitiveType.js"></script>
+	<script src="../src/system/Vector2.js"></script>
+    <script src="../src/graphics/Color.js"></script>
+    <script src="../src/graphics/Context.js"></script>
+    <script src="../src/graphics/Shader.js"></script>
+    <script src="../src/graphics/ShaderProgram.js"></script>
+    <script src="../src/graphics/Vertex.js"></script>
+    <script src="../src/graphics/VertexArray.js"></script>
+    <script src="../src/graphics/Shape.js"></script>
+    <script src="../src/graphics/CircleShape.js"></script>
+    <script>
+    function onload() {
+
+        var context = new _NS.Context("canvas1");
+
+        for (var i = 0; i < 20; i++) {
+
+            var color = _NS.Color.random();
+            var x = Math.random() * context.getViewportWidth();
+            var y = Math.random() * context.getViewportHeight();
+            var radius = 32 + Math.random() * 128;
+
+            var circle = new _NS.CircleShape(x, y, radius, color);
+            circle.setColors(_NS.Color.random(), _NS.Color.random());
+
+            //circle.setOutlineThickness(3);
+            //circle.setOutlineColor(new _NS.Color(255, 0, 0));
+
+            context.draw(circle);
+        }
+
+        var a = new _NS.CircleShape(320, 240, 50);
+        a.setOutlineColor(new _NS.Color(0, 0, 255));
+        a.setOutlineThickness(3);
+        a.setColors(_NS.Color.random(), _NS.Color.random());
+        a.setPointCount(5);
+        context.draw(a);
+
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
