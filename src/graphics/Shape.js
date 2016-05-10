@@ -160,7 +160,7 @@ _NS.Shape.prototype.updateOutline = function () {
         var n2 = _NS.Vector2.computeNormal(v.position, vRight.position);
 
         //Normals must point towards outside of the shape
-        var tmp = new _NS.Vector2(this.m_vertexArray.getVertex(0).position.x - v.position.x, this.m_vertexArray.getVertex(0).position.y - v.position.y);
+        var tmp = _NS.Vector2.sub(this.m_vertexArray.getVertex(0).position, v.position);
         if (_NS.Vector2.dotProduct(n1, tmp) > 0) {
             n1.x = -n1.x;
             n1.y = -n1.y;

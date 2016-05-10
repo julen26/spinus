@@ -67,3 +67,27 @@ _NS.Vector2.computeNormal = function (v1, v2) {
 _NS.Vector2.dotProduct = function (v1, v2) {
     return v1.x * v2.x + v1.y * v2.y;
 };
+
+/**
+* Addition of two vectors
+*
+* @method
+* @param {Vector2} v1 - First vector
+* @param {Vector2} v2 - Second vector
+* @return {Vector2} Result vector
+*/
+_NS.Vector2.add = function (v1, v2) {
+    return new _NS.Vector2(v1.x + v2.x, v1.y + v2.y);
+};
+
+/**
+* Substraction of two vectors
+*
+* @method
+* @param {Vector2} v1 - First vector
+* @param {Vector2} v2 - Second vector
+* @return {Vector2} Result vector
+*/
+_NS.Vector2.sub = function (v1, v2) {
+    return new _NS.Vector2(v1.x - v2.x, v1.y - v2.y);
+};
