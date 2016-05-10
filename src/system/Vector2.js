@@ -91,3 +91,27 @@ _NS.Vector2.add = function (v1, v2) {
 _NS.Vector2.sub = function (v1, v2) {
     return new _NS.Vector2(v1.x - v2.x, v1.y - v2.y);
 };
+
+/**
+* Multiply a vector with a scalar
+*
+* @method
+* @param {Vector2} v - Vector
+* @param {float} s - scalar
+* @return {Vector2} Result vector
+*/
+_NS.Vector2.mul = function (v, s) {
+    return new _NS.Vector2(v.x * s, v.y * s);
+};
+
+/**
+* Divide a vector with a scalar
+*
+* @method
+* @param {Vector2} v - Vector
+* @param {float} s - scalar
+* @return {Vector2} Result vector
+*/
+_NS.Vector2.div = function (v, s) {
+    return new _NS.Vector2(v.x / s, v.y / s);
+};
