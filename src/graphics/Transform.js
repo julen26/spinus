@@ -14,6 +14,11 @@ _NS.Transform = function() {
     this.m_matrix[1] = 0.0; this.m_matrix[5] = 1.0; this.m_matrix[9]  = 0.0; this.m_matrix[13] = 0.0;
     this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
     this.m_matrix[3] = 0.0; this.m_matrix[7] = 0.0; this.m_matrix[11] = 0.0; this.m_matrix[15] = 1.0;
+
+    this.m_scale = new _NS.Vector2();
+    this.m_origin = new _NS.Vector2();
+    this.m_rotation = 0;
+    this.m_position = new _NS.Vector2();
 };
 
 /**
@@ -39,6 +44,10 @@ _NS.Transform.prototype.set = function (a00, a01, a02,
     this.m_matrix[3] = a20; this.m_matrix[7] = a21; this.m_matrix[11] = 0.0; this.m_matrix[15] = a22;
 };
 
+_NS.Transform.prototype.getMatrix = function () {
+    return this.m_matrix;
+};
+
 /**
 * Gets new inverse transform
 *
@@ -50,7 +59,7 @@ _NS.Transform.prototype.getInverse = function () {
                 this.m_matrix[1] * (this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) +
                 this.m_matrix[3] * (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]);
     if (det != 0) {
-        var inverse = new Transform();
+        var inverse = new _NS.Transform();
         inverse.set(  (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) / det,
                      -(this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) / det,
                       (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]) / det,
@@ -62,7 +71,7 @@ _NS.Transform.prototype.getInverse = function () {
                       (this.m_matrix[5]  * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[4])  / det);
     }
     else {
-        return new Transform();
+        return new _NS.Transform();
     }
 };
 
@@ -75,8 +84,8 @@ _NS.Transform.prototype.getInverse = function () {
 */
 _NS.Transform.prototype.combine = function (transform) {
     var a = this.m_matrix;
-    var b = transform.matrix;
-    var comb = new Transform();
+    var b = transform.getMatrix();
+    var comb = new _NS.Transform();
     comb.set(a[0] * b[0] + a[4] * b[1] + a[12] * b[3], a[0] * b[4] + a[4] * b[5] + a[12] * b[7], a[0] * b[12] + a[4] * b[13] + a[12] * b[15],
              a[1] * b[0] + a[5] * b[1] + a[13] * b[3], a[1] * b[4] + a[5] * b[5] + a[13] * b[7], a[1] * b[12] + a[5] * b[13] + a[13] * b[15],
              a[3] * b[0] + a[7] * b[1] + a[15] * b[3], a[3] * b[4] + a[7] * b[5] + a[15] * b[7], a[3] * b[12] + a[7] * b[13] + a[15] * b[15]);
@@ -92,7 +101,7 @@ _NS.Transform.prototype.combine = function (transform) {
 * @returns {Transform} New translated transform
 */
 _NS.Transform.prototype.translate = function (x, y) {
-    var translation = new Transform();
+    var translation = new _NS.Transform();
     translation.set(1, 0, x,
                     0, 1, y,
                     0, 0, 1);
@@ -108,7 +117,7 @@ _NS.Transform.prototype.translate = function (x, y) {
 * @returns {Transform} New scaled transform
 */
 _NS.Transform.prototype.scale = function (x, y) {
-    var scaling = new Transform();
+    var scaling = new _NS.Transform();
     scaling.set(x, 0, 0,
                 0, y, 0,
                 0, 0, 1);
@@ -120,20 +129,60 @@ _NS.Transform.prototype.scale = function (x, y) {
 *
 * @method
 * @param {float} angle - Rotation angle in degrees
-* @param {float} x - X coordinate of the origin
-* @param {float} y - Y coordinate of the origin
 * @returns {Transform} New rotated transform
 */
-_NS.Transform.prototype.rotate = function (angle, x, y) {
+_NS.Transform.prototype.rotate = function (angle) {
     var rad = angle * Math.PI / 180.0;
     var cos = Math.cos(rad);
     var sin = Math.sin(rad);
 
-    var rotation = new Transform();
-    rotation.set(cos,   -sin,   x * (1 - cos) + y * sin,
-                 sin,    cos,   y * (1 - cos) - x * sin,
+    var rotation = new _NS.Transform();
+    rotation.set(cos,   -sin,   this.m_origin.x * (1 - cos) + this.m_origin.y * sin,
+                 sin,    cos,   this.m_origin.y * (1 - cos) - this.m_origin.x * sin,
                  0,      0,     1);
     return this.combine(rotation);
+};
+
+_NS.Transform.prototype.setScale = function(x, y) {
+    this.m_scale.x = x;
+    this.m_scale.y = y;
+};
+
+_NS.Transform.prototype.setOrigin = function(x, y) {
+    this.m_origin.x = x;
+    this.m_origin.y = y;
+};
+
+_NS.Transform.prototype.setRotation = function(angle) {
+    this.m_rotation = angle;
+};
+
+_NS.Transform.prototype.setPosition = function(x, y) {
+    this.m_position.x = x;
+    this.m_position.y = y;
+};
+
+_NS.Transform.prototype.getScale = function(x, y) {
+    return this.m_scale;
+};
+
+_NS.Transform.prototype.getOrigin = function(x, y) {
+    return this.m_origin;
+};
+
+_NS.Transform.prototype.getRotation = function(angle) {
+    return this.m_rotation;
+};
+
+_NS.Transform.prototype.getPosition = function(x, y) {
+    return this.m_position;
+};
+
+_NS.Transform.prototype.updateMatrix = function() {
+    this.set(1, 0, 0,
+             0, 1, 0,
+             0, 0, 1);
+    this.scale(this.m_scale.x, this.m_scale.y).rotate(this.m_rotation).translate(this.m_position.x, this.m_position.y);
 };
 
 /**

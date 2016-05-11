@@ -10,18 +10,8 @@ var _NS = _NS || {};
 * @param {float} h - Height
 * @param {Color} color - Color
 */
-_NS.RectangleShape = function(x, y, w, h, color) {
-    /**
-    * Position
-    * @type Vector2
-    */
-    this.m_position = new _NS.Vector2(x, y);
-    /**
-    * Size
-    * @type Vector2
-    */
-    this.m_size = new _NS.Vector2(w, h);
-
+_NS.RectangleShape = function(w, h, color) {
+    this.setSize(w, h);
     this.setColor(color);
 };
 _NS.RectangleShape.prototype = new _NS.Shape(4);
@@ -35,14 +25,13 @@ _NS.RectangleShape.prototype = new _NS.Shape(4);
 * @param {float} x2 - Right
 * @param {float} y2 - Bottom
 */
-_NS.RectangleShape.prototype.setBounds = function (x1, y1, x2, y2) {
-    this.m_position.set(x1, y1);
-    this.m_size.set(Math.abs(x2 - x1), Math.abs(y2 - y1));
+_NS.RectangleShape.prototype.setSize = function (w, h) {
+    this.m_size = new _NS.Vector2(w, h);
 
-    this.setPointPosition(0, this.m_position);
-    this.setPointPosition(1, new _NS.Vector2(x2, y1));
-    this.setPointPosition(2, new _NS.Vector2(x2, y2));
-    this.setPointPosition(3, new _NS.Vector2(x1, y2));
+    this.setPointPosition(0, new _NS.Vector2(0, 0));
+    this.setPointPosition(1, new _NS.Vector2(w, 0));
+    this.setPointPosition(2, new _NS.Vector2(w, h));
+    this.setPointPosition(3, new _NS.Vector2(0, h));
 };
 
 /**

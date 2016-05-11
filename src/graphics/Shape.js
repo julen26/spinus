@@ -37,7 +37,14 @@ _NS.Shape = function(pointCount) {
     */
     this.m_needsColorUpdate = false;
 
+    this.m_transform = new _NS.Transform();
+
     //TODO: Texture and texture rectangle
+};
+
+_NS.Shape.prototype.getTransform = function () {
+    this.m_transform.updateMatrix();
+    return this.m_transform;
 };
 
 /**
@@ -190,6 +197,9 @@ _NS.Shape.prototype.updateOutline = function () {
 * @param {Context} context - Context
 */
 _NS.Shape.prototype.draw = function (context) {
+    this.m_transform.updateMatrix();
+    context.setTransform(this.m_transform);
+    
     this.m_vertexArray.draw(context);
     if (this.m_outlineThickness > 0) {
         //TODO: May be done on an update step, not when drawing

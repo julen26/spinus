@@ -8,6 +8,7 @@
     <script src="../src/graphics/PrimitiveType.js"></script>
 	<script src="../src/system/Vector2.js"></script>
     <script src="../src/graphics/Color.js"></script>
+    <script src="../src/graphics/Transform.js"></script>
     <script src="../src/graphics/Context.js"></script>
     <script src="../src/graphics/Shader.js"></script>
     <script src="../src/graphics/ShaderProgram.js"></script>
@@ -29,11 +30,12 @@
 
             var rect = new _NS.RectangleShape();
             rect.setColors(color1, color2, color3, color4);
-            var x1 = Math.random() * context.getViewportWidth();
-            var y1 = Math.random() * context.getViewportHeight();
-            var x2 = Math.random() * context.getViewportWidth();
-            var y2 = Math.random() * context.getViewportHeight();
-            rect.setBounds(x1, y1, x2, y2);
+            var w = Math.random() * context.getViewportWidth() / 2;
+            var h = Math.random() * context.getViewportHeight() / 2;
+            var x = Math.random() * context.getViewportWidth();
+            var y = Math.random() * context.getViewportHeight();
+            rect.setSize(w, h);
+            rect.getTransform().setPosition(x, y);
 
             context.draw(rect);
         }

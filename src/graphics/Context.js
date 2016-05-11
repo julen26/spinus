@@ -85,6 +85,8 @@ _NS.Context = function(canvasId) {
     this.m_gl.enable(this.m_gl.BLEND);
     this.m_gl.blendFunc(this.m_gl.SRC_ALPHA, this.m_gl.ONE_MINUS_SRC_ALPHA);
     this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
+
+    this.m_transform = new _NS.Transform();
 };
 
 /**
@@ -191,6 +193,10 @@ _NS.Context.prototype.initBuffers = function() {
     this.vertexTexCoorsBuffer = this.m_gl.createBuffer();
 }
 
+_NS.Context.prototype.setTransform = function(transform) {
+    this.m_transform = transform;
+}
+
 /**
 * Draws a drawable object
 *
@@ -239,6 +245,9 @@ _NS.Context.prototype.drawVertices = function(vertices, type) {
     gl.vertexAttribPointer(colorAttribute, 4, gl.FLOAT, false, 0, 0);
 
     this.m_currentProgram.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
+    var transformMatrix = this.m_transform.getMatrix();
+    this.m_currentProgram.uniformMatrix4fv("u_transform", transformMatrix);
+    //TODO: reset transform?
 
     //Find WebGL primitive type
     var modes = [gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN];

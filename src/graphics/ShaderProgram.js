@@ -150,3 +150,11 @@ _NS.ShaderProgram.prototype.uniform4f = function (parameter, x, y, z, w) {
     var uniform = this.getUniformLocation(parameter);
     gl.uniform4f(uniform, x, y, z, w);
 };
+
+_NS.ShaderProgram.prototype.uniformMatrix4fv = function (parameter, v) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniformMatrix4fv(uniform, gl.FALSE, new Float32Array(v));
+};
+
+//TODO: Rest of uniforms
