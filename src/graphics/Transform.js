@@ -15,7 +15,7 @@ _NS.Transform = function() {
     this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
     this.m_matrix[3] = 0.0; this.m_matrix[7] = 0.0; this.m_matrix[11] = 0.0; this.m_matrix[15] = 1.0;
 
-    this.m_scale = new _NS.Vector2();
+    this.m_scale = new _NS.Vector2(1, 1);
     this.m_origin = new _NS.Vector2();
     this.m_rotation = 0;
     this.m_position = new _NS.Vector2();
@@ -85,11 +85,19 @@ _NS.Transform.prototype.getInverse = function () {
 _NS.Transform.prototype.combine = function (transform) {
     var a = this.m_matrix;
     var b = transform.getMatrix();
-    var comb = new _NS.Transform();
-    comb.set(a[0] * b[0] + a[4] * b[1] + a[12] * b[3], a[0] * b[4] + a[4] * b[5] + a[12] * b[7], a[0] * b[12] + a[4] * b[13] + a[12] * b[15],
-             a[1] * b[0] + a[5] * b[1] + a[13] * b[3], a[1] * b[4] + a[5] * b[5] + a[13] * b[7], a[1] * b[12] + a[5] * b[13] + a[13] * b[15],
-             a[3] * b[0] + a[7] * b[1] + a[15] * b[3], a[3] * b[4] + a[7] * b[5] + a[15] * b[7], a[3] * b[12] + a[7] * b[13] + a[15] * b[15]);
-    return comb;
+    var a00 = a[0] * b[0] + a[4] * b[1] + a[12] * b[3];
+    var a01 = a[0] * b[4] + a[4] * b[5] + a[12] * b[7];
+    var a02 = a[0] * b[12] + a[4] * b[13] + a[12] * b[15];
+    var a10 = a[1] * b[0] + a[5] * b[1] + a[13] * b[3];
+    var a11 = a[1] * b[4] + a[5] * b[5] + a[13] * b[7];
+    var a12 = a[1] * b[12] + a[5] * b[13] + a[13] * b[15];
+    var a20 = a[3] * b[0] + a[7] * b[1] + a[15] * b[3];
+    var a21 = a[3] * b[4] + a[7] * b[5] + a[15] * b[7];
+    var a22 = a[3] * b[12] + a[7] * b[13] + a[15] * b[15];
+    this.set(a00, a01, a02,
+             a10, a11, a12,
+             a20, a21, a22);
+    return this;
 };
 
 /**

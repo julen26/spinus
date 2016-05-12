@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Transforms</title>
+    
+    <script src="../src/graphics/PrimitiveType.js"></script>
+	<script src="../src/system/Vector2.js"></script>
+    <script src="../src/graphics/Transform.js"></script>
+    <script>
+    function onload() {
+
+        var transform = new _NS.Transform();
+        transform.scale(2, 2);
+        transform.rotate(45);
+        transform.translate(100, 100);
+
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
