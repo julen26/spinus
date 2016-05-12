@@ -109,7 +109,7 @@ _NS.VertexShader2D = function (context, hasTexture) {
         +       "\n#if hasTexture\n"
         +          "v_texCoord = a_texCoord;"
         +       "\n#endif\n"
-        +       "mat4 projection2d = mat4(2.0 / u_resolution.x, 0, 0, 0, 0, -2.0 / u_resolution.y, 0, 0, -1, 1, 1, 0, 0, 0, 0, 1);"
+        +       "mat4 projection2d = mat4(2.0 / u_resolution.x, 0, 0, 0, 0, -2.0 / u_resolution.y, 0, 0, 0, 0, 1, 0, -1, 1, 0, 1);"
         +       "gl_Position = vec4( (u_transform * projection2d * vec4(a_position, 0, 1)).xy, 0, 1);"
         +       "v_color = a_color;"
         +   "}"
