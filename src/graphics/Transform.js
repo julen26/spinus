@@ -145,8 +145,8 @@ _NS.Transform.prototype.rotate = function (angle) {
     var sin = Math.sin(rad);
 
     var rotation = new _NS.Transform();
-    rotation.set(cos,   -sin,   this.m_origin.x * (1 - cos) + this.m_origin.y * sin,
-                 sin,    cos,   this.m_origin.y * (1 - cos) - this.m_origin.x * sin,
+    rotation.set(cos,   -sin,   0,
+                 sin,    cos,   0,
                  0,      0,     1);
     return this.combine(rotation);
 };
@@ -162,6 +162,7 @@ _NS.Transform.prototype.setOrigin = function(x, y) {
 };
 
 _NS.Transform.prototype.setRotation = function(angle) {
+    //TODO: Fix value to [0-359]
     this.m_rotation = angle;
 };
 
@@ -190,7 +191,8 @@ _NS.Transform.prototype.updateMatrix = function() {
     this.set(1, 0, 0,
              0, 1, 0,
              0, 0, 1);
-    this.scale(this.m_scale.x, this.m_scale.y).rotate(this.m_rotation).translate(this.m_position.x, this.m_position.y);
+    //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
+    this.translate(this.m_position.x, this.m_position.y).rotate(this.m_rotation).translate(-this.m_origin.x, -this.m_origin.y).scale(this.m_scale.x, this.m_scale.y);
 };
 
 /**
