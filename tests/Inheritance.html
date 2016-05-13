@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Inheritance</title>
+    <script src="../src/system/Extend.js"></script>
+    <script>
+
+    var A = function () {
+        this.m_a = 'a';
+        this.m_x = 'a';
+    }
+    A.prototype.getA = function () {
+        return this.m_a;
+    }
+    A.prototype.shared1 = function () {
+        return this.m_a;
+    }
+    A.prototype.shared2 = function () {
+        return this.m_a;
+    }
+
+    var B = function () {
+        this.m_b = 'b';
+        this.m_x = 'b';
+    }
+    B.prototype.getB = function () {
+        return this.m_b;
+    }
+    B.prototype.shared1 = function () {
+        return this.m_b;
+    }
+    B.prototype.shared3 = function () {
+        return this.m_b;
+    }
+
+    var C = function () {
+        A.call(this);
+        B.call(this);
+        this.m_c = 'c';
+        this.m_x = 'c';
+    }
+
+    _NS.Extend(C, A);
+    _NS.Extend(C, B);
+
+    C.prototype.getC = function () {
+        return this.m_c;
+    }
+    C.prototype.shared2 = function () {
+        return this.m_c;
+    }
+    C.prototype.shared3 = function () {
+        return B.prototype.shared3.call(this)
+    }
+
+    function onload() {
+
+        //Constructor, includes constructor of base objects
+        var c = new C();
+        //Call derived shared1 of the latest base object
+        var x = c.shared1();
+        //Call overrided method
+        var y = c.shared2();
+        //Call overrided method that internally calls to base method
+        var z = c.shared3();
+
+    }
+
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
