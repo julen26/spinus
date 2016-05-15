@@ -10,40 +10,54 @@ _NS.Transformable = function() {
     this.m_origin = new _NS.Vector2();
     this.m_rotation = 0;
     this.m_position = new _NS.Vector2();
+
+    this.m_needsUpdate = false;
 };
 
 _NS.Transformable.prototype.getTransform = function () {
-    this.updateTransform();
+    if (this.m_needsUpdate) {
+        this.updateTransform();
+    }
     return this.m_transform;
 };
 
-_NS.Transformable.prototype.translate = function (x, y) {
+_NS.Transformable.prototype.move = function (x, y) {
+    this.setPosition(this.m_position.x + x, this.m_position.y + y);
 };
 
 _NS.Transformable.prototype.scale = function (x, y) {
+    this.setScale(this.m_scale.x * x, this.m_scale.y * y);
 };
 
 _NS.Transformable.prototype.rotate = function (angle) {
+    this.setRotation(this.m_rotation + angle);
 };
 
 _NS.Transformable.prototype.setScale = function(x, y) {
     this.m_scale.x = x;
     this.m_scale.y = y;
+    this.m_needsUpdate = true;
 };
 
 _NS.Transformable.prototype.setOrigin = function(x, y) {
     this.m_origin.x = x;
     this.m_origin.y = y;
+    this.m_needsUpdate = true;
 };
 
 _NS.Transformable.prototype.setRotation = function(angle) {
-    //TODO: Fix value to [0-359]
+    this.m_rotation = angle % 360;
+    if (this.m_rotation < 0) {
+        this.m_rotation += 360;
+    }
     this.m_rotation = angle;
+    this.m_needsUpdate = true;
 };
 
 _NS.Transformable.prototype.setPosition = function(x, y) {
     this.m_position.x = x;
     this.m_position.y = y;
+    this.m_needsUpdate = true;
 };
 
 _NS.Transformable.prototype.getScale = function(x, y) {
