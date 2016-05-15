@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <title>Fill Rectangles</title>
     
+    <script src="../src/system/Extend.js"></script>
     <script src="../src/graphics/PrimitiveType.js"></script>
 	<script src="../src/system/Vector2.js"></script>
     <script src="../src/graphics/Color.js"></script>
     <script src="../src/graphics/Transform.js"></script>
+    <script src="../src/graphics/Transformable.js"></script>
     <script src="../src/graphics/Context.js"></script>
     <script src="../src/graphics/Shader.js"></script>
     <script src="../src/graphics/ShaderProgram.js"></script>
@@ -35,7 +37,7 @@
             var x = Math.random() * context.getViewportWidth();
             var y = Math.random() * context.getViewportHeight();
             rect.setSize(w, h);
-            rect.getTransform().setPosition(x, y);
+            rect.setPosition(x, y);
 
             context.draw(rect);
         }
@@ -43,9 +45,9 @@
         var rect = new _NS.RectangleShape();
         rect.setColor(new _NS.Color(255, 0, 0));
         rect.setSize(100, 100);
-        rect.getTransform().setPosition(320, 240);
-        rect.getTransform().setOrigin(50, 50);
-        rect.getTransform().setRotation(45);
+        rect.setPosition(320, 240);
+        rect.setOrigin(50, 50);
+        rect.setRotation(45);
 
         context.draw(rect);
 

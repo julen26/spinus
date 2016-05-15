@@ -3,8 +3,12 @@ var _NS = _NS || {};
 /**
 * Constructs Shape objects
 * @class Represents a Shape object
+* @extends Transformable
 */
 _NS.Shape = function(pointCount) {
+    //Call base constructor
+    _NS.Transformable.call(this);
+
     /**
     * Outline thickness
     * @type float
@@ -37,15 +41,10 @@ _NS.Shape = function(pointCount) {
     */
     this.m_needsColorUpdate = false;
 
-    this.m_transform = new _NS.Transform();
-
     //TODO: Texture and texture rectangle
 };
-
-_NS.Shape.prototype.getTransform = function () {
-    this.m_transform.updateMatrix();
-    return this.m_transform;
-};
+//Extend from base
+_NS.extend(_NS.Shape, _NS.Transformable);
 
 /**
 * Resizes the point list, adding default points or removing existing ones to match the new length
@@ -197,8 +196,8 @@ _NS.Shape.prototype.updateOutline = function () {
 * @param {Context} context - Context
 */
 _NS.Shape.prototype.draw = function (context) {
-    this.m_transform.updateMatrix();
-    context.setTransform(this.m_transform);
+    var transform = this.getTransform();
+    context.setTransform(transform);
     
     this.m_vertexArray.draw(context);
     if (this.m_outlineThickness > 0) {

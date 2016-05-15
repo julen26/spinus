@@ -14,11 +14,6 @@ _NS.Transform = function() {
     this.m_matrix[1] = 0.0; this.m_matrix[5] = 1.0; this.m_matrix[9]  = 0.0; this.m_matrix[13] = 0.0;
     this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
     this.m_matrix[3] = 0.0; this.m_matrix[7] = 0.0; this.m_matrix[11] = 0.0; this.m_matrix[15] = 1.0;
-
-    this.m_scale = new _NS.Vector2(1, 1);
-    this.m_origin = new _NS.Vector2();
-    this.m_rotation = 0;
-    this.m_position = new _NS.Vector2();
 };
 
 /**
@@ -149,50 +144,6 @@ _NS.Transform.prototype.rotate = function (angle) {
                  sin,    cos,   0,
                  0,      0,     1);
     return this.combine(rotation);
-};
-
-_NS.Transform.prototype.setScale = function(x, y) {
-    this.m_scale.x = x;
-    this.m_scale.y = y;
-};
-
-_NS.Transform.prototype.setOrigin = function(x, y) {
-    this.m_origin.x = x;
-    this.m_origin.y = y;
-};
-
-_NS.Transform.prototype.setRotation = function(angle) {
-    //TODO: Fix value to [0-359]
-    this.m_rotation = angle;
-};
-
-_NS.Transform.prototype.setPosition = function(x, y) {
-    this.m_position.x = x;
-    this.m_position.y = y;
-};
-
-_NS.Transform.prototype.getScale = function(x, y) {
-    return this.m_scale;
-};
-
-_NS.Transform.prototype.getOrigin = function(x, y) {
-    return this.m_origin;
-};
-
-_NS.Transform.prototype.getRotation = function(angle) {
-    return this.m_rotation;
-};
-
-_NS.Transform.prototype.getPosition = function(x, y) {
-    return this.m_position;
-};
-
-_NS.Transform.prototype.updateMatrix = function() {
-    this.set(1, 0, 0,
-             0, 1, 0,
-             0, 0, 1);
-    //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
-    this.translate(this.m_position.x, this.m_position.y).rotate(this.m_rotation).translate(-this.m_origin.x, -this.m_origin.y).scale(this.m_scale.x, this.m_scale.y);
 };
 
 /**
