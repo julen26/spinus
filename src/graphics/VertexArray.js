@@ -107,8 +107,8 @@ _NS.VertexArray.prototype.setPrimitiveType = function (type) {
 * @method
 * @param {Context} context - Context
 */
-_NS.VertexArray.prototype.draw = function (context) {
-    context.drawVertices(this.m_vertices, this.m_primitiveType);
+_NS.VertexArray.prototype.draw = function (context, renderOptions) {
+    context.drawVertices(this.m_vertices, this.m_primitiveType, renderOptions);
 };
 
 /**

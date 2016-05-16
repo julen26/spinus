@@ -66,7 +66,6 @@ _NS.ShaderProgram.prototype.use = function () {
     var gl = this.m_context.GL();
 
     gl.useProgram(this.m_shaderProgramId);
-    this.m_context.setCurrentProgram(this);
 };
 
 /**

@@ -195,11 +195,11 @@ _NS.Shape.prototype.updateOutline = function () {
 * @method
 * @param {Context} context - Context
 */
-_NS.Shape.prototype.draw = function (context) {
-    var transform = this.getTransform();
-    context.setTransform(transform);
+_NS.Shape.prototype.draw = function (context, renderOptions) {
+    renderOptions.transform = this.getTransform();
+    //renderOptions.shader = context.getDefaultProgram();
     
-    this.m_vertexArray.draw(context);
+    this.m_vertexArray.draw(context, renderOptions);
     if (this.m_outlineThickness > 0) {
         //TODO: May be done on an update step, not when drawing
         if (this.m_needsUpdate) {
@@ -210,6 +210,6 @@ _NS.Shape.prototype.draw = function (context) {
             this.updateOutlineColor();
             this.m_needsColorUpdate = false;
         }
-        this.m_outlineVertexArray.draw(context);
+        this.m_outlineVertexArray.draw(context, renderOptions);
     }
 };

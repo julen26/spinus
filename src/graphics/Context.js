@@ -44,25 +44,13 @@ _NS.Context = function(canvasId) {
     */
     this.m_viewportHeight = this.m_canvas.height;
 
-    /**
-    * Current shader program
-    * @type ShaderProgram 
-    */
-    this.m_currentProgram = null;
-
+    //Load default shaders
     var vertexShader = new _NS.VertexShader2D(this);
     var fragmentShader = new _NS.FragmentShader2D(this);
     var program = new _NS.ShaderProgram(this);
     program.attachShader(vertexShader);
     program.attachShader(fragmentShader);
     program.link();
-    program.use(); //this.setCurrentProgram(program)
-
-    /**
-    * Default shader program
-    * @type ShaderProgram 
-    */
-    this.m_defaultProgram = program;
 
     var vertexShaderTextured = new _NS.VertexShader2D(this, true);
     var fragmentShaderTextured = new _NS.FragmentShader2D(this, true);
@@ -70,6 +58,12 @@ _NS.Context = function(canvasId) {
     programTextured.attachShader(vertexShaderTextured);
     programTextured.attachShader(fragmentShaderTextured);
     programTextured.link();
+
+    /**
+    * Default shader program
+    * @type ShaderProgram 
+    */
+    this.m_defaultProgram = program;
 
     /**
     * Default shader program for textured drawings
@@ -85,8 +79,6 @@ _NS.Context = function(canvasId) {
     this.m_gl.enable(this.m_gl.BLEND);
     this.m_gl.blendFunc(this.m_gl.SRC_ALPHA, this.m_gl.ONE_MINUS_SRC_ALPHA);
     this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
-
-    this.m_transform = new _NS.Transform();
 };
 
 /**
@@ -150,27 +142,6 @@ _NS.Context.prototype.getDefaultProgramTextured = function() {
 }
 
 /**
-* Get shader program in use
-*
-* @method
-* @returns {ShaderProgram} Current shader program
-*/
-_NS.Context.prototype.getCurrentProgram = function() {
-    return this.m_currentProgram;
-}
-
-/**
-* Set current shader program
-*
-* @method
-* @param {ShaderProgram} program - Shader program to use
-*/
-_NS.Context.prototype.setCurrentProgram = function(program) {
-    this.m_currentProgram = program;
-}
-
-
-/**
 * Initializes support buffers
 *
 * @method
@@ -193,18 +164,19 @@ _NS.Context.prototype.initBuffers = function() {
     this.vertexTexCoorsBuffer = this.m_gl.createBuffer();
 }
 
-_NS.Context.prototype.setTransform = function(transform) {
-    this.m_transform = transform;
-}
-
 /**
 * Draws a drawable object
 *
 * @method
 * @param {Drawable} drawable - Drawable object
 */
-_NS.Context.prototype.draw = function(drawable) {
-    drawable.draw(this);
+_NS.Context.prototype.draw = function(drawable, renderOptions) {
+    //Load default render options
+    if (!renderOptions) {
+        renderOptions = new _NS.RenderOptions();
+        renderOptions.shader = this.getDefaultProgram();
+    }
+    drawable.draw(this, renderOptions);
 };
 
 /**
@@ -214,9 +186,18 @@ _NS.Context.prototype.draw = function(drawable) {
 * @param {List} vertices - Vertices list
 * @param {PrimitiveType} type - Primitive type
 */
-_NS.Context.prototype.drawVertices = function(vertices, type) {
+_NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
+    //Load default render options
+    if (!renderOptions) {
+        renderOptions = new _NS.RenderOptions();
+        renderOptions.shader = this.getDefaultProgram();
+    }
+
     var gl = this.GL();
-    //TODO: use shader
+
+    if (renderOptions.shader) {
+        renderOptions.shader.use();
+    }
 
     //Positions
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
@@ -235,19 +216,18 @@ _NS.Context.prototype.drawVertices = function(vertices, type) {
 
     //Bind buffer to attributes
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    var positionAttribute = this.m_currentProgram.getAttribLocation("a_position");
+    var positionAttribute = renderOptions.shader.getAttribLocation("a_position");
     gl.enableVertexAttribArray(positionAttribute);
     gl.vertexAttribPointer(positionAttribute, 2, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexColorBuffer);
-    var colorAttribute = this.m_currentProgram.getAttribLocation("a_color");
+    var colorAttribute = renderOptions.shader.getAttribLocation("a_color");
     gl.enableVertexAttribArray(colorAttribute);
     gl.vertexAttribPointer(colorAttribute, 4, gl.FLOAT, false, 0, 0);
 
-    this.m_currentProgram.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
-    var transformMatrix = this.m_transform.getMatrix();
-    this.m_currentProgram.uniformMatrix4fv("u_transform", transformMatrix);
-    //TODO: reset transform?
+    renderOptions.shader.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
+    var transformMatrix = renderOptions.transform.getMatrix();
+    renderOptions.shader.uniformMatrix4fv("u_transform", transformMatrix);
 
     //Find WebGL primitive type
     var modes = [gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN];
