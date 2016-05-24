@@ -43,33 +43,17 @@ _NS.Context = function(canvasId) {
     * @type int 
     */
     this.m_viewportHeight = this.m_canvas.height;
-
-    //Load default shaders
-    var vertexShader = new _NS.VertexShader2D(this);
-    var fragmentShader = new _NS.FragmentShader2D(this);
-    var program = new _NS.ShaderProgram(this);
-    program.attachShader(vertexShader);
-    program.attachShader(fragmentShader);
-    program.link();
-
-    var vertexShaderTextured = new _NS.VertexShader2D(this, true);
-    var fragmentShaderTextured = new _NS.FragmentShader2D(this, true);
-    var programTextured = new _NS.ShaderProgram(this);
-    programTextured.attachShader(vertexShaderTextured);
-    programTextured.attachShader(fragmentShaderTextured);
-    programTextured.link();
-
     /**
     * Default shader program
-    * @type ShaderProgram 
+    * @type Shader
     */
-    this.m_defaultProgram = program;
+    this.m_defaultShader = new _NS.DefaultShader(this);
 
     /**
     * Default shader program for textured drawings
-    * @type ShaderProgram 
+    * @type Shader
     */
-    this.m_defaultProgramTextured = programTextured;
+    this.m_defaultShaderTextured = new _NS.DefaultShader(this, true);
 
     //Initialize buffer
     this.initBuffers();
@@ -127,8 +111,8 @@ _NS.Context.prototype.getViewportHeight = function() {
 * @method
 * @returns {ShaderProgram} Default shader program
 */
-_NS.Context.prototype.getDefaultProgram = function() {
-    return this.m_defaultProgram;
+_NS.Context.prototype.getDefaultShader = function() {
+    return this.m_defaultShader;
 }
 
 /**
@@ -137,8 +121,8 @@ _NS.Context.prototype.getDefaultProgram = function() {
 * @method
 * @returns {ShaderProgram} Default textured shader program
 */
-_NS.Context.prototype.getDefaultProgramTextured = function() {
-    return this.m_defaultProgramTextured;
+_NS.Context.prototype.getDefaultShaderTextured = function() {
+    return this.m_defaultShaderTextured;
 }
 
 /**
@@ -174,7 +158,7 @@ _NS.Context.prototype.draw = function(drawable, renderOptions) {
     //Load default render options
     if (!renderOptions) {
         renderOptions = new _NS.RenderOptions();
-        renderOptions.shader = this.getDefaultProgram();
+        renderOptions.shader = this.getDefaultShader();
     }
     drawable.draw(this, renderOptions);
 };
@@ -190,7 +174,7 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     //Load default render options
     if (!renderOptions) {
         renderOptions = new _NS.RenderOptions();
-        renderOptions.shader = this.getDefaultProgram();
+        renderOptions.shader = this.getDefaultShader();
     }
 
     var gl = this.GL();

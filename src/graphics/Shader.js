@@ -7,36 +7,35 @@ var _NS = _NS || {};
 */
 _NS.Shader = function(context) {
     /**
-    * WebGLShader object
-    * @type WebGLShader
+    * WebGLProgram object
+    * @type WebGLProgram
     */
-    this.m_shaderId = null;
+    this.m_shaderProgram = null;
     /**
     * Context
     * @type Context
     */
     this.m_context = context;
+        /**
+    * Hash of uniforms
+    * @type Object<string, WebGLUniformLocation>
+    */
+    this.m_uniforms = {};
+    /**
+    * Hash of attributes
+    * @type Object<string, int>
+    */
+    this.m_attributes = {};
 };
 
 /**
-* Enum for shader types
-* @enum {int}
-*/
-_NS.Shader.Types = {
-    /** Vertex shader */
-    VertexShader : 0,
-    /** Fragment shader */
-    FragmentShader : 1
-};
-
-/**
-* Gets the internal WebGLShader object
+* Gets the internal WebGLProgram object
 *
 * @method
-* @returns {WebGLShader} Internal WebGL shader object
+* @returns {WebGLProgram} Internal WebGLProgram object
 */
-_NS.Shader.prototype.getShaderId = function () {
-    return this.m_shaderId;
+_NS.Shader.prototype.getShaderProgram = function () {
+    return this.m_shaderProgram;
 };
 
 /**
@@ -46,19 +45,29 @@ _NS.Shader.prototype.getShaderId = function () {
 * @param {string} data - Shader source code
 * @param {Types} shaderType - Shader type
 */
-_NS.Shader.prototype.compile = function (data, shaderType) {
+_NS.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
     var gl = this.m_context.GL();
 
-    var realType;
-    if (shaderType == _NS.Shader.Types.VertexShader) {
-        realType = gl.VERTEX_SHADER;
+    if (this.m_shaderProgram) {
+        gl.deleteProgram(this.m_shaderProgram);
     }
-    else if (shaderType == _NS.Shader.Types.FragmentShader) {
-        realType = gl.FRAGMENT_SHADER;
+    this.m_shaderProgram = gl.createProgram();
+
+    if (vertexShaderSource) {
+        var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.compileShader(vertexShader);
+        gl.attachShader(this.m_shaderProgram, vertexShader);
     }
-    this.m_shaderId = gl.createShader(realType);
-    gl.shaderSource(this.m_shaderId, data);
-    gl.compileShader(this.m_shaderId);
+
+    if (fragmentShaderSource) {
+        var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+        gl.compileShader(fragmentShader);
+        gl.attachShader(this.m_shaderProgram, fragmentShader);
+    }
+
+    gl.linkProgram(this.m_shaderProgram);
     //alert(gl.getShaderInfoLog(this.m_shaderId));
 };
 
@@ -68,30 +77,123 @@ _NS.Shader.prototype.compile = function (data, shaderType) {
 * @method
 * @param {string} scriptId - ID of the script tag
 */
-_NS.Shader.prototype.loadFromScript = function (scriptId) {
+_NS.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
     var gl = this.m_context.GL();
     
-    var shaderScript = document.getElementByTag(scriptId);
-    var shaderSource = shaderScript.text;
+    var vertexShaderScript = document.getElementById(vertexShaderScriptId);
+    var fragmentShaderScript = document.getElementById(fragmentShaderScriptId);
 
-    var shaderType;
-    if (shaderScript.type == "x-shader/x-fragment") {
-        shaderType = _NS.Shader.Types.FragmentShader;
-    }
-    else if (shaderScript.type == "x-shader/x-vertex") {
-        shaderType = _NS.Shader.Types.VertexShader;
-    }
-
-    this.compile(gl, shaderSource, shaderType);
+    this.compile(vertexShaderScript.text, fragmentShaderScript.text);
 };
 
 /**
-* Constructs a VertexShader2D object
-* @class Represents a vertex shader for 2D games
+* Uses the shader
+*
+* @method
+*/
+_NS.Shader.prototype.use = function () {
+    var gl = this.m_context.GL();
+
+    gl.useProgram(this.m_shaderProgram);
+};
+
+/**
+* Gets the location of the uniform mapped to a parameter. Creates and maps a new one if it doesn't exist.
+*
+* @method
+* @param {string} parameter - Parameter name
+* @return {WebGLUniformLocation} Location of the uniform
+*/
+_NS.Shader.prototype.getUniformLocation = function (parameter) {
+    var gl = this.m_context.GL();
+
+    if (this.m_uniforms[parameter]) {
+        return this.m_uniforms[parameter];
+    }
+    this.m_uniforms[parameter] = gl.getUniformLocation(this.m_shaderProgram, parameter);
+    return this.m_uniforms[parameter];
+};
+
+/**
+* Gets the location of the attribute mapped to a parameter. Creates and maps a new one if it doesn't exist.
+*
+* @method
+* @param {string} parameter - Parameter name
+* @return {int} Location of the uniform
+*/
+_NS.Shader.prototype.getAttribLocation = function (parameter) {
+    var gl = this.m_context.GL();
+
+    if (this.m_attributes[parameter]) {
+        return this.m_attributes[parameter];
+    }
+    this.m_attributes[parameter] = gl.getAttribLocation(this.m_shaderProgram, parameter);
+    return this.m_attributes[parameter];
+};
+
+_NS.Shader.prototype.uniform1i = function (parameter, x) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform1i(uniform, x);
+};
+
+_NS.Shader.prototype.uniform1f = function (parameter, x) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform1f(uniform, x);
+};
+
+_NS.Shader.prototype.uniform2i = function (parameter, x, y) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform2i(uniform, x, y);
+};
+
+_NS.Shader.prototype.uniform2f = function (parameter, x, y) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform2f(uniform, x, y);
+};
+
+_NS.Shader.prototype.uniform3i = function (parameter, x, y, z) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform3i(uniform, x, y, z);
+};
+
+_NS.Shader.prototype.uniform3f = function (parameter, x, y, z) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform3f(uniform, x, y, z);
+};
+
+_NS.Shader.prototype.uniform4i = function (parameter, x, y, z, w) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform4i(uniform, x, y, z, w);
+};
+
+_NS.Shader.prototype.uniform4f = function (parameter, x, y, z, w) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniform4f(uniform, x, y, z, w);
+};
+
+_NS.Shader.prototype.uniformMatrix4fv = function (parameter, v) {
+    var gl = this.m_context.GL();
+    var uniform = this.getUniformLocation(parameter);
+    gl.uniformMatrix4fv(uniform, gl.FALSE, new Float32Array(v));
+};
+
+//TODO: Rest of uniforms
+
+/**
+* Constructs a DefaultShader object
+* @class Represents a shader for 2D games
 * @param {Context} context - Context
 * @param {bool} hasTexture - If the shader has texture
 */
-_NS.VertexShader2D = function (context, hasTexture) {
+_NS.DefaultShader = function (context, hasTexture) {
     hasTexture = hasTexture || false;
     var shader = new _NS.Shader(context);
     shader.compile(
@@ -113,20 +215,7 @@ _NS.VertexShader2D = function (context, hasTexture) {
         +       "gl_Position = vec4( (projection2d * u_transform * vec4(a_position, 0, 1)).xy, 0, 1);"
         +       "v_color = a_color;"
         +   "}"
-    , _NS.Shader.Types.VertexShader);
-    return shader;
-};
-
-/**
-* Constructs a FragmentShader2D object
-* @class Represents a fragment shader for 2D games
-* @param {Context} context - Context
-* @param {bool} hasTexture - If the shader has texture
-*/
-_NS.FragmentShader2D = function (context, hasTexture) {
-    hasTexture = hasTexture || false;
-    var shader = new _NS.Shader(context);
-    shader.compile(
+        ,
             "precision mediump float;"
         +   "\n#define hasTexture " + ((hasTexture  == true) ? "1" : "0") + "\n"
         +   "\n#if hasTexture\n"
@@ -142,6 +231,6 @@ _NS.FragmentShader2D = function (context, hasTexture) {
         +           "gl_FragColor = v_color;"
         +       "\n#endif\n"
         +   "}"
-        , _NS.Shader.Types.FragmentShader);
+        );
     return shader;
 };
