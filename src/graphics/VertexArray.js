@@ -22,6 +22,7 @@ _NS.VertexArray = function(type, vertexCount) {
     	this.m_vertices.push(new _NS.Vertex());
     }
 };
+_NS.extend(_NS.VertexArray, _NS.Drawable);
 
 /**
 * Gets the number of vertices

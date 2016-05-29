@@ -10,6 +10,7 @@ var _NS = _NS || {};
 * @param {Color} color - Color
 */
 _NS.CircleShape = function(x, y, radius, color) {
+    _NS.Shape.call(this, 30);
     /**
     * Position
     * @type Vector2
@@ -22,8 +23,7 @@ _NS.CircleShape = function(x, y, radius, color) {
 
     this.setColor(color);
 };
-_NS.CircleShape.prototype = new _NS.Shape(30);
-
+_NS.extend(_NS.CircleShape, _NS.Shape);
 
 _NS.CircleShape.prototype.setPosition = function (position) {
     this.m_position = position;

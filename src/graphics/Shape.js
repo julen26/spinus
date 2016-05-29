@@ -43,8 +43,8 @@ _NS.Shape = function(pointCount) {
 
     //TODO: Texture and texture rectangle
 };
-//Extend from base
 _NS.extend(_NS.Shape, _NS.Transformable);
+_NS.extend(_NS.Shape, _NS.Drawable);
 
 /**
 * Resizes the point list, adding default points or removing existing ones to match the new length

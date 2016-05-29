@@ -11,10 +11,11 @@ var _NS = _NS || {};
 * @param {Color} color - Color
 */
 _NS.RectangleShape = function(w, h, color) {
+    _NS.Shape.call(this, 4);
     this.setSize(w, h);
     this.setColor(color);
 };
-_NS.RectangleShape.prototype = new _NS.Shape(4);
+_NS.extend(_NS.RectangleShape, _NS.Shape);
 
 /**
 * Sets rectangle bounds
