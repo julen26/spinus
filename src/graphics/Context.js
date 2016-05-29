@@ -145,9 +145,12 @@ _NS.Context.prototype.initBuffers = function() {
     * Vertex texture coords buffer
     * @type WebGLBuffer  
     */
-    this.vertexTexCoorsBuffer = this.m_gl.createBuffer();
+    this.vertexTexCoordsBuffer = this.m_gl.createBuffer();
 }
 
+_NS.Context.prototype.clear = function() {
+    this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
+}
 /**
 * Draws a drawable object
 *
@@ -179,9 +182,15 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
 
     var gl = this.GL();
 
-    if (renderOptions.shader) {
-        renderOptions.shader.use();
+    if (!renderOptions.shader) {
+        if (renderOptions.texture) {
+            renderOptions.shader = this.getDefaultShaderTextured();
+        }
+        else {
+            renderOptions.shader = this.getDefaultShader();
+        }
     }
+    renderOptions.shader.use();
 
     //Positions
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
@@ -194,7 +203,7 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
     //Texture coordinates
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTexCoorsBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTexCoordsBuffer);
     var texCoords = _NS.VertexArray.getTexCoordsArray(vertices);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
 
@@ -209,9 +218,21 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     gl.enableVertexAttribArray(colorAttribute);
     gl.vertexAttribPointer(colorAttribute, 4, gl.FLOAT, false, 0, 0);
 
+    if (renderOptions.texture) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTexCoordsBuffer);
+        var texCoordsAttribute = renderOptions.shader.getAttribLocation("a_texCoord");
+        gl.enableVertexAttribArray(texCoordsAttribute);
+        gl.vertexAttribPointer(texCoordsAttribute, 2, gl.FLOAT, false, 0, 0);
+    }
+
     renderOptions.shader.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
     var transformMatrix = renderOptions.transform.getMatrix();
     renderOptions.shader.uniformMatrix4fv("u_transform", transformMatrix);
+
+    if (renderOptions.texture) {
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, renderOptions.texture.getTextureId());
+    }
 
     //Find WebGL primitive type
     var modes = [gl.POINTS, gl.LINES, gl.LINE_STRIP, gl.LINE_LOOP, gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.TRIANGLE_FAN];
@@ -219,4 +240,6 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
 
     //Draw primitives
     gl.drawArrays(mode, 0, vertices.length);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
 };  

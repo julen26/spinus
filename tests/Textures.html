@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Textures</title>
+    
+    <script src="../src/system/Extend.js"></script>
+    <script src="../src/system/Vector2.js"></script>
+    <script src="../src/graphics/Color.js"></script>
+    <script src="../src/graphics/Transform.js"></script>
+    <script src="../src/graphics/Texture.js"></script>
+    <script src="../src/graphics/RenderOptions.js"></script>
+    <script src="../src/graphics/Drawable.js"></script>
+    <script src="../src/graphics/Context.js"></script>
+    <script src="../src/graphics/Shader.js"></script>
+    <script src="../src/graphics/Vertex.js"></script>
+    <script src="../src/graphics/VertexArray.js"></script>
+    <script src="../src/graphics/PrimitiveType.js"></script>
+    <script>
+    function onload() {
+
+        var context = new _NS.Context("canvas1");
+
+        var square = new _NS.VertexArray(_NS.PrimitiveType.TriangleStrip);
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 0)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(94, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(1, 0)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(94, 94), new _NS.Color(255, 255, 255), new _NS.Vector2(1, 1)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 94), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 1)) );
+        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 0)) );
+
+        var texture = new _NS.Texture(context);
+        texture.loadFromFile('picture.png',  function() {
+
+            context.draw(square, new _NS.RenderOptions(new _NS.Transform(), texture));
+
+        });
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
