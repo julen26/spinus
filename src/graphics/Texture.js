@@ -40,9 +40,15 @@ _NS.Texture.prototype.handleLoadedTexture = function () {
     	//gl.generateMipmap(gl.TEXTURE_2D);
     	gl.bindTexture(gl.TEXTURE_2D, null);
 
+        this.m_size = new _NS.Vector2(this.m_image.width, this.m_image.height);
+
     	this.m_callback();
 };
 
 _NS.Texture.prototype.getTextureId = function () {
 	return this.m_textureId;
+};
+
+_NS.Texture.prototype.getSize = function () {
+    return this.m_size;
 };
