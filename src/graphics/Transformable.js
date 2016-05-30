@@ -60,19 +60,19 @@ _NS.Transformable.prototype.setPosition = function(x, y) {
     this.m_needsUpdate = true;
 };
 
-_NS.Transformable.prototype.getScale = function(x, y) {
+_NS.Transformable.prototype.getScale = function() {
     return this.m_scale;
 };
 
-_NS.Transformable.prototype.getOrigin = function(x, y) {
+_NS.Transformable.prototype.getOrigin = function() {
     return this.m_origin;
 };
 
-_NS.Transformable.prototype.getRotation = function(angle) {
+_NS.Transformable.prototype.getRotation = function() {
     return this.m_rotation;
 };
 
-_NS.Transformable.prototype.getPosition = function(x, y) {
+_NS.Transformable.prototype.getPosition = function() {
     return this.m_position;
 };
 
