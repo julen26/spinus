@@ -31,8 +31,9 @@
             var y = Math.random() * context.getViewportHeight();
             var radius = 32 + Math.random() * 128;
 
-            var circle = new _NS.CircleShape(x, y, radius, color);
+            var circle = new _NS.CircleShape(radius, color);
             circle.setColor(_NS.Color.random());
+            circle.setPosition(x, y);
 
             //circle.setOutlineThickness(3);
             //circle.setOutlineColor(new _NS.Color(255, 0, 0));
@@ -40,7 +41,8 @@
             context.draw(circle);
         }
 
-        var a = new _NS.CircleShape(320, 240, 50);
+        var a = new _NS.CircleShape(50);
+        a.setPosition(320, 240);
         a.setOutlineColor(new _NS.Color(0, 0, 255));
         a.setOutlineThickness(3);
         a.setColor(_NS.Color.random());

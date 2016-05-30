@@ -9,13 +9,8 @@ var _NS = _NS || {};
 * @param {float} radius - Radius
 * @param {Color} color - Color
 */
-_NS.CircleShape = function(x, y, radius, color) {
+_NS.CircleShape = function(radius, color) {
     _NS.Shape.call(this, 30);
-    /**
-    * Position
-    * @type Vector2
-    */
-    this.m_position = new _NS.Vector2(x, y);
 
     this.m_radius = radius || 0;
 
@@ -25,20 +20,13 @@ _NS.CircleShape = function(x, y, radius, color) {
 };
 _NS.extend(_NS.CircleShape, _NS.Shape);
 
-_NS.CircleShape.prototype.setPosition = function (position) {
-    this.m_position = position;
-    this.update();
-};
-
 _NS.CircleShape.prototype.setRadius = function (radius) {
     this.m_radius = radius;
     this.update();
 };
 
 _NS.CircleShape.prototype.setPointCount = function (pointCount) {
-    this.m_vertexArray.resize(pointCount);
-    this.m_needsUpdate = true;
-    this.m_needsColorUpdate = true;
+    _NS.Shape.prototype.setPointCount.call(this, pointCount);
     this.update();
 };
 
@@ -48,7 +36,7 @@ _NS.CircleShape.prototype.update = function () {
         var alfa = 2 * Math.PI / pointCount;
         for (var i = 0; i < pointCount; i++) {
             var angle = alfa * i;
-            var pos = new _NS.Vector2(this.m_position.x + Math.cos(angle) * this.m_radius, this.m_position.y + Math.sin(angle) * this.m_radius);
+            var pos = new _NS.Vector2(Math.cos(angle) * this.m_radius, Math.sin(angle) * this.m_radius);
             this.setPointPosition(i, pos);
         }
     }
