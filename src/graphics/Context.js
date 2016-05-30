@@ -158,12 +158,7 @@ _NS.Context.prototype.clear = function() {
 * @param {Drawable} drawable - Drawable object
 */
 _NS.Context.prototype.draw = function(drawable, renderOptions) {
-    //Load default render options
-    if (!renderOptions) {
-        renderOptions = new _NS.RenderOptions();
-        renderOptions.shader = this.getDefaultShader();
-    }
-    drawable.draw(this, renderOptions);
+    drawable.draw(this, renderOptions || new _NS.RenderOptions());
 };
 
 /**

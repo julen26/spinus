@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Sprites</title>
+    
+    <script src="../src/system/Extend.js"></script>
+    <script src="../src/system/Vector2.js"></script>
+    <script src="../src/graphics/Color.js"></script>
+    <script src="../src/graphics/Transform.js"></script>
+    <script src="../src/graphics/Transformable.js"></script>
+    <script src="../src/graphics/Texture.js"></script>
+    <script src="../src/graphics/Drawable.js"></script>
+    <script src="../src/graphics/RenderOptions.js"></script>
+    <script src="../src/graphics/Sprite.js"></script>
+    <script src="../src/graphics/Context.js"></script>
+    <script src="../src/graphics/Shader.js"></script>
+    <script src="../src/graphics/Vertex.js"></script>
+    <script src="../src/graphics/VertexArray.js"></script>
+    <script src="../src/graphics/PrimitiveType.js"></script>
+    <script>
+    function onload() {
+
+        var context = new _NS.Context("canvas1");
+
+        var texture = new _NS.Texture(context);
+        texture.loadFromFile('picture.png',  function() {
+
+            var sprite = new _NS.Sprite(texture);
+            sprite.setScale(2, 2);
+            context.draw(sprite);
+
+        });
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
