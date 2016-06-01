@@ -31,6 +31,10 @@ _NS.Sprite.prototype.setTexture = function (texture) {
 	}
 };
 
+_NS.Sprite.prototype.getTexture = function () {
+	return this.m_texture;
+};
+
 _NS.Sprite.prototype.setColor = function (color) {
     color = color || new _NS.Color();
     
