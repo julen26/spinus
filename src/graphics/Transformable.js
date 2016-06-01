@@ -81,5 +81,5 @@ _NS.Transformable.prototype.updateTransform = function() {
              0, 1, 0,
              0, 0, 1);
     //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
-    this.m_transform.translate(this.m_position.x, this.m_position.y).rotate(this.m_rotation).translate(-this.m_origin.x, -this.m_origin.y).scale(this.m_scale.x, this.m_scale.y);
+    this.m_transform.translate(this.m_position.x, this.m_position.y).rotate(this.m_rotation).scale(this.m_scale.x, this.m_scale.y).translate(-this.m_origin.x, -this.m_origin.y);
 };
