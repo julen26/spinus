@@ -61,7 +61,6 @@ _NS.Context = function(canvasId) {
     this.m_gl.viewport(0, 0, this.m_viewportWidth, this.m_viewportHeight);
     this.m_gl.clearColor(0.0, 0.0, 0.0, 1.0);
     this.m_gl.enable(this.m_gl.BLEND);
-    this.m_gl.blendFunc(this.m_gl.SRC_ALPHA, this.m_gl.ONE_MINUS_SRC_ALPHA);
     this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
 };
 
@@ -169,14 +168,29 @@ _NS.Context.prototype.draw = function(drawable, renderOptions) {
 * @param {PrimitiveType} type - Primitive type
 */
 _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
+    var gl = this.GL();
+
     //Load default render options
     if (!renderOptions) {
         renderOptions = new _NS.RenderOptions();
         renderOptions.shader = this.getDefaultShader();
     }
 
-    var gl = this.GL();
+    //Set blend mode
+    var blendMode = renderOptions.blendMode;
+    if (!blendMode) {
+        blendMode = _NS.BlendMode.Alpha;
+    }
+    var factors = [gl.ZERO, gl.ONE, 
+        gl.SRC_COLOR, gl.ONE_MINUS_SRC_COLOR, gl.DST_COLOR, gl.ONE_MINUS_DST_COLOR,
+        gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_DST_ALPHA,
+        gl.SRC_ALPHA_SATURATE];
+    var equations = [gl.FUNC_ADD, gl.FUNC_SUBTRACT, gl.FUNC_REVERSE_SUBTRACT];
+    this.m_gl.blendFuncSeparate(factors[blendMode.srcColorFactor], factors[blendMode.dstColorFactor],
+                                factors[blendMode.srcAlphaFactor], factors[blendMode.dstAlphaFactor]);
+    this.m_gl.blendEquationSeparate(equations[blendMode.colorEquation], equations[blendMode.alphaEquation]);
 
+    //Set shader
     if (!renderOptions.shader) {
         if (renderOptions.texture) {
             renderOptions.shader = this.getDefaultShaderTextured();
