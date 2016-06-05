@@ -147,9 +147,12 @@ _NS.Context.prototype.initBuffers = function() {
     this.vertexTexCoordsBuffer = this.m_gl.createBuffer();
 }
 
-_NS.Context.prototype.clear = function() {
+_NS.Context.prototype.clear = function(color) {
+    color = color || new _NS.Color();
+    this.m_gl.clearColor(color.r / 255, color.g / 255, color.b / 255, color.a / 255);
     this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
 }
+
 /**
 * Draws a drawable object
 *

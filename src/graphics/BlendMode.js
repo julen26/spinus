@@ -31,6 +31,6 @@ _NS.BlendMode.Equation = {
 
 _NS.BlendMode.Alpha = new _NS.BlendMode(_NS.BlendMode.Factor.SrcAlpha, _NS.BlendMode.Factor.OneMinusSrcAlpha, _NS.BlendMode.Equation.Add,
                                         _NS.BlendMode.Factor.One, _NS.BlendMode.Factor.OneMinusSrcAlpha, _NS.BlendMode.Equation.Add);
-//_NS.BlendMode.Add = new _NS.BlendMode(_NS.BlendMode.Factor.SrcAlpha, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add,
-//                                      _NS.BlendMode.Factor.One, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add);
-//_NS.BlendMode.Multiply = new _NS.BlendMode(_NS.BlendMode.Factor.DstColor, _NS.BlendMode.Factor.Zero, _NS.BlendMode.Equation.Add);
+_NS.BlendMode.Add = new _NS.BlendMode(_NS.BlendMode.Factor.SrcAlpha, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add,
+                                      _NS.BlendMode.Factor.One, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add);
+_NS.BlendMode.Multiply = new _NS.BlendMode(_NS.BlendMode.Factor.DstColor, _NS.BlendMode.Factor.Zero, _NS.BlendMode.Equation.Add);
