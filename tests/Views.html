@@ -26,30 +26,18 @@
 
         var context = new _NS.Context("canvas1");
 
-        for (var i = 0; i < 20; i++) {
+        var view = context.getView();
+        view.setCenter(100, 240);
+        view.setScale(1.5, 1.5);
+        view.setRotation(30);
 
-            var color = _NS.Color.random();
-            var x = Math.random() * context.getViewportWidth();
-            var y = Math.random() * context.getViewportHeight();
-            var radius = 32 + Math.random() * 128;
-
-            var circle = new _NS.CircleShape(radius, color);
-            circle.setColor(_NS.Color.random());
-            circle.setPosition(x, y);
-
-            //circle.setOutlineThickness(3);
-            //circle.setOutlineColor(new _NS.Color(255, 0, 0));
-
-            context.draw(circle);
-        }
-
-        var a = new _NS.CircleShape(50);
-        a.setPosition(320, 240);
-        a.setOutlineColor(new _NS.Color(0, 0, 255));
-        a.setOutlineThickness(3);
-        a.setColor(_NS.Color.random());
-        a.setPointCount(8);
-        context.draw(a);
+        var circle = new _NS.CircleShape(50);
+        circle.setPosition(320, 240);
+        circle.setOutlineColor(new _NS.Color(0, 0, 255));
+        circle.setOutlineThickness(3);
+        circle.setColor(_NS.Color.random());
+        circle.setPointCount(8);
+        context.draw(circle);
 
     }
     </script>

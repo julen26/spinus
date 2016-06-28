@@ -44,6 +44,16 @@ _NS.Context = function(canvasId) {
     */
     this.m_viewportHeight = this.m_canvas.height;
     /**
+    * Default view
+    * @type View
+    */
+    this.m_defaultView = new _NS.View(this.m_viewportWidth, this.m_viewportHeight);
+    /**
+    * Current view
+    * @type View
+    */
+    this.m_currentView = this.m_defaultView;
+    /**
     * Default shader program
     * @type Shader
     */
@@ -102,6 +112,14 @@ _NS.Context.prototype.getViewportWidth = function() {
 */
 _NS.Context.prototype.getViewportHeight = function() {
     return this.m_viewportHeight;
+}
+
+_NS.Context.prototype.getView = function() {
+    return this.m_currentView;
+}
+
+_NS.Context.prototype.setView = function(view) {
+    return this.m_currentView = view;
 }
 
 /**
@@ -240,6 +258,10 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     renderOptions.shader.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
     var transformMatrix = renderOptions.transform.getMatrix();
     renderOptions.shader.uniformMatrix4fv("u_transform", transformMatrix);
+    var viewMatrix = this.m_currentView.getTransform().getMatrix();
+    renderOptions.shader.uniformMatrix4fv("u_view", viewMatrix);
+    var projectionMatrix = this.m_currentView.getProjection().getMatrix();
+    renderOptions.shader.uniformMatrix4fv("u_projection", projectionMatrix);
 
     if (renderOptions.texture) {
         gl.activeTexture(gl.TEXTURE0);
