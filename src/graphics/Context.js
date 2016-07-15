@@ -255,13 +255,13 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
         gl.vertexAttribPointer(texCoordsAttribute, 2, gl.FLOAT, false, 0, 0);
     }
 
-    renderOptions.shader.uniform2f("u_resolution", this.m_viewportWidth, this.m_viewportHeight);
+    renderOptions.shader.uniformfv("u_resolution", [this.m_viewportWidth, this.m_viewportHeight]);
     var transformMatrix = renderOptions.transform.getMatrix();
-    renderOptions.shader.uniformMatrix4fv("u_transform", transformMatrix);
+    renderOptions.shader.uniformMatrixfv("u_transform", transformMatrix);
     var viewMatrix = this.m_currentView.getTransform().getMatrix();
-    renderOptions.shader.uniformMatrix4fv("u_view", viewMatrix);
+    renderOptions.shader.uniformMatrixfv("u_view", viewMatrix);
     var projectionMatrix = this.m_currentView.getProjection().getMatrix();
-    renderOptions.shader.uniformMatrix4fv("u_projection", projectionMatrix);
+    renderOptions.shader.uniformMatrixfv("u_projection", projectionMatrix);
 
     if (renderOptions.texture) {
         gl.activeTexture(gl.TEXTURE0);

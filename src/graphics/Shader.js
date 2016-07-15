@@ -131,61 +131,42 @@ _NS.Shader.prototype.getAttribLocation = function (parameter) {
     return this.m_attributes[parameter];
 };
 
-_NS.Shader.prototype.uniform1i = function (parameter, x) {
+//TODO: Possible improvement autochecking the uniform type
+//TODO: Check if values is an array
+_NS.Shader.prototype.uniformiv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    gl.uniform1i(uniform, x);
+    var length = values.length;
+    if (length > 0 && length < 5)
+    {
+        gl["uniform" + length + "iv"](uniform, new int32Array(values));
+    }
 };
 
-_NS.Shader.prototype.uniform1f = function (parameter, x) {
+_NS.Shader.prototype.uniformfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    gl.uniform1f(uniform, x);
+    var length = values.length;
+    if (length > 0 && length < 5)
+    {
+        gl["uniform" + length + "fv"](uniform, new Float32Array(values));
+    }
 };
 
-_NS.Shader.prototype.uniform2i = function (parameter, x, y) {
+_NS.Shader.prototype.uniformMatrixfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
-    gl.uniform2i(uniform, x, y);
+    var length = values.length;
+    if (length > 15) {
+        gl.uniformMatrix4fv(uniform, gl.FALSE, new Float32Array(values));
+    }
+    else if (length > 8) {
+        gl.uniformMatrix3fv(uniform, gl.FALSE, new Float32Array(values));
+    }
+    else if (length > 3) {
+        gl.uniformMatrix2fv(uniform, gl.FALSE, new Float32Array(values));
+    }
 };
-
-_NS.Shader.prototype.uniform2f = function (parameter, x, y) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniform2f(uniform, x, y);
-};
-
-_NS.Shader.prototype.uniform3i = function (parameter, x, y, z) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniform3i(uniform, x, y, z);
-};
-
-_NS.Shader.prototype.uniform3f = function (parameter, x, y, z) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniform3f(uniform, x, y, z);
-};
-
-_NS.Shader.prototype.uniform4i = function (parameter, x, y, z, w) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniform4i(uniform, x, y, z, w);
-};
-
-_NS.Shader.prototype.uniform4f = function (parameter, x, y, z, w) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniform4f(uniform, x, y, z, w);
-};
-
-_NS.Shader.prototype.uniformMatrix4fv = function (parameter, v) {
-    var gl = this.m_context.GL();
-    var uniform = this.getUniformLocation(parameter);
-    gl.uniformMatrix4fv(uniform, gl.FALSE, new Float32Array(v));
-};
-
-//TODO: Rest of uniforms
 
 /**
 * Constructs a DefaultShader object
