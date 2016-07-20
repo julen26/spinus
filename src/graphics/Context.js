@@ -263,6 +263,9 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     var projectionMatrix = this.m_currentView.getProjection().getMatrix();
     renderOptions.shader.uniformMatrixfv("u_projection", projectionMatrix);
 
+    var viewport = this.m_currentView.getViewport();
+    gl.viewport(viewport.x * this.m_viewportWidth, this.m_viewportHeight - (viewport.y + viewport.h) * this.m_viewportHeight, viewport.w * this.m_viewportWidth, viewport.h * this.m_viewportHeight);
+
     if (renderOptions.texture) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, renderOptions.texture.getTextureId());
@@ -275,5 +278,6 @@ _NS.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     //Draw primitives
     gl.drawArrays(mode, 0, vertices.length);
 
+    //TODO: Reset states
     gl.bindTexture(gl.TEXTURE_2D, null);
 };  

@@ -17,6 +17,7 @@ _NS.View = function(w, h) {
     this.m_projection.set(  2.0 / this.m_size.x,    0,                      0,
                             0,                      -2.0 / this.m_size.y,   0,
                             -1,                     1,                      1);
+    this.m_viewport = new _NS.Rect(0, 0, 1, 1);
 
     //TODO: Viewport
 };
@@ -66,6 +67,10 @@ _NS.View.prototype.setCenter = function(x, y) {
     this.m_needsUpdate = true;
 };
 
+_NS.View.prototype.setViewport = function(rect) {
+    this.m_viewport = rect;
+};
+
 _NS.View.prototype.getScale = function() {
     return this.m_scale;
 };
@@ -76,6 +81,10 @@ _NS.View.prototype.getRotation = function() {
 
 _NS.View.prototype.getCenter = function() {
     return this.m_center;
+};
+
+_NS.View.prototype.getViewport = function() {
+    return this.m_viewport;
 };
 
 _NS.View.prototype.updateTransform = function() {

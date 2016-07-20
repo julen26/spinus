@@ -14,6 +14,7 @@
     <script src="../src/graphics/Drawable.js"></script>
     <script src="../src/graphics/BlendMode.js"></script>
     <script src="../src/graphics/RenderOptions.js"></script>
+    <script src="../src/system/Rect.js"></script>
     <script src="../src/graphics/View.js"></script>
     <script src="../src/graphics/Context.js"></script>
     <script src="../src/graphics/Shader.js"></script>
@@ -30,6 +31,7 @@
         view.setCenter(100, 240);
         view.setScale(1.5, 1.5);
         view.setRotation(30);
+        view.setViewport(new _NS.Rect(0, 0, 0.5, 0.5));
 
         var circle = new _NS.CircleShape(50);
         circle.setPosition(320, 240);
@@ -37,6 +39,15 @@
         circle.setOutlineThickness(3);
         circle.setColor(_NS.Color.random());
         circle.setPointCount(8);
+        context.draw(circle);
+
+        view.setViewport(new _NS.Rect(0.5, 0, 0.5, 0.5));
+        context.draw(circle);
+
+        view.setViewport(new _NS.Rect(0, 0.5, 0.5, 0.5));
+        context.draw(circle);
+
+        view.setViewport(new _NS.Rect(0.5, 0.5, 0.5, 0.5));
         context.draw(circle);
 
     }
