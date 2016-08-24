@@ -25,6 +25,11 @@ _NS.Texture.prototype.loadFromFile = function (sourcePath, callback) {
     this.m_image.onload = this.handleLoadedTexture.bind(this);
 };
 
+_NS.Texture.prototype.loadFromImage = function (image) {
+    this.m_image = image;
+    this.handleLoadedTexture();
+};
+
 _NS.Texture.prototype.handleLoadedTexture = function () {
 		var gl = this.m_context.GL();
 
@@ -35,6 +40,7 @@ _NS.Texture.prototype.handleLoadedTexture = function () {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        //TODO: Mipmap improvement
     	//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   		//gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
     	//gl.generateMipmap(gl.TEXTURE_2D);
@@ -42,7 +48,9 @@ _NS.Texture.prototype.handleLoadedTexture = function () {
 
         this.m_size = new _NS.Vector2(this.m_image.width, this.m_image.height);
 
-    	this.m_callback();
+        if (this.m_callback) {
+    	   this.m_callback();
+        }
 };
 
 _NS.Texture.prototype.getTextureId = function () {
