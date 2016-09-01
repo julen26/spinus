@@ -23,19 +23,19 @@
     <script>
     function onload() {
 
-        var context = new _NS.Context("canvas1");
+        var context = new sp.Context("canvas1");
 
-        var square = new _NS.VertexArray(_NS.PrimitiveType.TriangleStrip);
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 0)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(94, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(1, 0)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(94, 94), new _NS.Color(255, 255, 255), new _NS.Vector2(1, 1)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 94), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 1)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 255, 255), new _NS.Vector2(0, 0)) );
+        var square = new sp.VertexArray(sp.PrimitiveType.TriangleStrip);
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 10), new sp.Color(255, 255, 255), new sp.Vector2(0, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(94, 10), new sp.Color(255, 255, 255), new sp.Vector2(1, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(94, 94), new sp.Color(255, 255, 255), new sp.Vector2(1, 1)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 94), new sp.Color(255, 255, 255), new sp.Vector2(0, 1)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 10), new sp.Color(255, 255, 255), new sp.Vector2(0, 0)) );
 
-        var texture = new _NS.Texture(context);
+        var texture = new sp.Texture(context);
         texture.loadFromFile('picture.png',  function() {
 
-            context.draw(square, new _NS.RenderOptions(new _NS.Transform(), texture));
+            context.draw(square, new sp.RenderOptions(new sp.Transform(), texture));
 
         });
     }

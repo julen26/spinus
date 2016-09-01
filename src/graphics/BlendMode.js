@@ -1,15 +1,15 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
-_NS.BlendMode = function(srcColorFactor, dstColorFactor, colorEquation, srcAlphaFactor, dstAlphaFactor, alphaEquation) {
+sp.BlendMode = function(srcColorFactor, dstColorFactor, colorEquation, srcAlphaFactor, dstAlphaFactor, alphaEquation) {
 	this.srcColorFactor = srcColorFactor;
 	this.dstColorFactor = dstColorFactor;
-	this.colorEquation = colorEquation = _NS.BlendMode.Equation.Add;
+	this.colorEquation = colorEquation = sp.BlendMode.Equation.Add;
 	this.srcAlphaFactor = srcAlphaFactor || srcColorFactor;
 	this.dstAlphaFactor = dstAlphaFactor || dstColorFactor;
 	this.alphaEquation = alphaEquation || colorEquation;
 };
 
-_NS.BlendMode.Factor = {
+sp.BlendMode.Factor = {
     Zero : 0,
     One : 1,
     SrcColor : 2,
@@ -23,15 +23,15 @@ _NS.BlendMode.Factor = {
     SrcAlphaSaturate : 10
 };
 
-_NS.BlendMode.Equation = {
+sp.BlendMode.Equation = {
     Add : 0,
     Subtract : 1,
     ReverseSubtract : 2
 };
 
 //Predefined blend modes assuming that alpha is not premultiplied
-_NS.BlendMode.Alpha = new _NS.BlendMode(_NS.BlendMode.Factor.SrcAlpha, _NS.BlendMode.Factor.OneMinusSrcAlpha, _NS.BlendMode.Equation.Add,
-                                        _NS.BlendMode.Factor.One, _NS.BlendMode.Factor.OneMinusSrcAlpha, _NS.BlendMode.Equation.Add);
-_NS.BlendMode.Add = new _NS.BlendMode(_NS.BlendMode.Factor.SrcAlpha, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add,
-                                      _NS.BlendMode.Factor.One, _NS.BlendMode.Factor.One, _NS.BlendMode.Equation.Add);
-_NS.BlendMode.Multiply = new _NS.BlendMode(_NS.BlendMode.Factor.DstColor, _NS.BlendMode.Factor.Zero, _NS.BlendMode.Equation.Add);
+sp.BlendMode.Alpha = new sp.BlendMode(sp.BlendMode.Factor.SrcAlpha, sp.BlendMode.Factor.OneMinusSrcAlpha, sp.BlendMode.Equation.Add,
+                                        sp.BlendMode.Factor.One, sp.BlendMode.Factor.OneMinusSrcAlpha, sp.BlendMode.Equation.Add);
+sp.BlendMode.Add = new sp.BlendMode(sp.BlendMode.Factor.SrcAlpha, sp.BlendMode.Factor.One, sp.BlendMode.Equation.Add,
+                                      sp.BlendMode.Factor.One, sp.BlendMode.Factor.One, sp.BlendMode.Equation.Add);
+sp.BlendMode.Multiply = new sp.BlendMode(sp.BlendMode.Factor.DstColor, sp.BlendMode.Factor.Zero, sp.BlendMode.Equation.Add);

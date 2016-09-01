@@ -1,13 +1,13 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Shape objects
 * @class Represents a Shape object
 * @extends Transformable
 */
-_NS.Shape = function(pointCount) {
+sp.Shape = function(pointCount) {
     //Call base constructor
-    _NS.Transformable.call(this);
+    sp.Transformable.call(this);
 
     /**
     * Outline thickness
@@ -18,17 +18,17 @@ _NS.Shape = function(pointCount) {
     * Outline color
     * @type Color
     */
-    this.m_outlineColor = new _NS.Color();
+    this.m_outlineColor = new sp.Color();
     /**
     * Vertex array that represents the fill
     * @type VertexArray
     */
-    this.m_vertexArray = new _NS.VertexArray(_NS.PrimitiveType.TriangleFan, pointCount);
+    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, pointCount);
     /**
     * Vertex array that represents the outline
     * @type VertexArray
     */
-    this.m_outlineVertexArray = new _NS.VertexArray(_NS.PrimitiveType.TriangleStrip, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
+    this.m_outlineVertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleStrip, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
 
     /**
     * Private member to control when to update outline
@@ -43,8 +43,8 @@ _NS.Shape = function(pointCount) {
 
     //TODO: Texture and texture rectangle
 };
-_NS.extend(_NS.Shape, _NS.Transformable);
-_NS.extend(_NS.Shape, _NS.Drawable);
+sp.extend(sp.Shape, sp.Transformable);
+sp.extend(sp.Shape, sp.Drawable);
 
 /**
 * Resizes the point list, adding default points or removing existing ones to match the new length
@@ -52,7 +52,7 @@ _NS.extend(_NS.Shape, _NS.Drawable);
 * @method
 * @param {int} pointCount - New length of the point list
 */
-_NS.Shape.prototype.setPointCount = function (pointCount) {
+sp.Shape.prototype.setPointCount = function (pointCount) {
     this.m_vertexArray.resize(pointCount);
     this.m_needsUpdate = true;
     this.m_needsColorUpdate = true;
@@ -64,7 +64,7 @@ _NS.Shape.prototype.setPointCount = function (pointCount) {
 * @method
 * @returns {int} Length of point list
 */
-_NS.Shape.prototype.getPointCount = function () {
+sp.Shape.prototype.getPointCount = function () {
     return this.m_vertexArray.getVertexCount();
 };
 
@@ -75,8 +75,8 @@ _NS.Shape.prototype.getPointCount = function () {
 * @param {Vector2} position - Position of the new point
 * @param {Color} color - Color of the new point
 */
-_NS.Shape.prototype.addPoint = function (position, color) {
-    this.m_vertexArray.addVertex(_NS.Vertex(position, color));
+sp.Shape.prototype.addPoint = function (position, color) {
+    this.m_vertexArray.addVertex(sp.Vertex(position, color));
     this.m_needsUpdate = true;
     this.m_needsColorUpdate = true;
 };
@@ -88,7 +88,7 @@ _NS.Shape.prototype.addPoint = function (position, color) {
 * @param {int} index - Index of the point
 * @param {Vector2} position - New position of the point
 */
-_NS.Shape.prototype.setPointPosition = function (index, position) {
+sp.Shape.prototype.setPointPosition = function (index, position) {
     if (index < this.m_vertexArray.getVertexCount()) {
         var vertex = this.m_vertexArray.getVertex(index);
         vertex.position = position;
@@ -103,7 +103,7 @@ _NS.Shape.prototype.setPointPosition = function (index, position) {
 * @param {int} index - Index of the point
 * @param {Color} position - New color of the point
 */
-_NS.Shape.prototype.setPointColor = function (index, color) {
+sp.Shape.prototype.setPointColor = function (index, color) {
     if (index < this.m_vertexArray.getVertexCount()) {
         var vertex = this.m_vertexArray.getVertex(index);
         vertex.color = color;
@@ -116,7 +116,7 @@ _NS.Shape.prototype.setPointColor = function (index, color) {
 * @method
 * @param {float} outlineThickness - Outline thickness
 */
-_NS.Shape.prototype.setOutlineThickness = function (outlineThickness) {
+sp.Shape.prototype.setOutlineThickness = function (outlineThickness) {
     this.m_outlineThickness = outlineThickness;
     this.m_needsUpdate = true;
 };
@@ -127,7 +127,7 @@ _NS.Shape.prototype.setOutlineThickness = function (outlineThickness) {
 * @method
 * @param {Color} color - Color of the outline
 */
-_NS.Shape.prototype.setOutlineColor = function (color) {
+sp.Shape.prototype.setOutlineColor = function (color) {
     this.m_outlineColor = color;
     this.m_needsColorUpdate = true;
 };
@@ -137,7 +137,7 @@ _NS.Shape.prototype.setOutlineColor = function (color) {
 *
 * @method
 */
-_NS.Shape.prototype.updateOutlineColor = function () {
+sp.Shape.prototype.updateOutlineColor = function () {
     var count = this.m_outlineVertexArray.getVertexCount();
 
     for (var i = 0; i < count; i++) {
@@ -150,7 +150,7 @@ _NS.Shape.prototype.updateOutlineColor = function () {
 *
 * @method
 */
-_NS.Shape.prototype.updateOutline = function () {
+sp.Shape.prototype.updateOutline = function () {
     var count = this.m_vertexArray.getVertexCount();
     this.m_outlineVertexArray.resize((count * 2) + 2);
 
@@ -162,26 +162,26 @@ _NS.Shape.prototype.updateOutline = function () {
         var vRight = (i == count - 1) ? this.m_vertexArray.getVertex(0) : this.m_vertexArray.getVertex(i + 1);
 
         //Compute segment normals
-        var n1 = _NS.Vector2.computeNormal(vLeft.position, v.position);
-        var n2 = _NS.Vector2.computeNormal(v.position, vRight.position);
+        var n1 = sp.Vector2.computeNormal(vLeft.position, v.position);
+        var n2 = sp.Vector2.computeNormal(v.position, vRight.position);
 
         //Normals must point towards outside of the shape
-        var tmp = _NS.Vector2.sub(this.m_vertexArray.getVertex(0).position, v.position);
-        if (_NS.Vector2.dotProduct(n1, tmp) > 0) {
+        var tmp = sp.Vector2.sub(this.m_vertexArray.getVertex(0).position, v.position);
+        if (sp.Vector2.dotProduct(n1, tmp) > 0) {
             n1.x = -n1.x;
             n1.y = -n1.y;
         }
-        if (_NS.Vector2.dotProduct(n2, tmp) > 0) {
+        if (sp.Vector2.dotProduct(n2, tmp) > 0) {
             n2.x = -n2.x;
             n2.y = -n2.y;
         }
 
         // Combine normals to get the extrusion direction
         var factor = 1.0 + (n1.x * n2.x + n1.y * n2.y);
-        var normal = new _NS.Vector2((n1.x + n2.x) / factor, (n1.y + n2.y) / factor);
+        var normal = new sp.Vector2((n1.x + n2.x) / factor, (n1.y + n2.y) / factor);
 
         this.m_outlineVertexArray.getVertex(i * 2).position = v.position;
-        this.m_outlineVertexArray.getVertex(i * 2 + 1).position = new _NS.Vector2(v.position.x + normal.x * this.m_outlineThickness, v.position.y + normal.y * this.m_outlineThickness);
+        this.m_outlineVertexArray.getVertex(i * 2 + 1).position = new sp.Vector2(v.position.x + normal.x * this.m_outlineThickness, v.position.y + normal.y * this.m_outlineThickness);
     }
 
     //The last point is the same as the first
@@ -195,7 +195,7 @@ _NS.Shape.prototype.updateOutline = function () {
 * @method
 * @param {Context} context - Context
 */
-_NS.Shape.prototype.draw = function (context, renderOptions) {
+sp.Shape.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();
     //renderOptions.shader = context.getDefaultProgram();
     

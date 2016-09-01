@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Vector2 objects
@@ -6,7 +6,7 @@ var _NS = _NS || {};
 * @param {float} x - X component
 * @param {float} y - Y component
 */
-_NS.Vector2 = function(x, y) {
+sp.Vector2 = function(x, y) {
     /**
     * X component
     * @type Float
@@ -23,7 +23,7 @@ _NS.Vector2 = function(x, y) {
 * Sets vector components
 * @method
 */
-_NS.Vector2.prototype.set = function (x, y) {
+sp.Vector2.prototype.set = function (x, y) {
     this.x = x;
     this.y = y;
 };
@@ -34,7 +34,7 @@ _NS.Vector2.prototype.set = function (x, y) {
 * @method
 * @return {Boolean} True if vectors are equal
 */
-_NS.Vector2.prototype.equals = function (vector) {
+sp.Vector2.prototype.equals = function (vector) {
     return (this.x == vector.x && this.y == vector.y);
 };
 
@@ -46,8 +46,8 @@ _NS.Vector2.prototype.equals = function (vector) {
 * @param {Vector2} v2 - Second vertex position
 * @return {Vector2} Normal of the segment
 */
-_NS.Vector2.computeNormal = function (v1, v2) {
-    var normal = new _NS.Vector2(v1.y - v2.y, v2.x - v1.x);
+sp.Vector2.computeNormal = function (v1, v2) {
+    var normal = new sp.Vector2(v1.y - v2.y, v2.x - v1.x);
     var length = Math.sqrt(normal.x * normal.x + normal.y * normal.y);
     if (length != 0) {
         normal.x = normal.x / length;
@@ -64,7 +64,7 @@ _NS.Vector2.computeNormal = function (v1, v2) {
 * @param {Vector2} v2 - Second vector
 * @return {float} Dot product
 */
-_NS.Vector2.dotProduct = function (v1, v2) {
+sp.Vector2.dotProduct = function (v1, v2) {
     return v1.x * v2.x + v1.y * v2.y;
 };
 
@@ -76,8 +76,8 @@ _NS.Vector2.dotProduct = function (v1, v2) {
 * @param {Vector2} v2 - Second vector
 * @return {Vector2} Result vector
 */
-_NS.Vector2.add = function (v1, v2) {
-    return new _NS.Vector2(v1.x + v2.x, v1.y + v2.y);
+sp.Vector2.add = function (v1, v2) {
+    return new sp.Vector2(v1.x + v2.x, v1.y + v2.y);
 };
 
 /**
@@ -88,8 +88,8 @@ _NS.Vector2.add = function (v1, v2) {
 * @param {Vector2} v2 - Second vector
 * @return {Vector2} Result vector
 */
-_NS.Vector2.sub = function (v1, v2) {
-    return new _NS.Vector2(v1.x - v2.x, v1.y - v2.y);
+sp.Vector2.sub = function (v1, v2) {
+    return new sp.Vector2(v1.x - v2.x, v1.y - v2.y);
 };
 
 /**
@@ -100,8 +100,8 @@ _NS.Vector2.sub = function (v1, v2) {
 * @param {float} s - scalar
 * @return {Vector2} Result vector
 */
-_NS.Vector2.mul = function (v, s) {
-    return new _NS.Vector2(v.x * s, v.y * s);
+sp.Vector2.mul = function (v, s) {
+    return new sp.Vector2(v.x * s, v.y * s);
 };
 
 /**
@@ -112,6 +112,6 @@ _NS.Vector2.mul = function (v, s) {
 * @param {float} s - scalar
 * @return {Vector2} Result vector
 */
-_NS.Vector2.div = function (v, s) {
-    return new _NS.Vector2(v.x / s, v.y / s);
+sp.Vector2.div = function (v, s) {
+    return new sp.Vector2(v.x / s, v.y / s);
 };

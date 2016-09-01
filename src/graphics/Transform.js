@@ -1,10 +1,10 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Transform objects
 * @class Represents a 4x4 matrix
 */
-_NS.Transform = function() {
+sp.Transform = function() {
     /**
     * 4x4 matrix
     * @type float[]
@@ -30,7 +30,7 @@ _NS.Transform = function() {
 * @param {float} a21 - 2,1 component
 * @param {float} a22 - 2,2 component
 */
-_NS.Transform.prototype.set = function (a00, a01, a02,
+sp.Transform.prototype.set = function (a00, a01, a02,
                                         a10, a11, a12,
                                         a20, a21, a22) {
     this.m_matrix[0] = a00; this.m_matrix[4] = a01; this.m_matrix[8]  = 0.0; this.m_matrix[12] = a02;
@@ -39,7 +39,7 @@ _NS.Transform.prototype.set = function (a00, a01, a02,
     this.m_matrix[3] = a20; this.m_matrix[7] = a21; this.m_matrix[11] = 0.0; this.m_matrix[15] = a22;
 };
 
-_NS.Transform.prototype.getMatrix = function () {
+sp.Transform.prototype.getMatrix = function () {
     return this.m_matrix;
 };
 
@@ -49,12 +49,12 @@ _NS.Transform.prototype.getMatrix = function () {
 * @method
 * @returns {Transform} Inverse transform or identity if determinant is zero
 */
-_NS.Transform.prototype.getInverse = function () {
+sp.Transform.prototype.getInverse = function () {
     var det =   this.m_matrix[0] * (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) -
                 this.m_matrix[1] * (this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) +
                 this.m_matrix[3] * (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]);
     if (det != 0) {
-        var inverse = new _NS.Transform();
+        var inverse = new sp.Transform();
         inverse.set(  (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) / det,
                      -(this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) / det,
                       (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]) / det,
@@ -66,7 +66,7 @@ _NS.Transform.prototype.getInverse = function () {
                       (this.m_matrix[5]  * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[4])  / det);
     }
     else {
-        return new _NS.Transform();
+        return new sp.Transform();
     }
 };
 
@@ -77,7 +77,7 @@ _NS.Transform.prototype.getInverse = function () {
 * @param {Transform} transform - Transform to combine
 * @returns {Transform} New combined transform
 */
-_NS.Transform.prototype.combine = function (transform) {
+sp.Transform.prototype.combine = function (transform) {
     var a = this.m_matrix;
     var b = transform.getMatrix();
     var a00 = a[0] * b[0] + a[4] * b[1] + a[12] * b[3];
@@ -103,8 +103,8 @@ _NS.Transform.prototype.combine = function (transform) {
 * @param {float} y - Y translation
 * @returns {Transform} New translated transform
 */
-_NS.Transform.prototype.translate = function (x, y) {
-    var translation = new _NS.Transform();
+sp.Transform.prototype.translate = function (x, y) {
+    var translation = new sp.Transform();
     translation.set(1, 0, x,
                     0, 1, y,
                     0, 0, 1);
@@ -119,8 +119,8 @@ _NS.Transform.prototype.translate = function (x, y) {
 * @param {float} y - Y scale factor
 * @returns {Transform} New scaled transform
 */
-_NS.Transform.prototype.scale = function (x, y) {
-    var scaling = new _NS.Transform();
+sp.Transform.prototype.scale = function (x, y) {
+    var scaling = new sp.Transform();
     scaling.set(x, 0, 0,
                 0, y, 0,
                 0, 0, 1);
@@ -134,12 +134,12 @@ _NS.Transform.prototype.scale = function (x, y) {
 * @param {float} angle - Rotation angle in degrees
 * @returns {Transform} New rotated transform
 */
-_NS.Transform.prototype.rotate = function (angle) {
+sp.Transform.prototype.rotate = function (angle) {
     var rad = angle * Math.PI / 180.0;
     var cos = Math.cos(rad);
     var sin = Math.sin(rad);
 
-    var rotation = new _NS.Transform();
+    var rotation = new sp.Transform();
     rotation.set(cos,   -sin,   0,
                  sin,    cos,   0,
                  0,      0,     1);
@@ -154,7 +154,7 @@ _NS.Transform.prototype.rotate = function (angle) {
 * @param {float} y - Y coordinate
 * @returns {Vector2} New transformed point
 */
-_NS.Transform.prototype.transformPoint = function (x, y) {
+sp.Transform.prototype.transformPoint = function (x, y) {
     var vec = Vector2();
     vec.set(this.m_matrix[0] * x + this.m_matrix[4] * y + this.m_matrix[12],
             this.m_matrix[1] * x + this.m_matrix[5] * y + this.m_matrix[13]);

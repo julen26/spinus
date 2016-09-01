@@ -1,10 +1,10 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Drawable objects
 * @class Represents a Drawable object
 */
-_NS.Drawable = function() {
+sp.Drawable = function() {
 };
 
 /**
@@ -14,6 +14,6 @@ _NS.Drawable = function() {
 * @param {Context} context - Context
 * @param {RenderOptions} renderOptions - Render options
 */
-_NS.Drawable.prototype.draw = function (context, renderOptions) {
+sp.Drawable.prototype.draw = function (context, renderOptions) {
     throw "Drawable object must implement the method: draw";
 };

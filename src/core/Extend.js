@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /*
 * Extends the prototype of derived objects with the prototype of base object.
@@ -9,7 +9,7 @@ var _NS = _NS || {};
 * @param {Object} base - Base object
 * @returns {Object} Returns the new prototype of the derived object
 */
-_NS.extend = function (derived, base) {
+sp.extend = function (derived, base) {
     for(var key in base.prototype) {
         if(base.prototype.hasOwnProperty(key)) {
             derived.prototype[key] = base.prototype[key];

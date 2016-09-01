@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Vertex objects
@@ -7,29 +7,29 @@ var _NS = _NS || {};
 * @param {Color} color - Color
 * @param {Vector2} texCoords - Texture coordinates
 */
-_NS.Vertex = function(position, color, texCoords) {
+sp.Vertex = function(position, color, texCoords) {
     /**
     * Position
     * @type Vector2
     */
-    this.position = position || new _NS.Vector2(0, 0);
+    this.position = position || new sp.Vector2(0, 0);
     /**
     * Color
     * @type Color
     */
-    this.color = color || new _NS.Color(255, 255, 255);
+    this.color = color || new sp.Color(255, 255, 255);
     /**
     * Texture coordinates
     * @type Float
     */
-    this.texCoords = texCoords || new _NS.Vector2(0, 0);
+    this.texCoords = texCoords || new sp.Vector2(0, 0);
 };
 
 /**
 * Sets vertex components
 * @method
 */
-_NS.Vertex.prototype.set = function (position, color, texCoords) {
+sp.Vertex.prototype.set = function (position, color, texCoords) {
     this.position = position;
     this.color = color;
     this.texCoords = texCoords;
@@ -40,6 +40,6 @@ _NS.Vertex.prototype.set = function (position, color, texCoords) {
 * @method
 * @return {bool} True if vertices are equal
 */
-_NS.Vertex.prototype.equals = function (vertex) {
+sp.Vertex.prototype.equals = function (vertex) {
     return (this.position.equals(vertex.position) && this.color.equals(vertex.color) && this.texCoords.equals(vertex.texCoords));
 };

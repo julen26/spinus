@@ -25,9 +25,9 @@
     <script>
     function onload() {
 
-        var context = new _NS.Context("canvas1");
+        var context = new sp.Context("canvas1");
 
-        var texture = new _NS.Texture(context);
+        var texture = new sp.Texture(context);
         texture.loadFromFile('picture.png',  function() {
 
             var origX = texture.getSize().x / 2;
@@ -37,15 +37,15 @@
                 var x = Math.random() * context.getViewportWidth();
                 var y = Math.random() * context.getViewportHeight();
 
-                var sprite = new _NS.Sprite(texture);
+                var sprite = new sp.Sprite(texture);
                 sprite.setPosition(x, y);
                 sprite.setOrigin(origX, origY);
-                sprite.setColor(_NS.Color.random());
+                sprite.setColor(sp.Color.random());
                 sprite.setRotation(Math.random() * 360);
                 context.draw(sprite);
             }
 
-            var sprite = new _NS.Sprite(texture);
+            var sprite = new sp.Sprite(texture);
             sprite.setPosition(320, 240);
             sprite.setOrigin(origX, origY);
             sprite.setScale(2, 2);

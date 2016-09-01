@@ -1,11 +1,11 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Shader objects
 * @class Represents a Shader object
 * @param {Context} context - Context
 */
-_NS.Shader = function(context) {
+sp.Shader = function(context) {
     /**
     * WebGLProgram object
     * @type WebGLProgram
@@ -34,7 +34,7 @@ _NS.Shader = function(context) {
 * @method
 * @returns {WebGLProgram} Internal WebGLProgram object
 */
-_NS.Shader.prototype.getShaderProgram = function () {
+sp.Shader.prototype.getShaderProgram = function () {
     return this.m_shaderProgram;
 };
 
@@ -45,7 +45,7 @@ _NS.Shader.prototype.getShaderProgram = function () {
 * @param {string} data - Shader source code
 * @param {Types} shaderType - Shader type
 */
-_NS.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
+sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
     var gl = this.m_context.GL();
 
     if (this.m_shaderProgram) {
@@ -77,7 +77,7 @@ _NS.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSourc
 * @method
 * @param {string} scriptId - ID of the script tag
 */
-_NS.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
+sp.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
     var gl = this.m_context.GL();
     
     var vertexShaderScript = document.getElementById(vertexShaderScriptId);
@@ -91,7 +91,7 @@ _NS.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentSh
 *
 * @method
 */
-_NS.Shader.prototype.use = function () {
+sp.Shader.prototype.use = function () {
     var gl = this.m_context.GL();
 
     gl.useProgram(this.m_shaderProgram);
@@ -104,7 +104,7 @@ _NS.Shader.prototype.use = function () {
 * @param {string} parameter - Parameter name
 * @return {WebGLUniformLocation} Location of the uniform
 */
-_NS.Shader.prototype.getUniformLocation = function (parameter) {
+sp.Shader.prototype.getUniformLocation = function (parameter) {
     var gl = this.m_context.GL();
 
     if (this.m_uniforms[parameter]) {
@@ -121,7 +121,7 @@ _NS.Shader.prototype.getUniformLocation = function (parameter) {
 * @param {string} parameter - Parameter name
 * @return {int} Location of the uniform
 */
-_NS.Shader.prototype.getAttribLocation = function (parameter) {
+sp.Shader.prototype.getAttribLocation = function (parameter) {
     var gl = this.m_context.GL();
 
     if (this.m_attributes[parameter]) {
@@ -133,7 +133,7 @@ _NS.Shader.prototype.getAttribLocation = function (parameter) {
 
 //TODO: Possible improvement autochecking the uniform type
 //TODO: Check if values is an array
-_NS.Shader.prototype.uniformiv = function (parameter, values) {
+sp.Shader.prototype.uniformiv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
@@ -143,7 +143,7 @@ _NS.Shader.prototype.uniformiv = function (parameter, values) {
     }
 };
 
-_NS.Shader.prototype.uniformfv = function (parameter, values) {
+sp.Shader.prototype.uniformfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
@@ -153,7 +153,7 @@ _NS.Shader.prototype.uniformfv = function (parameter, values) {
     }
 };
 
-_NS.Shader.prototype.uniformMatrixfv = function (parameter, values) {
+sp.Shader.prototype.uniformMatrixfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
@@ -174,9 +174,9 @@ _NS.Shader.prototype.uniformMatrixfv = function (parameter, values) {
 * @param {Context} context - Context
 * @param {bool} hasTexture - If the shader has texture
 */
-_NS.DefaultShader = function (context, hasTexture) {
+sp.DefaultShader = function (context, hasTexture) {
     hasTexture = hasTexture || false;
-    var shader = new _NS.Shader(context);
+    var shader = new sp.Shader(context);
     shader.compile(
             "\n#define hasTexture " + ((hasTexture == true) ? "1" : "0") + "\n"
         +   "\n#if hasTexture\n"

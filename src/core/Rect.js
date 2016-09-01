@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Rect objects
@@ -8,7 +8,7 @@ var _NS = _NS || {};
 * @param {float} w - Width
 * @param {float} h - Height
 */
-_NS.Rect = function(x, y, w, h) {
+sp.Rect = function(x, y, w, h) {
     this.x = x || 0;
     this.y = y || 0;
     this.w = w || 0;
@@ -16,13 +16,13 @@ _NS.Rect = function(x, y, w, h) {
 };
 
 
-_NS.Rect.prototype.set = function (x, y, w, h) {
+sp.Rect.prototype.set = function (x, y, w, h) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
 };
 
-_NS.Rect.prototype.equals = function (rect) {
+sp.Rect.prototype.equals = function (rect) {
     return (this.x == rect.x && this.y == rect.y && this.w == rect.w && this.h == rect.h);
 };

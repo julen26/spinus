@@ -1,10 +1,10 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /** 
 * Enum for primitive types
 * @enum {number}
 */
-_NS.PrimitiveType = {
+sp.PrimitiveType = {
     Points : 0,
     Lines : 1,
     LineStrip : 2,

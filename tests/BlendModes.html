@@ -25,58 +25,58 @@
     <script>
     function onload() {
                 
-        var context = new _NS.Context("canvas1");
-        context.clear(new _NS.Color(0, 0, 255));
+        var context = new sp.Context("canvas1");
+        context.clear(new sp.Color(0, 0, 255));
 
-        var renderOptions = new _NS.RenderOptions();
+        var renderOptions = new sp.RenderOptions();
 
-        var rect = new _NS.RectangleShape();
+        var rect = new sp.RectangleShape();
         rect.setSize(128, 128);
 
-        renderOptions.blendMode = _NS.BlendMode.Alpha;
-        rect.setColor(new _NS.Color(255, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Alpha;
+        rect.setColor(new sp.Color(255, 0, 0));
         rect.setPosition(0, 0);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Add;
-        rect.setColor(new _NS.Color(255, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Add;
+        rect.setColor(new sp.Color(255, 0, 0));
         rect.setPosition(128, 0);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Multiply;
-        rect.setColor(new _NS.Color(255, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Multiply;
+        rect.setColor(new sp.Color(255, 0, 0));
         rect.setPosition(256, 0);
         context.draw(rect, renderOptions);
 
 
-        renderOptions.blendMode = _NS.BlendMode.Alpha;
-        rect.setColor(new _NS.Color(255, 0, 0, 128));
+        renderOptions.blendMode = sp.BlendMode.Alpha;
+        rect.setColor(new sp.Color(255, 0, 0, 128));
         rect.setPosition(0, 128);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Add;
-        rect.setColor(new _NS.Color(255, 0, 0, 128));
+        renderOptions.blendMode = sp.BlendMode.Add;
+        rect.setColor(new sp.Color(255, 0, 0, 128));
         rect.setPosition(128, 128);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Multiply;
-        rect.setColor(new _NS.Color(255, 0, 0, 128));
+        renderOptions.blendMode = sp.BlendMode.Multiply;
+        rect.setColor(new sp.Color(255, 0, 0, 128));
         rect.setPosition(256, 128);
         context.draw(rect, renderOptions);
 
 
-        renderOptions.blendMode = _NS.BlendMode.Alpha;
-        rect.setColor(new _NS.Color(255, 0, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Alpha;
+        rect.setColor(new sp.Color(255, 0, 0, 0));
         rect.setPosition(0, 256);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Add;
-        rect.setColor(new _NS.Color(255, 0, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Add;
+        rect.setColor(new sp.Color(255, 0, 0, 0));
         rect.setPosition(128, 256);
         context.draw(rect, renderOptions);
 
-        renderOptions.blendMode = _NS.BlendMode.Multiply;
-        rect.setColor(new _NS.Color(255, 0, 0, 0));
+        renderOptions.blendMode = sp.BlendMode.Multiply;
+        rect.setColor(new sp.Color(255, 0, 0, 0));
         rect.setPosition(256, 256);
         context.draw(rect, renderOptions);
 

@@ -22,13 +22,13 @@
     <script>
     function onload() {
 
-        var context = new _NS.Context("canvas1");
+        var context = new sp.Context("canvas1");
 
-        var square = new _NS.VertexArray(_NS.PrimitiveType.LineLoop);
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 10), new _NS.Color(255, 0, 0)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(100, 10), new _NS.Color(255, 0, 0)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(100, 100), new _NS.Color(255, 0, 0)) );
-        square.addVertex( new _NS.Vertex( new _NS.Vector2(10, 100), new _NS.Color(255, 0, 0)) );
+        var square = new sp.VertexArray(sp.PrimitiveType.LineLoop);
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 10), new sp.Color(255, 0, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(100, 10), new sp.Color(255, 0, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(100, 100), new sp.Color(255, 0, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 100), new sp.Color(255, 0, 0)) );
 
         context.draw(square);
 

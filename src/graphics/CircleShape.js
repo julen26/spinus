@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs CircleShape objects
@@ -9,8 +9,8 @@ var _NS = _NS || {};
 * @param {float} radius - Radius
 * @param {Color} color - Color
 */
-_NS.CircleShape = function(radius, color) {
-    _NS.Shape.call(this, 30);
+sp.CircleShape = function(radius, color) {
+    sp.Shape.call(this, 30);
 
     this.m_radius = radius || 0;
 
@@ -18,25 +18,25 @@ _NS.CircleShape = function(radius, color) {
 
     this.setColor(color);
 };
-_NS.extend(_NS.CircleShape, _NS.Shape);
+sp.extend(sp.CircleShape, sp.Shape);
 
-_NS.CircleShape.prototype.setRadius = function (radius) {
+sp.CircleShape.prototype.setRadius = function (radius) {
     this.m_radius = radius;
     this.update();
 };
 
-_NS.CircleShape.prototype.setPointCount = function (pointCount) {
-    _NS.Shape.prototype.setPointCount.call(this, pointCount);
+sp.CircleShape.prototype.setPointCount = function (pointCount) {
+    sp.Shape.prototype.setPointCount.call(this, pointCount);
     this.update();
 };
 
-_NS.CircleShape.prototype.update = function () {
+sp.CircleShape.prototype.update = function () {
     var pointCount = this.getPointCount();
     if (pointCount > 2) {
         var alfa = 2 * Math.PI / pointCount;
         for (var i = 0; i < pointCount; i++) {
             var angle = alfa * i;
-            var pos = new _NS.Vector2(Math.cos(angle) * this.m_radius, Math.sin(angle) * this.m_radius);
+            var pos = new sp.Vector2(Math.cos(angle) * this.m_radius, Math.sin(angle) * this.m_radius);
             this.setPointPosition(i, pos);
         }
     }
@@ -48,8 +48,8 @@ _NS.CircleShape.prototype.update = function () {
 * @method
 * @param {Color} color - Fill color
 */
-_NS.CircleShape.prototype.setColor = function (color) {
-    color = color || new _NS.Color();
+sp.CircleShape.prototype.setColor = function (color) {
+    color = color || new sp.Color();
     var pointCount = this.getPointCount();
     for (var i = 0; i < pointCount; i++) {
         this.setPointColor(i, color);

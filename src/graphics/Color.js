@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs Color objects
@@ -8,7 +8,7 @@ var _NS = _NS || {};
 * @param {int} b - Blue component
 * @param {int} a - Alpha component
 */
-_NS.Color = function(r, g, b, a) {
+sp.Color = function(r, g, b, a) {
     /**
     * Red component
     * @type int
@@ -37,7 +37,7 @@ _NS.Color = function(r, g, b, a) {
 * @method
 * @return {bool} True if colors are equal
 */
-_NS.Color.prototype.equals = function (color) {
+sp.Color.prototype.equals = function (color) {
     return (this.r == color.r && this.g == color.g && this.b == color.b && this.a == color.a);
 };
 
@@ -47,7 +47,7 @@ _NS.Color.prototype.equals = function (color) {
 * @method
 * @return {string} rgba string
 */
-_NS.Color.prototype.getRGBAString = function () {
+sp.Color.prototype.getRGBAString = function () {
     return "rgba(" + Math.floor(this.r) + "," + Math.floor(this.g) + "," + Math.floor(this.b) + "," + this.a/255 +")";
 };
 
@@ -57,7 +57,7 @@ _NS.Color.prototype.getRGBAString = function () {
 * @method
 * @return {string} RGB in hex format
 */
-_NS.Color.prototype.getHexString = function () {
+sp.Color.prototype.getHexString = function () {
     var r = Math.floor(this.r).toString(16);
     r = (r.length == 1) ? '0' + r : r;
     var g = Math.floor(this.g).toString(16);
@@ -73,8 +73,8 @@ _NS.Color.prototype.getHexString = function () {
 * @method
 * @return {Color} New color object
 */
-_NS.Color.fromNormalized = function (r, g, b, a) {
-    return new _NS.Color(r * 255, g * 255, b * 255, a * 255);
+sp.Color.fromNormalized = function (r, g, b, a) {
+    return new sp.Color(r * 255, g * 255, b * 255, a * 255);
 };
 
 /**
@@ -83,6 +83,6 @@ _NS.Color.fromNormalized = function (r, g, b, a) {
 * @method
 * @return {Color} New color object
 */
-_NS.Color.random = function () {
-    return _NS.Color.fromNormalized(Math.random(), Math.random(), Math.random(), Math.random());
+sp.Color.random = function () {
+    return sp.Color.fromNormalized(Math.random(), Math.random(), Math.random(), Math.random());
 };

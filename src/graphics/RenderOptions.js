@@ -1,12 +1,12 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs RenderOptions objects
 * @class Represents a RenderOptions object
 */
-_NS.RenderOptions = function(transform, texture, shader, blendMode) {
-    this.blendMode = blendMode || _NS.BlendMode.Alpha;
-    this.transform = transform || new _NS.Transform();
+sp.RenderOptions = function(transform, texture, shader, blendMode) {
+    this.blendMode = blendMode || sp.BlendMode.Alpha;
+    this.transform = transform || new sp.Transform();
     this.texture = texture;
     this.shader = shader;
 };

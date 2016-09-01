@@ -1,4 +1,4 @@
-var _NS = _NS || {};
+var sp = sp || {};
 
 /**
 * Constructs RectangleShape objects
@@ -10,12 +10,12 @@ var _NS = _NS || {};
 * @param {float} h - Height
 * @param {Color} color - Color
 */
-_NS.RectangleShape = function(w, h, color) {
-    _NS.Shape.call(this, 4);
+sp.RectangleShape = function(w, h, color) {
+    sp.Shape.call(this, 4);
     this.setSize(w, h);
     this.setColor(color);
 };
-_NS.extend(_NS.RectangleShape, _NS.Shape);
+sp.extend(sp.RectangleShape, sp.Shape);
 
 /**
 * Sets rectangle bounds
@@ -26,13 +26,13 @@ _NS.extend(_NS.RectangleShape, _NS.Shape);
 * @param {float} x2 - Right
 * @param {float} y2 - Bottom
 */
-_NS.RectangleShape.prototype.setSize = function (w, h) {
-    this.m_size = new _NS.Vector2(w, h);
+sp.RectangleShape.prototype.setSize = function (w, h) {
+    this.m_size = new sp.Vector2(w, h);
 
-    this.setPointPosition(0, new _NS.Vector2(0, 0));
-    this.setPointPosition(1, new _NS.Vector2(w, 0));
-    this.setPointPosition(2, new _NS.Vector2(w, h));
-    this.setPointPosition(3, new _NS.Vector2(0, h));
+    this.setPointPosition(0, new sp.Vector2(0, 0));
+    this.setPointPosition(1, new sp.Vector2(w, 0));
+    this.setPointPosition(2, new sp.Vector2(w, h));
+    this.setPointPosition(3, new sp.Vector2(0, h));
 };
 
 /**
@@ -41,8 +41,8 @@ _NS.RectangleShape.prototype.setSize = function (w, h) {
 * @method
 * @param {Color} color - Fill color
 */
-_NS.RectangleShape.prototype.setColor = function (color) {
-    color = color || new _NS.Color();
+sp.RectangleShape.prototype.setColor = function (color) {
+    color = color || new sp.Color();
     
     this.setPointColor(0, color);
     this.setPointColor(1, color);
@@ -59,11 +59,11 @@ _NS.RectangleShape.prototype.setColor = function (color) {
 * @param {Color} color3 - Bottom-right color
 * @param {Color} color4 - Bottom-left color
 */
-_NS.RectangleShape.prototype.setColors = function (color1, color2, color3, color4) {
-    color1 = color1 || new _NS.Color();
-    color2 = color2 || new _NS.Color();
-    color3 = color3 || new _NS.Color();
-    color4 = color4 || new _NS.Color();
+sp.RectangleShape.prototype.setColors = function (color1, color2, color3, color4) {
+    color1 = color1 || new sp.Color();
+    color2 = color2 || new sp.Color();
+    color3 = color3 || new sp.Color();
+    color4 = color4 || new sp.Color();
 
     this.setPointColor(0, color1);
     this.setPointColor(1, color2);
