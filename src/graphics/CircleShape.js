@@ -1,4 +1,6 @@
-var sp = sp || {};
+goog.provide('sp.CircleShape');
+goog.require('sp.extend');
+goog.require('sp.Shape');
 
 /**
 * Constructs CircleShape objects

@@ -1,4 +1,10 @@
-var sp = sp || {};
+goog.provide('sp.Shape');
+goog.require('sp.extend');
+goog.require('sp.Transformable');
+goog.require('sp.Drawable');
+goog.require('sp.Color');
+goog.require('sp.VertexArray');
+goog.require('sp.Vector2');
 
 /**
 * Constructs Shape objects

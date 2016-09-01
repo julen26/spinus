@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.BlendMode');
 
 sp.BlendMode = function(srcColorFactor, dstColorFactor, colorEquation, srcAlphaFactor, dstAlphaFactor, alphaEquation) {
 	this.srcColorFactor = srcColorFactor;

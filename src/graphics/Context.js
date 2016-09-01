@@ -1,4 +1,9 @@
-var sp = sp || {};
+goog.provide('sp.Context');
+goog.require('sp.RenderOptions');
+goog.require('sp.DefaultShader');
+goog.require('sp.View');
+goog.require('sp.Color');
+goog.require('sp.BlendMode');
 
 /**
 * Constructs Context objects

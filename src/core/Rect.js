@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.Rect');
 
 /**
 * Constructs Rect objects

@@ -1,4 +1,5 @@
-var sp = sp || {};
+goog.provide('sp.Transform');
+goog.require('sp.Vector2');
 
 /**
 * Constructs Transform objects
@@ -155,7 +156,7 @@ sp.Transform.prototype.rotate = function (angle) {
 * @returns {Vector2} New transformed point
 */
 sp.Transform.prototype.transformPoint = function (x, y) {
-    var vec = Vector2();
+    var vec = new Vector2();
     vec.set(this.m_matrix[0] * x + this.m_matrix[4] * y + this.m_matrix[12],
             this.m_matrix[1] * x + this.m_matrix[5] * y + this.m_matrix[13]);
     return vec;

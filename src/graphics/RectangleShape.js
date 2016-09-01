@@ -1,4 +1,8 @@
-var sp = sp || {};
+goog.provide('sp.RectangleShape');
+goog.require('sp.extend');
+goog.require('sp.Shape');
+goog.require('sp.Vector2');
+goog.require('sp.Color');
 
 /**
 * Constructs RectangleShape objects

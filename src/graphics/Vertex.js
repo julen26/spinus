@@ -1,4 +1,6 @@
-var sp = sp || {};
+goog.provide('sp.Vertex');
+goog.require('sp.Vector2');
+goog.require('sp.Color');
 
 /**
 * Constructs Vertex objects

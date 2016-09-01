@@ -1,4 +1,7 @@
-var sp = sp || {};
+goog.provide('sp.View');
+goog.require('sp.Transform');
+goog.require('sp.Vector2');
+goog.require('sp.Rect');
 
 /**
 * Constructs View objects

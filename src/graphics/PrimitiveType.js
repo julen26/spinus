@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.PrimitiveType');
 
 /** 
 * Enum for primitive types

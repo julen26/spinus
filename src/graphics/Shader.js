@@ -1,4 +1,5 @@
-var sp = sp || {};
+goog.provide('sp.Shader');
+goog.provide('sp.DefaultShader');
 
 /**
 * Constructs Shader objects
@@ -16,7 +17,7 @@ sp.Shader = function(context) {
     * @type Context
     */
     this.m_context = context;
-        /**
+    /**
     * Hash of uniforms
     * @type Object<string, WebGLUniformLocation>
     */

@@ -1,4 +1,5 @@
-var sp = sp || {};
+goog.provide('sp.Texture');
+goog.require('sp.Vector2');
 
 /**
 * Constructs Texture objects

@@ -1,4 +1,7 @@
-var sp = sp || {};
+goog.provide('sp.VertexArray');
+goog.require('sp.extend');
+goog.require('sp.Drawable');
+goog.require('sp.Vertex');
 
 /**
 * Constructs VertexArray objects

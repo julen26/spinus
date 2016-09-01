@@ -1,4 +1,6 @@
-var sp = sp || {};
+goog.provide('sp.Transformable');
+goog.require('sp.Transform');
+goog.require('sp.Vector2');
 
 /**
 * Constructs Transformable objects

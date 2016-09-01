@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.Drawable');
 
 /**
 * Constructs Drawable objects

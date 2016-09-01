@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.Vector2');
 
 /**
 * Constructs Vector2 objects

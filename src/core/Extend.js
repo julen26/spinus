@@ -1,4 +1,4 @@
-var sp = sp || {};
+goog.provide('sp.extend');
 
 /*
 * Extends the prototype of derived objects with the prototype of base object.

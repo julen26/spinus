@@ -1,4 +1,10 @@
-var sp = sp || {};
+goog.provide('sp.Text');
+goog.require('sp.extend');
+goog.require('sp.Transformable');
+goog.require('sp.Drawable');
+goog.require('sp.VertexArray');
+goog.require('sp.Vector2');
+goog.require('sp.Texture');
 
 /**
 * Constructs Text objects

@@ -1,4 +1,4 @@
-mkdir ..\release
-call build-core.bat
-call build-graphics.bat
+@echo | call build.bat
+@echo | call build-core.bat
+@echo | call build-graphics.bat
 pause

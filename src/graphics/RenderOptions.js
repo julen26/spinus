@@ -1,4 +1,6 @@
-var sp = sp || {};
+goog.provide('sp.RenderOptions');
+goog.require('sp.BlendMode');
+goog.require('sp.Transform');
 
 /**
 * Constructs RenderOptions objects
