@@ -35,8 +35,7 @@ sp.extend(sp.Text, sp.Drawable);
 
 sp.Text.prototype.setString = function (str) {
     str = str || "";
-    if (str != this.m_string)
-    {
+    if (str != this.m_string) {
         this.m_string = str;
         this.m_needsTextureUpdate = true;
     }

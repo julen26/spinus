@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Sprites</title>
+    
+    <script src="../release/spinus-graphics.js"></script>
+
+    <script>
+    function onload() {
+
+        var context = new sp.Context("canvas1");
+
+        var texture1 = new sp.Texture(context, 'texture.png',  function() {
+
+            var sprite = new sp.Sprite(texture1);
+
+            sprite.setPosition(0, 0);
+            sprite.setScale(1, 1);
+            context.draw(sprite);
+
+            sprite.setPosition(200, 0);
+            sprite.setScale(0.75, 0.75);
+            context.draw(sprite);
+
+            sprite.setPosition(400, 0);
+            sprite.setScale(0.5, 0.5);
+            context.draw(sprite);
+
+            sprite.setPosition(600, 0);
+            sprite.setScale(0.25, 0.25);
+            context.draw(sprite);
+        }, false, false, true);
+
+        var texture2 = new sp.Texture(context, 'texture.png',  function() {
+
+            var sprite = new sp.Sprite(texture2);
+
+            sprite.setPosition(0, 200);
+            sprite.setScale(1, 1);
+            context.draw(sprite);
+
+            sprite.setPosition(200, 200);
+            sprite.setScale(0.75, 0.75);
+            context.draw(sprite);
+
+            sprite.setPosition(400, 200);
+            sprite.setScale(0.5, 0.5);
+            context.draw(sprite);
+
+            sprite.setPosition(600, 200);
+            sprite.setScale(0.25, 0.25);
+            context.draw(sprite);
+        }, true, false, true);
+
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>
