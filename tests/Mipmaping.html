@@ -12,7 +12,8 @@
 
         var context = new sp.Context("canvas1");
 
-        var texture1 = new sp.Texture(context, 'texture.png',  function() {
+        var texture1 = new sp.Texture(context, false, false, true);
+        texture1.loadFromFile('texture.png', function() {
 
             var sprite = new sp.Sprite(texture1);
 
@@ -31,9 +32,10 @@
             sprite.setPosition(600, 0);
             sprite.setScale(0.25, 0.25);
             context.draw(sprite);
-        }, false, false, true);
+        });
 
-        var texture2 = new sp.Texture(context, 'texture.png',  function() {
+        var texture2 = new sp.Texture(context, true, false, true);
+        texture2.loadFromFile('texture.png', function() {
 
             var sprite = new sp.Sprite(texture2);
 
@@ -52,7 +54,7 @@
             sprite.setPosition(600, 200);
             sprite.setScale(0.25, 0.25);
             context.draw(sprite);
-        }, true, false, true);
+        });
 
     }
     </script>

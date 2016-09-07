@@ -5,15 +5,12 @@ goog.require('sp.Vector2');
 * Constructs Texture objects
 * @class Represents a Texture object
 */
-sp.Texture = function(context, sourcePath, callback, smooth, repeat, forcePOT) {
+sp.Texture = function(context, smooth, repeat, forcePOT) {
 	this.m_context = context;
     this.m_smooth = smooth || false;
     this.m_repeat = repeat || false;
     this.m_forcePOT = forcePOT || false;
-    this.m_image = new Image();
-    if (sourcePath) {
-        this.loadFromFile(sourcePath, callback || null);
-    }
+    this.m_image = null;
 };
 
 /**
@@ -24,6 +21,7 @@ sp.Texture = function(context, sourcePath, callback, smooth, repeat, forcePOT) {
 * @param {function} callback - Callback function
 */
 sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
+    this.m_image = new Image();
 	this.m_callback = callback;
     this.m_image.src = sourcePath;
     this.m_image.onload = this.handleLoadedTexture.bind(this);
