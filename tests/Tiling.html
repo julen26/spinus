@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Tiling</title>
+    
+    <script src="../release/spinus-graphics.js"></script>
+
+    <script>
+    function onload() {
+
+        var context = new sp.Context("canvas1");
+
+        var texture = new sp.Texture(context, false, true, true);
+        texture.loadFromFile('texturePOT.png',  function() {
+
+            var sprite = new sp.Sprite(texture);
+            sprite.setTextureRect(new sp.Rect(0, 0, 4, 4));
+            context.draw(sprite);
+
+        });
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>

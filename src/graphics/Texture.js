@@ -40,7 +40,7 @@ sp.Texture.prototype.handleLoadedTexture = function () {
     	this.m_textureId = gl.createTexture();
     	gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
 
-        if (this.forcePOT && !this.isPowerOfTwo()) {
+        if (this.m_forcePOT && !this.isPowerOfTwo()) {
             var ctx = document.createElement("canvas").getContext("2d");
             ctx.canvas.width = this.nextHighestPowerOfTwo(this.m_size.x);
             ctx.canvas.height = this.nextHighestPowerOfTwo(this.m_size.y);
@@ -108,7 +108,7 @@ sp.Texture.prototype.setRepeat = function (repeat) {
 
 sp.Texture.prototype.isPowerOfTwo = function () {
     if (!this.m_size) return false;
-    return ((this.m_size.x & (this.m_size.x - 1) == 0) && (this.m_size.y & (this.m_size.y - 1) == 0));
+    return ((this.m_size.x & (this.m_size.x - 1)) == 0) && ((this.m_size.y & (this.m_size.y - 1)) == 0);
 };
 
 sp.Texture.prototype.nextHighestPowerOfTwo = function (p) {

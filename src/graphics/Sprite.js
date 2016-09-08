@@ -5,6 +5,7 @@ goog.require('sp.Drawable');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Color');
+goog.require('sp.Rect');
 
 /**
 * Constructs Sprite objects
@@ -15,10 +16,6 @@ sp.Sprite = function(texture) {
     sp.Transformable.call(this);
 
 	this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, 4);
-	this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
-    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(1, 0);
-    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(1, 1);
-    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(0, 1);
 
 	this.setTexture(texture);
 };
@@ -30,15 +27,44 @@ sp.Sprite.prototype.setTexture = function (texture) {
 
 	if (this.m_texture) {
 		var size = this.m_texture.getSize();
+
 		this.m_vertexArray.getVertex(0).position = new sp.Vector2(0, 0);
 		this.m_vertexArray.getVertex(1).position = new sp.Vector2(size.x, 0);
 		this.m_vertexArray.getVertex(2).position = new sp.Vector2(size.x, size.y);
 		this.m_vertexArray.getVertex(3).position = new sp.Vector2(0, size.y);
 	}
+
+	this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
+    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(1, 0);
+    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(1, 1);
+    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(0, 1);
+
+    this.m_textureRect = new sp.Rect(0, 0, 1, 1);
 };
 
 sp.Sprite.prototype.getTexture = function () {
 	return this.m_texture;
+};
+
+sp.Sprite.prototype.setTextureRect = function (rect) {
+	if (this.m_texture) {
+		var size = this.m_texture.getSize();
+
+		this.m_vertexArray.getVertex(0).position = new sp.Vector2(0, 0);
+		this.m_vertexArray.getVertex(1).position = new sp.Vector2(size.x * rect.w, 0);
+		this.m_vertexArray.getVertex(2).position = new sp.Vector2(size.x * rect.w, size.y * rect.h);
+		this.m_vertexArray.getVertex(3).position = new sp.Vector2(0, size.y * rect.h);
+	}
+
+	this.m_textureRect = rect;
+	this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(rect.x, rect.y);
+    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(rect.x + rect.w, rect.y);
+    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(rect.x + rect.w, rect.y + rect.h);
+    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(rect.x, rect.y + rect.h);
+};
+
+sp.Sprite.prototype.getTextureRect = function () {
+	return this.m_textureRect;
 };
 
 sp.Sprite.prototype.setColor = function (color) {
