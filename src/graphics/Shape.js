@@ -11,7 +11,7 @@ goog.require('sp.Vector2');
 * @class Represents a Shape object
 * @extends Transformable
 */
-sp.Shape = function(pointCount) {
+sp.Shape = function(pointCount, texture) {
     //Call base constructor
     sp.Transformable.call(this);
 
@@ -46,8 +46,9 @@ sp.Shape = function(pointCount) {
     * @type bool
     */
     this.m_needsColorUpdate = false;
+    this.m_needsTexCoordsUpdate = false;
 
-    //TODO: Texture and texture rectangle
+    this.setTexture(texture);
 };
 sp.extend(sp.Shape, sp.Transformable);
 sp.extend(sp.Shape, sp.Drawable);
@@ -62,6 +63,7 @@ sp.Shape.prototype.setPointCount = function (pointCount) {
     this.m_vertexArray.resize(pointCount);
     this.m_needsUpdate = true;
     this.m_needsColorUpdate = true;
+    this.m_needsTexCoordsUpdate = true;
 };
 
 /**
@@ -85,6 +87,7 @@ sp.Shape.prototype.addPoint = function (position, color) {
     this.m_vertexArray.addVertex(sp.Vertex(position, color));
     this.m_needsUpdate = true;
     this.m_needsColorUpdate = true;
+    this.m_needsTexCoordsUpdate = true;
 };
 
 /**
@@ -99,6 +102,7 @@ sp.Shape.prototype.setPointPosition = function (index, position) {
         var vertex = this.m_vertexArray.getVertex(index);
         vertex.position = position;
         this.m_needsUpdate = true;
+        this.m_needsTexCoordsUpdate = true;
     }
 };
 
@@ -195,6 +199,36 @@ sp.Shape.prototype.updateOutline = function () {
     this.m_outlineVertexArray.getVertex(count * 2 + 1).position = this.m_outlineVertexArray.getVertex(1).position;
 };
 
+sp.Shape.prototype.setTexture = function (texture) {
+    this.m_texture = texture;
+
+    if (this.m_texture) {
+        this.m_needsTexCoordsUpdate = true;
+        var size = this.m_texture.getSize();
+
+        for (var i = 0; i < this.m_vertexArray.getVertexCount(); i++) {
+            var v = this.m_vertexArray.getVertex(i);
+            v.texCoords = new sp.Vector2(v.position.x / size.x, v.position.y / size.y);
+        }
+    }
+
+};
+
+sp.Shape.prototype.getTexture = function () {
+    return this.m_texture;
+};
+
+sp.Shape.prototype.updateTexCoords = function () {
+    if (this.m_texture) {
+        var size = this.m_texture.getSize();
+
+        for (var i = 0; i < this.m_vertexArray.getVertexCount(); i++) {
+            var v = this.m_vertexArray.getVertex(i);
+            v.texCoords = new sp.Vector2(v.position.x / size.x, v.position.y / size.y);
+        }
+    }
+};
+
 /**
 * Draws the shape in the given context
 *
@@ -203,10 +237,16 @@ sp.Shape.prototype.updateOutline = function () {
 */
 sp.Shape.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();
-    //renderOptions.shader = context.getDefaultProgram();
+    renderOptions.texture = this.m_texture;
+
+    if (this.m_needsTexCoordsUpdate) {
+        this.updateTexCoords();
+        this.m_needsTexCoordsUpdate = false;
+    }
     
     this.m_vertexArray.draw(context, renderOptions);
     if (this.m_outlineThickness > 0) {
+        renderOptions.texture = null;
         //TODO: May be done on an update step, not when drawing
         if (this.m_needsUpdate) {
             this.updateOutline();
