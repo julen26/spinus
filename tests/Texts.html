@@ -13,7 +13,7 @@
         var context = new sp.Context("canvas1");
         context.clear(new sp.Color(192, 192, 192));
 
-        var text = new sp.Text("Hello world");
+        var text = new sp.Text("Hello world", 128, 64, "Arial", 20, sp.TextStyle.Italic | sp.TextStyle.Bold | sp.TextStyle.StrikeThrough | sp.TextStyle.Underline);
         text.setPosition(200, 200);
 
         context.draw(text);

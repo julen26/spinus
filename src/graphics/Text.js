@@ -1,4 +1,5 @@
 goog.provide('sp.Text');
+goog.provide('sp.TextStyle');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
 goog.require('sp.Drawable');
@@ -6,12 +7,20 @@ goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Texture');
 
+sp.TextStyle = {
+    Normal : 0,
+    Bold : 1,
+    Italic : 2,
+    Underline : 4,
+    StrikeThrough : 8
+};
+
 /**
 * Constructs Text objects
 * @class Represents a Text object
 * @param {string} str - Text's string
 */
-sp.Text = function(str, width, height) {
+sp.Text = function(str, width, height, font, characterSize, style) {
     //Call base constructor
     sp.Transformable.call(this);
 
@@ -19,6 +28,9 @@ sp.Text = function(str, width, height) {
     this.m_string = "";
     this.m_width = width || 100;
     this.m_height = height || 100;
+    this.m_font = font || "Arial";
+    this.m_characterSize = characterSize || 12;
+    this.m_style = style || sp.TextStyle.Normal;
 
     this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, 4);
     this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
@@ -41,6 +53,21 @@ sp.Text.prototype.setString = function (str) {
     }
 };
 
+sp.Text.prototype.setFont = function (font) {
+    this.m_font = font;
+    this.m_needsTextureUpdate = true;
+};
+
+sp.Text.prototype.setCharacterSize = function (characterSize) {
+    this.m_characterSize = characterSize;
+    this.m_needsTextureUpdate = true;
+};
+
+sp.Text.prototype.setStyle = function (style) {
+    this.m_style = style;
+    this.m_needsTextureUpdate = true;
+};
+
 sp.Text.prototype.updateTexture = function (context) {
     var gl = context.GL();
     var ctx = document.createElement("canvas").getContext("2d");
@@ -50,9 +77,55 @@ sp.Text.prototype.updateTexture = function (context) {
         ctx.height = this.m_height;
         ctx.canvas.width = this.m_width;
         ctx.canvas.height = this.m_height;
-        ctx.font = "20px Arial";
+
+        var font = this.m_characterSize + "px " + this.m_font;
+        if ((this.m_style & sp.TextStyle.Bold) != 0) {
+            font = "bold " + font;
+        }
+        if ((this.m_style & sp.TextStyle.Italic) != 0) {
+            font = "italic " + font;
+        }
+        ctx.font = font;
+
         ctx.textBaseline = "top";
         ctx.fillText(this.m_string, 0, 0);
+
+        //Underline and strikethrough
+        var textWidth = ctx.measureText(this.m_string).width;
+        var lineHeight = this.m_characterSize / 15;
+        var startX;
+        var endX;
+        if (ctx.textAlign == "center") {
+            startX = -textWidth / 2;
+            endX = textWidth / 2;
+        }
+        else if (ctx.textAlign == "right") {
+            startX = -textWidth;
+            endX = 0;
+        }
+        else {
+            startX = 0;
+            endX = textWidth;
+        }
+        var lineY;
+        if ((this.m_style & sp.TextStyle.Underline) != 0) {
+            lineY = this.m_characterSize;
+            ctx.beginPath();
+            //ctx.strokeStyle = color;
+            ctx.lineWidth = lineHeight;
+            ctx.moveTo(startX, lineY);
+            ctx.lineTo(endX, lineY);
+            ctx.stroke();
+        }
+        if ((this.m_style & sp.TextStyle.StrikeThrough) != 0) {
+            lineY = this.m_characterSize / 1.5;
+            ctx.beginPath();
+            //ctx.strokeStyle = color;
+            ctx.lineWidth = lineHeight;
+            ctx.moveTo(startX, lineY);
+            ctx.lineTo(endX, lineY);
+            ctx.stroke();
+        }
 
         if (this.m_texture) {
             gl.deleteTexture(this.m_texture.getTextureId());
