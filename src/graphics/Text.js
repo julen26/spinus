@@ -6,6 +6,7 @@ goog.require('sp.Drawable');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Texture');
+goog.require('sp.Color');
 
 sp.TextStyle = {
     Normal : 0,
@@ -20,7 +21,7 @@ sp.TextStyle = {
 * @class Represents a Text object
 * @param {string} str - Text's string
 */
-sp.Text = function(str, width, height, font, characterSize, style) {
+sp.Text = function(str, width, height, font, characterSize, style, color) {
     //Call base constructor
     sp.Transformable.call(this);
 
@@ -31,6 +32,7 @@ sp.Text = function(str, width, height, font, characterSize, style) {
     this.m_font = font || "Arial";
     this.m_characterSize = characterSize || 12;
     this.m_style = style || sp.TextStyle.Normal;
+    this.m_color = color || new sp.Color();
 
     this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, 4);
     this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
@@ -68,6 +70,11 @@ sp.Text.prototype.setStyle = function (style) {
     this.m_needsTextureUpdate = true;
 };
 
+sp.Text.prototype.setColor = function (color) {
+    this.m_color = color || new sp.Color();
+    this.m_needsTextureUpdate = true;
+};
+
 sp.Text.prototype.updateTexture = function (context) {
     var gl = context.GL();
     var ctx = document.createElement("canvas").getContext("2d");
@@ -77,6 +84,7 @@ sp.Text.prototype.updateTexture = function (context) {
         ctx.height = this.m_height;
         ctx.canvas.width = this.m_width;
         ctx.canvas.height = this.m_height;
+        ctx.fillStyle = "rgba(" + this.m_color.r + ", " + this.m_color.g + ", " + this.m_color.b + ", " + (this.m_color.a / 255) + ")";
 
         var font = this.m_characterSize + "px " + this.m_font;
         if ((this.m_style & sp.TextStyle.Bold) != 0) {
@@ -111,7 +119,7 @@ sp.Text.prototype.updateTexture = function (context) {
         if ((this.m_style & sp.TextStyle.Underline) != 0) {
             lineY = this.m_characterSize;
             ctx.beginPath();
-            //ctx.strokeStyle = color;
+            ctx.strokeStyle = ctx.fillStyle;
             ctx.lineWidth = lineHeight;
             ctx.moveTo(startX, lineY);
             ctx.lineTo(endX, lineY);
@@ -120,7 +128,7 @@ sp.Text.prototype.updateTexture = function (context) {
         if ((this.m_style & sp.TextStyle.StrikeThrough) != 0) {
             lineY = this.m_characterSize / 1.5;
             ctx.beginPath();
-            //ctx.strokeStyle = color;
+            ctx.strokeStyle = ctx.fillStyle;
             ctx.lineWidth = lineHeight;
             ctx.moveTo(startX, lineY);
             ctx.lineTo(endX, lineY);
