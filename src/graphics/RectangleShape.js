@@ -54,6 +54,10 @@ sp.RectangleShape.prototype.setColor = function (color) {
     this.setPointColor(3, color);
 };
 
+sp.RectangleShape.prototype.getSize = function () {
+    return this.m_size;
+};
+
 /**
 * Sets a color for each vertex
 *
