@@ -12,11 +12,13 @@
 
         var context = new sp.Context("canvas1");
 
+        var color = sp.Color.fromName("red");
+
         var square = new sp.VertexArray(sp.PrimitiveType.LineLoop);
-        square.addVertex( new sp.Vertex( new sp.Vector2(10, 10), new sp.Color(255, 0, 0)) );
-        square.addVertex( new sp.Vertex( new sp.Vector2(100, 10), new sp.Color(255, 0, 0)) );
-        square.addVertex( new sp.Vertex( new sp.Vector2(100, 100), new sp.Color(255, 0, 0)) );
-        square.addVertex( new sp.Vertex( new sp.Vector2(10, 100), new sp.Color(255, 0, 0)) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 10), color) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(100, 10), color) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(100, 100), color) );
+        square.addVertex( new sp.Vertex( new sp.Vector2(10, 100), color) );
 
         context.draw(square);
 
