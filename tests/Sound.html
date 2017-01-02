@@ -8,13 +8,32 @@
     <script src="../release/spinus-audio.js"></script>
 
     <script>
+    var sound;
     function onload() {
-        
+
+        sound = new sp.Sound();
+        sound.loadFromFile('sound.wav',  function() {
+            sound.setSpeed(2);
+        });
+    }
+
+    function btnPlay() {
+        sound.playOnce();
+    }
+
+    function btnPause() {
+        sound.pause();
+    }
+
+    function btnStop() {
+        sound.stop();
     }
     </script>
 
   </head>
 <body onload="onload();">
-    <canvas id="canvas1" width="640" height="480"></canvas>
+    <button onclick="btnPlay()">Play</button>
+    <button onclick="btnPause()">Pause</button>
+    <button onclick="btnStop()">Stop</button>
 </body>
 </html>
