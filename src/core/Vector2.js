@@ -21,6 +21,7 @@ sp.Vector2 = function(x, y) {
 
 /**
 * Sets vector components
+
 * @method
 */
 sp.Vector2.prototype.set = function (x, y) {
@@ -32,7 +33,8 @@ sp.Vector2.prototype.set = function (x, y) {
 * Compares vectors and checks if they are equal
 *
 * @method
-* @return {Boolean} True if vectors are equal
+* @param {Vector2} vector - Vector to compare with
+* @return {bool} True if vectors are equal
 */
 sp.Vector2.prototype.equals = function (vector) {
     return (this.x == vector.x && this.y == vector.y);

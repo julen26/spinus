@@ -4,6 +4,10 @@ goog.require('sp.Vector2');
 /**
 * Constructs Texture objects
 * @class Represents a Texture object
+* @param {Context} context - Context
+* @param {bool} [smooth=false] - Color
+* @param {bool} [repeat=false] - Color
+* @param {bool} [forcePOT=false] - Color
 */
 sp.Texture = function(context, smooth, repeat, forcePOT) {
 	this.m_context = context;
@@ -27,6 +31,12 @@ sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
     this.m_image.onload = this.handleLoadedTexture.bind(this);
 };
 
+/**
+* Loads the image from HTML image element
+*
+* @method
+* @param {HTMLImageElement} image - HTML image element
+*/
 sp.Texture.prototype.loadFromImage = function (image) {
     this.m_image = image;
     this.handleLoadedTexture();
@@ -72,14 +82,32 @@ sp.Texture.prototype.handleLoadedTexture = function () {
         }
 };
 
+/**
+* Get the internal WebGL texture
+*
+* @method
+* @returns {WebGLTexture} Internal WebGL texture
+*/
 sp.Texture.prototype.getTextureId = function () {
 	return this.m_textureId;
 };
 
+/**
+* Get texture size
+*
+* @method
+* @returns {Vector2} image - HTML image element
+*/
 sp.Texture.prototype.getSize = function () {
     return this.m_size;
 };
 
+/**
+* Enable or disable smooth mode.
+*
+* @method
+* @param {bool} smooth - Enable smooth mode
+*/
 sp.Texture.prototype.setSmooth = function (smooth) {
     gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
     if (this.isPowerOfTwo()) {
@@ -92,6 +120,12 @@ sp.Texture.prototype.setSmooth = function (smooth) {
     this.m_smooth = smooth;
 };
 
+/**
+* Enable or disable repeat mode.
+*
+* @method
+* @param {bool} repeat - Enable repeat mode
+*/
 sp.Texture.prototype.setRepeat = function (repeat) {
     gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
     if (this.isPowerOfTwo()) {
@@ -106,11 +140,25 @@ sp.Texture.prototype.setRepeat = function (repeat) {
     }
 };
 
+/**
+* Checks wether or not texture size is power of two
+*
+* @method
+* @returns {bool} True if texture size is power of two
+*/
 sp.Texture.prototype.isPowerOfTwo = function () {
     if (!this.m_size) return false;
     return ((this.m_size.x & (this.m_size.x - 1)) == 0) && ((this.m_size.y & (this.m_size.y - 1)) == 0);
 };
 
+//TODO: Move this to a math/tools module
+/**
+* Get next highest power of two
+*
+* @method
+* @param {int} p - Integer
+* @returns {int} Next highest power of two
+*/
 sp.Texture.prototype.nextHighestPowerOfTwo = function (p) {
     p--;
     for (var i = 1; i <= 16; i <<= 1) {

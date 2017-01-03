@@ -6,19 +6,12 @@ goog.require('sp.Vertex');
 /**
 * Constructs VertexArray objects
 * @class Represents a list of vertices and a primitive type
+* @extends Drawable
 * @param {PrimitiveType} type - Primitive type
 * @param {int} vertexCount - Initial number of vertices
 */
 sp.VertexArray = function(type, vertexCount) {
-	/**
-    * Primitive type
-    * @type PrimitiveType
-    */
 	this.m_primitiveType = type || sp.PrimitiveType.Points;
-	/**
-    * Vertex list
-    * @type Vertex[]
-    */
     this.m_vertices = [];
     vertexCount = vertexCount || 0;
     for (var i = 0; i < vertexCount; i++) {

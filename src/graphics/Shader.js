@@ -7,25 +7,11 @@ goog.provide('sp.DefaultShader');
 * @param {Context} context - Context
 */
 sp.Shader = function(context) {
-    /**
-    * WebGLProgram object
-    * @type WebGLProgram
-    */
     this.m_shaderProgram = null;
-    /**
-    * Context
-    * @type Context
-    */
     this.m_context = context;
-    /**
-    * Hash of uniforms
-    * @type Object<string, WebGLUniformLocation>
-    */
+    //Hash of uniforms
     this.m_uniforms = {};
-    /**
-    * Hash of attributes
-    * @type Object<string, int>
-    */
+    //Hash of attributes
     this.m_attributes = {};
 };
 
@@ -40,11 +26,11 @@ sp.Shader.prototype.getShaderProgram = function () {
 };
 
 /**
-* Compiles the shader source of the given type
+* Compiles the shader source codes
 *
 * @method
-* @param {string} data - Shader source code
-* @param {Types} shaderType - Shader type
+* @param {string} vertexShaderSource - Vertex shader source code
+* @param {string} fragmentShaderSource - Fragment shader source code
 */
 sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
     var gl = this.m_context.GL();
@@ -73,10 +59,11 @@ sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource
 };
 
 /**
-* Loads and compiles the shader from a script in HTML
+* Loads and compiles the shader from scripts in HTML
 *
 * @method
-* @param {string} scriptId - ID of the script tag
+* @param {string} vertexShaderScriptId - ID of the script tag that contains the vertex shader
+* @param {string} fragmentShaderScriptId - ID of the script tag that contains the fragment shader
 */
 sp.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
     var gl = this.m_context.GL();
@@ -134,6 +121,13 @@ sp.Shader.prototype.getAttribLocation = function (parameter) {
 
 //TODO: Possible improvement autochecking the uniform type
 //TODO: Check if values is an array
+/**
+* Set values for an integer parameter of the shader
+*
+* @method
+* @param {string} parameter - Parameter name
+* @param {int[]} values - Array of integers
+*/
 sp.Shader.prototype.uniformiv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
@@ -144,6 +138,13 @@ sp.Shader.prototype.uniformiv = function (parameter, values) {
     }
 };
 
+/**
+* Set values for a float parameter of the shader
+*
+* @method
+* @param {string} parameter - Parameter name
+* @param {float[]} values - Array of floats
+*/
 sp.Shader.prototype.uniformfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);
@@ -154,6 +155,13 @@ sp.Shader.prototype.uniformfv = function (parameter, values) {
     }
 };
 
+/**
+* Set values for a matrix parameter of the shader
+*
+* @method
+* @param {string} parameter - Parameter name
+* @param {float[]} values - Array of floats that represents matrix content 
+*/
 sp.Shader.prototype.uniformMatrixfv = function (parameter, values) {
     var gl = this.m_context.GL();
     var uniform = this.getUniformLocation(parameter);

@@ -6,8 +6,6 @@ goog.require('sp.Shape');
 * Constructs CircleShape objects
 * @class Represents a CircleShape object
 * @extends Shape
-* @param {float} x - X position
-* @param {float} y - Y position
 * @param {float} radius - Radius
 * @param {Color} color - Color
 */
@@ -22,16 +20,34 @@ sp.CircleShape = function(radius, color) {
 };
 sp.extend(sp.CircleShape, sp.Shape);
 
+/**
+* Sets radius of the circle
+*
+* @method
+* @param {float} radius - Radius
+*/
 sp.CircleShape.prototype.setRadius = function (radius) {
     this.m_radius = radius;
     this.update();
 };
 
+/**
+* Resizes the point list, adding default points or removing existing ones to match the new length. Increase this value to increase the quality but lose efficiency.
+* Default value is 30.
+*
+* @method
+* @param {int} pointCount - Points
+*/
 sp.CircleShape.prototype.setPointCount = function (pointCount) {
     sp.Shape.prototype.setPointCount.call(this, pointCount);
     this.update();
 };
 
+/**
+* Recalculates all the points again. Should be called if points are changed.
+*
+* @method
+*/
 sp.CircleShape.prototype.update = function () {
     var pointCount = this.getPointCount();
     if (pointCount > 2) {

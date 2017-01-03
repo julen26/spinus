@@ -30,6 +30,9 @@ sp.Vertex = function(position, color, texCoords) {
 /**
 * Sets vertex components
 * @method
+* @param {Vector2} position - Position
+* @param {Color} color - Color
+* @param {Vector2} texCoords - Texture coordinates
 */
 sp.Vertex.prototype.set = function (position, color, texCoords) {
     this.position = position;

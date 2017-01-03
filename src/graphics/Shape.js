@@ -10,41 +10,20 @@ goog.require('sp.Vector2');
 * Constructs Shape objects
 * @class Represents a Shape object
 * @extends Transformable
+* @extends Drawable
+* @param {int} pointCount - New length of the point list
+* @param {Texture} texture - Texture
 */
 sp.Shape = function(pointCount, texture) {
     //Call base constructor
     sp.Transformable.call(this);
 
-    /**
-    * Outline thickness
-    * @type float
-    */
     this.m_outlineThickness = 0;
-    /**
-    * Outline color
-    * @type Color
-    */
     this.m_outlineColor = new sp.Color();
-    /**
-    * Vertex array that represents the fill
-    * @type VertexArray
-    */
     this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, pointCount);
-    /**
-    * Vertex array that represents the outline
-    * @type VertexArray
-    */
     this.m_outlineVertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleStrip, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
 
-    /**
-    * Private member to control when to update outline
-    * @type bool
-    */
     this.m_needsUpdate = false;
-    /**
-    * Private member to control when to update outline color
-    * @type bool
-    */
     this.m_needsColorUpdate = false;
     this.m_needsTexCoordsUpdate = false;
 
@@ -54,7 +33,7 @@ sp.extend(sp.Shape, sp.Transformable);
 sp.extend(sp.Shape, sp.Drawable);
 
 /**
-* Resizes the point list, adding default points or removing existing ones to match the new length
+* Resizes the point list, adding default points or removing existing ones to match the new length.
 *
 * @method
 * @param {int} pointCount - New length of the point list
@@ -199,6 +178,12 @@ sp.Shape.prototype.updateOutline = function () {
     this.m_outlineVertexArray.getVertex(count * 2 + 1).position = this.m_outlineVertexArray.getVertex(1).position;
 };
 
+/**
+* Sets a texture to the shape.
+*
+* @method
+* @param {Texture} texture - Texture
+*/
 sp.Shape.prototype.setTexture = function (texture) {
     this.m_texture = texture;
 
@@ -214,10 +199,21 @@ sp.Shape.prototype.setTexture = function (texture) {
 
 };
 
+/**
+* Get the texture of the shape.
+*
+* @method
+* @returns {Texture} Texture
+*/
 sp.Shape.prototype.getTexture = function () {
     return this.m_texture;
 };
 
+/**
+* Updates texture coordinates.
+*
+* @method
+*/
 sp.Shape.prototype.updateTexCoords = function () {
     if (this.m_texture) {
         var size = this.m_texture.getSize();
@@ -230,10 +226,11 @@ sp.Shape.prototype.updateTexCoords = function () {
 };
 
 /**
-* Draws the shape in the given context
+* Draws the shape in the given context.
 *
 * @method
 * @param {Context} context - Context
+/ @param {RenderOptions} renderOptions - Optional render options
 */
 sp.Shape.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();

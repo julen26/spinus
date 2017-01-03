@@ -8,6 +8,10 @@ goog.require('sp.Vector2');
 goog.require('sp.Texture');
 goog.require('sp.Color');
 
+/** 
+* Enum for text style
+* @enum {number}
+*/
 sp.TextStyle = {
     Normal : 0,
     Bold : 1,
@@ -19,7 +23,15 @@ sp.TextStyle = {
 /**
 * Constructs Text objects
 * @class Represents a Text object
-* @param {string} str - Text's string
+* @extends Transformable
+* @extends Drawable
+* @param {string} [str=""] - Text's string
+* @param {string} [width=100] - Width
+* @param {string} [height=100] - Height
+* @param {string} [font="Arial"] - Font
+* @param {string} [characterSize=12] - Character size
+* @param {string} [style=TextStyle.Normal] - Text style
+* @param {string} [color=Black] - Color
 */
 sp.Text = function(str, width, height, font, characterSize, style, color) {
     //Call base constructor
@@ -47,6 +59,12 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
 sp.extend(sp.Text, sp.Transformable);
 sp.extend(sp.Text, sp.Drawable);
 
+/**
+* Set text content.
+*
+* @method
+* @param {string} str - Text content
+*/
 sp.Text.prototype.setString = function (str) {
     str = str || "";
     if (str != this.m_string) {
@@ -55,26 +73,56 @@ sp.Text.prototype.setString = function (str) {
     }
 };
 
+/**
+* Set font.
+*
+* @method
+* @param {string} font - Font name
+*/
 sp.Text.prototype.setFont = function (font) {
     this.m_font = font;
     this.m_needsTextureUpdate = true;
 };
 
+/**
+* Set character size.
+*
+* @method
+* @param {float} characterSize - Character size
+*/
 sp.Text.prototype.setCharacterSize = function (characterSize) {
     this.m_characterSize = characterSize;
     this.m_needsTextureUpdate = true;
 };
 
+/**
+* Set text style.
+*
+* @method
+* @param {TextStyle} style - Text style
+*/
 sp.Text.prototype.setStyle = function (style) {
     this.m_style = style;
     this.m_needsTextureUpdate = true;
 };
 
+/**
+* Set text color.
+*
+* @method
+* @param {Color} color - Text color
+*/
 sp.Text.prototype.setColor = function (color) {
     this.m_color = color || new sp.Color();
     this.m_needsTextureUpdate = true;
 };
 
+/**
+* Updates the texture that contains the text.
+*
+* @method
+* @param {Context} context - Context
+*/
 sp.Text.prototype.updateTexture = function (context) {
     var gl = context.GL();
     var ctx = document.createElement("canvas").getContext("2d");
@@ -151,6 +199,13 @@ sp.Text.prototype.updateTexture = function (context) {
     }
 };
 
+/**
+* Draws the text to the context. First updates the texture if needed.
+*
+* @method
+* @param {Context} context - Context
+* @param {RenderOptions} renderOptions - Optional render options
+*/
 sp.Text.prototype.draw = function (context, renderOptions) {
     if (this.m_needsTextureUpdate) {
         this.updateTexture(context);

@@ -11,7 +11,5 @@ sp.PrimitiveType = {
     LineLoop : 3,
     Triangles : 4,
     TriangleStrip : 5,
-    TriangleFan : 6,
-    /** Deprecated, not supported in OpenGL ES */
-    Quads : 7
+    TriangleFan : 6
 };

@@ -11,16 +11,8 @@ goog.require('sp.BlendMode');
 * @param {string} canvasId - ID of the canvas element
 */
 sp.Context = function(canvasId) {
-    /**
-    * Canvas element
-    * @type HTMLElement
-    */
     this.m_canvas = document.getElementById(canvasId);
 
-    /**
-    * WebGL rendering context
-    * @type WebGLRenderingContext 
-    */
     this.m_gl = null;
 
     if (!this.m_canvas) {
@@ -38,36 +30,12 @@ sp.Context = function(canvasId) {
         throw "Unable to initialize a valid context. Your browser may not support it."
     }
 
-    /**
-    * Viewport width
-    * @type int 
-    */
     this.m_viewportWidth = this.m_canvas.width;
-    /**
-    * Viewport height
-    * @type int 
-    */
     this.m_viewportHeight = this.m_canvas.height;
-    /**
-    * Default view
-    * @type View
-    */
     this.m_defaultView = new sp.View(this.m_viewportWidth, this.m_viewportHeight);
-    /**
-    * Current view
-    * @type View
-    */
     this.m_currentView = this.m_defaultView;
-    /**
-    * Default shader program
-    * @type Shader
-    */
-    this.m_defaultShader = new sp.DefaultShader(this);
 
-    /**
-    * Default shader program for textured drawings
-    * @type Shader
-    */
+    this.m_defaultShader = new sp.DefaultShader(this);
     this.m_defaultShaderTextured = new sp.DefaultShader(this, true);
 
     //Initialize buffer
@@ -119,57 +87,58 @@ sp.Context.prototype.getViewportHeight = function() {
     return this.m_viewportHeight;
 }
 
+/**
+* Get current active view
+*
+* @method
+* @returns {View} Current view
+*/
 sp.Context.prototype.getView = function() {
     return this.m_currentView;
 }
 
+/**
+* Set current view
+*
+* @method
+* @param {View} view - View
+*/
 sp.Context.prototype.setView = function(view) {
     return this.m_currentView = view;
 }
 
 /**
-* Get default shader program
+* Get default shader
 *
 * @method
-* @returns {ShaderProgram} Default shader program
+* @returns {Shader} Default shader
 */
 sp.Context.prototype.getDefaultShader = function() {
     return this.m_defaultShader;
 }
 
 /**
-* Get default textured shader program
+* Get default textured shader
 *
 * @method
-* @returns {ShaderProgram} Default textured shader program
+* @returns {Shader} Default textured shader
 */
 sp.Context.prototype.getDefaultShaderTextured = function() {
     return this.m_defaultShaderTextured;
 }
 
-/**
-* Initializes support buffers
-*
-* @method
-*/
 sp.Context.prototype.initBuffers = function() {
-    /**
-    * Vertex position buffer
-    * @type WebGLBuffer  
-    */
     this.vertexPositionBuffer = this.m_gl.createBuffer();
-    /**
-    * Vertex color buffer
-    * @type WebGLBuffer  
-    */
     this.vertexColorBuffer = this.m_gl.createBuffer();
-    /**
-    * Vertex texture coords buffer
-    * @type WebGLBuffer  
-    */
     this.vertexTexCoordsBuffer = this.m_gl.createBuffer();
 }
 
+/**
+* Clear the context with an optional color
+*
+* @method
+* @param {Color} color - Clear color
+*/
 sp.Context.prototype.clear = function(color) {
     color = color || new sp.Color();
     this.m_gl.clearColor(color.r / 255, color.g / 255, color.b / 255, color.a / 255);
@@ -181,6 +150,7 @@ sp.Context.prototype.clear = function(color) {
 *
 * @method
 * @param {Drawable} drawable - Drawable object
+* @param {RenderOptions} renderOptions - Optional render options
 */
 sp.Context.prototype.draw = function(drawable, renderOptions) {
     drawable.draw(this, renderOptions || new sp.RenderOptions());
@@ -192,6 +162,7 @@ sp.Context.prototype.draw = function(drawable, renderOptions) {
 * @method
 * @param {List} vertices - Vertices list
 * @param {PrimitiveType} type - Primitive type
+* @param {RenderOptions} renderOptions - Optional render options
 */
 sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     var gl = this.GL();

@@ -8,8 +8,6 @@ goog.require('sp.Color');
 * Constructs RectangleShape objects
 * @class Represents a RectangleShape object
 * @extends Shape
-* @param {float} x - X position
-* @param {float} y - Y position
 * @param {float} w - Width
 * @param {float} h - Height
 * @param {Color} color - Color
@@ -22,13 +20,11 @@ sp.RectangleShape = function(w, h, color) {
 sp.extend(sp.RectangleShape, sp.Shape);
 
 /**
-* Sets rectangle bounds
+* Sets rectangle size
 *
 * @method
-* @param {float} x1 - Left
-* @param {float} y1 - Top
-* @param {float} x2 - Right
-* @param {float} y2 - Bottom
+* @param {float} w - Width
+* @param {float} h - Height
 */
 sp.RectangleShape.prototype.setSize = function (w, h) {
     this.m_size = new sp.Vector2(w, h);
@@ -54,6 +50,12 @@ sp.RectangleShape.prototype.setColor = function (color) {
     this.setPointColor(3, color);
 };
 
+/**
+* Gets rectangle size
+*
+* @method
+* @returns {Vector2} Rectangle size
+*/
 sp.RectangleShape.prototype.getSize = function () {
     return this.m_size;
 };
