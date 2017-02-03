@@ -14,6 +14,10 @@ goog.require('sp.Color');
 */
 sp.RectangleShape = function(w, h, color) {
     sp.Shape.call(this, 4);
+
+    /** @private */
+    this.size_ = null;
+
     this.setSize(w, h);
     this.setColor(color);
 };
@@ -27,7 +31,7 @@ sp.extend(sp.RectangleShape, sp.Shape);
 * @param {float} h - Height
 */
 sp.RectangleShape.prototype.setSize = function (w, h) {
-    this.m_size = new sp.Vector2(w, h);
+    this.size_ = new sp.Vector2(w, h);
 
     this.setPointPosition(0, new sp.Vector2(0, 0));
     this.setPointPosition(1, new sp.Vector2(w, 0));
@@ -57,7 +61,7 @@ sp.RectangleShape.prototype.setColor = function (color) {
 * @returns {Vector2} Rectangle size
 */
 sp.RectangleShape.prototype.getSize = function () {
-    return this.m_size;
+    return this.size_;
 };
 
 /**

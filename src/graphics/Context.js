@@ -11,40 +11,54 @@ goog.require('sp.BlendMode');
 * @param {string} canvasId - ID of the canvas element
 */
 sp.Context = function(canvasId) {
-    this.m_canvas = document.getElementById(canvasId);
+    /** @protected */
+    this.canvas_ = document.getElementById(canvasId);
 
-    this.m_gl = null;
+    /** @protected */
+    this.gl_ = null;
 
-    if (!this.m_canvas) {
+    if (!this.canvas_) {
         throw "Specified canvas element is missing.";
     }
 
     if (window.WebGLRenderingContext) {
-        this.m_gl = this.m_canvas.getContext("webgl") || this.m_canvas.getContext("experimental-webgl");   
+        this.gl_ = this.canvas_.getContext("webgl") || this.canvas_.getContext("experimental-webgl");   
     }
     else {
         throw "WebGL context is required and it's not supported by the browser."
     }
 
-    if (!this.m_gl) {
+    if (!this.gl_) {
         throw "Unable to initialize a valid context. Your browser may not support it."
     }
 
-    this.m_viewportWidth = this.m_canvas.width;
-    this.m_viewportHeight = this.m_canvas.height;
-    this.m_defaultView = new sp.View(this.m_viewportWidth, this.m_viewportHeight);
-    this.m_currentView = this.m_defaultView;
+    /** @protected */
+    this.viewportWidth_ = this.canvas_.width;
+    /** @protected */
+    this.viewportHeight_ = this.canvas_.height;
 
-    this.m_defaultShader = new sp.DefaultShader(this);
-    this.m_defaultShaderTextured = new sp.DefaultShader(this, true);
+    /** @protected */
+    this.defaultView_ = new sp.View(this.viewportWidth_, this.viewportHeight_);
+    /** @protected */
+    this.currentView_ = this.defaultView_;
+
+    /** @protected */
+    this.defaultShader_ = new sp.DefaultShader(this);
+    /** @protected */
+    this.defaultShaderTextured_ = new sp.DefaultShader(this, true);
 
     //Initialize buffer
-    this.initBuffers();
+    /** @protected */
+    this.vertexPositionBuffer = this.gl_.createBuffer();
+    /** @protected */
+    this.vertexColorBuffer = this.gl_.createBuffer();
+    /** @protected */
+    this.vertexTexCoordsBuffer = this.gl_.createBuffer();
 
-    this.m_gl.viewport(0, 0, this.m_viewportWidth, this.m_viewportHeight);
-    this.m_gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    this.m_gl.enable(this.m_gl.BLEND);
-    this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
+    this.gl_.viewport(0, 0, this.viewportWidth_, this.viewportHeight_);
+    this.gl_.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.gl_.enable(this.gl_.BLEND);
+    this.gl_.clear(this.gl_.COLOR_BUFFER_BIT); 
 };
 
 /**
@@ -54,7 +68,7 @@ sp.Context = function(canvasId) {
 * @returns {HTMLElement} Canvas element
 */
 sp.Context.prototype.getCanvas = function() {
-    return this.m_canvas;
+    return this.canvas_;
 }
 
 /**
@@ -64,7 +78,7 @@ sp.Context.prototype.getCanvas = function() {
 * @returns {WebGLRenderingContext} WebGL rendering context
 */
 sp.Context.prototype.GL = function() {
-    return this.m_gl;
+    return this.gl_;
 }
 
 /**
@@ -74,7 +88,7 @@ sp.Context.prototype.GL = function() {
 * @returns {int} Viewport width
 */
 sp.Context.prototype.getViewportWidth = function() {
-    return this.m_viewportWidth;
+    return this.viewportWidth_;
 }
 
 /**
@@ -84,7 +98,7 @@ sp.Context.prototype.getViewportWidth = function() {
 * @returns {int} Viewport height
 */
 sp.Context.prototype.getViewportHeight = function() {
-    return this.m_viewportHeight;
+    return this.viewportHeight_;
 }
 
 /**
@@ -94,7 +108,7 @@ sp.Context.prototype.getViewportHeight = function() {
 * @returns {View} Current view
 */
 sp.Context.prototype.getView = function() {
-    return this.m_currentView;
+    return this.currentView_;
 }
 
 /**
@@ -104,7 +118,7 @@ sp.Context.prototype.getView = function() {
 * @param {View} view - View
 */
 sp.Context.prototype.setView = function(view) {
-    return this.m_currentView = view;
+    return this.currentView_ = view;
 }
 
 /**
@@ -114,7 +128,7 @@ sp.Context.prototype.setView = function(view) {
 * @returns {Shader} Default shader
 */
 sp.Context.prototype.getDefaultShader = function() {
-    return this.m_defaultShader;
+    return this.defaultShader_;
 }
 
 /**
@@ -124,13 +138,7 @@ sp.Context.prototype.getDefaultShader = function() {
 * @returns {Shader} Default textured shader
 */
 sp.Context.prototype.getDefaultShaderTextured = function() {
-    return this.m_defaultShaderTextured;
-}
-
-sp.Context.prototype.initBuffers = function() {
-    this.vertexPositionBuffer = this.m_gl.createBuffer();
-    this.vertexColorBuffer = this.m_gl.createBuffer();
-    this.vertexTexCoordsBuffer = this.m_gl.createBuffer();
+    return this.defaultShaderTextured_;
 }
 
 /**
@@ -141,8 +149,8 @@ sp.Context.prototype.initBuffers = function() {
 */
 sp.Context.prototype.clear = function(color) {
     color = color || new sp.Color();
-    this.m_gl.clearColor(color.r / 255, color.g / 255, color.b / 255, color.a / 255);
-    this.m_gl.clear(this.m_gl.COLOR_BUFFER_BIT); 
+    this.gl_.clearColor(color.r / 255, color.g / 255, color.b / 255, color.a / 255);
+    this.gl_.clear(this.gl_.COLOR_BUFFER_BIT); 
 }
 
 /**
@@ -183,9 +191,9 @@ sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
         gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.DST_ALPHA, gl.ONE_MINUS_DST_ALPHA,
         gl.SRC_ALPHA_SATURATE];
     var equations = [gl.FUNC_ADD, gl.FUNC_SUBTRACT, gl.FUNC_REVERSE_SUBTRACT];
-    this.m_gl.blendFuncSeparate(factors[blendMode.srcColorFactor], factors[blendMode.dstColorFactor],
+    this.gl_.blendFuncSeparate(factors[blendMode.srcColorFactor], factors[blendMode.dstColorFactor],
                                 factors[blendMode.srcAlphaFactor], factors[blendMode.dstAlphaFactor]);
-    this.m_gl.blendEquationSeparate(equations[blendMode.colorEquation], equations[blendMode.alphaEquation]);
+    this.gl_.blendEquationSeparate(equations[blendMode.colorEquation], equations[blendMode.alphaEquation]);
 
     //Set shader
     if (!renderOptions.shader) {
@@ -231,16 +239,16 @@ sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
         gl.vertexAttribPointer(texCoordsAttribute, 2, gl.FLOAT, false, 0, 0);
     }
 
-    renderOptions.shader.uniformfv("u_resolution", [this.m_viewportWidth, this.m_viewportHeight]);
+    renderOptions.shader.uniformfv("u_resolution", [this.viewportWidth_, this.viewportHeight_]);
     var transformMatrix = renderOptions.transform.getMatrix();
     renderOptions.shader.uniformMatrixfv("u_transform", transformMatrix);
-    var viewMatrix = this.m_currentView.getTransform().getMatrix();
+    var viewMatrix = this.currentView_.getTransform().getMatrix();
     renderOptions.shader.uniformMatrixfv("u_view", viewMatrix);
-    var projectionMatrix = this.m_currentView.getProjection().getMatrix();
+    var projectionMatrix = this.currentView_.getProjection().getMatrix();
     renderOptions.shader.uniformMatrixfv("u_projection", projectionMatrix);
 
-    var viewport = this.m_currentView.getViewport();
-    gl.viewport(viewport.x * this.m_viewportWidth, this.m_viewportHeight - (viewport.y + viewport.h) * this.m_viewportHeight, viewport.w * this.m_viewportWidth, viewport.h * this.m_viewportHeight);
+    var viewport = this.currentView_.getViewport();
+    gl.viewport(viewport.x * this.viewportWidth_, this.viewportHeight_ - (viewport.y + viewport.h) * this.viewportHeight_, viewport.w * this.viewportWidth_, viewport.h * this.viewportHeight_);
 
     if (renderOptions.texture) {
         gl.activeTexture(gl.TEXTURE0);

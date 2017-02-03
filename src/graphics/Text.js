@@ -37,22 +37,35 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     //Call base constructor
     sp.Transformable.call(this);
 
-    this.m_texture = null;
-    this.m_string = "";
-    this.m_width = width || 100;
-    this.m_height = height || 100;
-    this.m_font = font || "Arial";
-    this.m_characterSize = characterSize || 12;
-    this.m_style = style || sp.TextStyle.NORMAL;
-    this.m_color = color || new sp.Color();
+    /** @private */
+    this.texture_ = null;
 
-    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
-    this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
-    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(1, 0);
-    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(1, 1);
-    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(0, 1);
+    /** @private */
+    this.string_ = "";
 
-    this.m_needsTextureUpdate = true;
+    /** @private */
+    this.width_ = width || 100;
+    /** @private */
+    this.height_ = height || 100;
+
+    /** @private */
+    this.font_ = font || "Arial";
+    /** @private */
+    this.characterSize_ = characterSize || 12;
+    /** @private */
+    this.style_ = style || sp.TextStyle.NORMAL;
+    /** @private */
+    this.color_ = color || new sp.Color();
+
+    /** @private */
+    this.vertexArray_ = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
+    this.vertexArray_.getVertex(0).texCoords = new sp.Vector2(0, 0);
+    this.vertexArray_.getVertex(1).texCoords = new sp.Vector2(1, 0);
+    this.vertexArray_.getVertex(2).texCoords = new sp.Vector2(1, 1);
+    this.vertexArray_.getVertex(3).texCoords = new sp.Vector2(0, 1);
+
+    /** @private */
+    this.needsTextureUpdate_ = true;
 
     this.setString(str);
 };
@@ -67,9 +80,9 @@ sp.extend(sp.Text, sp.Drawable);
 */
 sp.Text.prototype.setString = function (str) {
     str = str || "";
-    if (str != this.m_string) {
-        this.m_string = str;
-        this.m_needsTextureUpdate = true;
+    if (str != this.string_) {
+        this.string_ = str;
+        this.needsTextureUpdate_ = true;
     }
 };
 
@@ -80,8 +93,8 @@ sp.Text.prototype.setString = function (str) {
 * @param {string} font - Font name
 */
 sp.Text.prototype.setFont = function (font) {
-    this.m_font = font;
-    this.m_needsTextureUpdate = true;
+    this.font_ = font;
+    this.needsTextureUpdate_ = true;
 };
 
 /**
@@ -91,8 +104,8 @@ sp.Text.prototype.setFont = function (font) {
 * @param {float} characterSize - Character size
 */
 sp.Text.prototype.setCharacterSize = function (characterSize) {
-    this.m_characterSize = characterSize;
-    this.m_needsTextureUpdate = true;
+    this.characterSize_ = characterSize;
+    this.needsTextureUpdate_ = true;
 };
 
 /**
@@ -102,8 +115,8 @@ sp.Text.prototype.setCharacterSize = function (characterSize) {
 * @param {TextStyle} style - Text style
 */
 sp.Text.prototype.setStyle = function (style) {
-    this.m_style = style;
-    this.m_needsTextureUpdate = true;
+    this.style_ = style;
+    this.needsTextureUpdate_ = true;
 };
 
 /**
@@ -113,8 +126,8 @@ sp.Text.prototype.setStyle = function (style) {
 * @param {Color} color - Text color
 */
 sp.Text.prototype.setColor = function (color) {
-    this.m_color = color || new sp.Color();
-    this.m_needsTextureUpdate = true;
+    this.color_ = color || new sp.Color();
+    this.needsTextureUpdate_ = true;
 };
 
 /**
@@ -128,27 +141,27 @@ sp.Text.prototype.updateTexture = function (context) {
     var ctx = document.createElement("canvas").getContext("2d");
 
     if (ctx) {
-        ctx.width = this.m_width;
-        ctx.height = this.m_height;
-        ctx.canvas.width = this.m_width;
-        ctx.canvas.height = this.m_height;
-        ctx.fillStyle = "rgba(" + this.m_color.r + ", " + this.m_color.g + ", " + this.m_color.b + ", " + (this.m_color.a / 255) + ")";
+        ctx.width = this.width_;
+        ctx.height = this.height_;
+        ctx.canvas.width = this.width_;
+        ctx.canvas.height = this.height_;
+        ctx.fillStyle = "rgba(" + this.color_.r + ", " + this.color_.g + ", " + this.color_.b + ", " + (this.color_.a / 255) + ")";
 
-        var font = this.m_characterSize + "px " + this.m_font;
-        if ((this.m_style & sp.TextStyle.BOLD) != 0) {
+        var font = this.characterSize_ + "px " + this.font_;
+        if ((this.style_ & sp.TextStyle.BOLD) != 0) {
             font = "bold " + font;
         }
-        if ((this.m_style & sp.TextStyle.ITALIC) != 0) {
+        if ((this.style_ & sp.TextStyle.ITALIC) != 0) {
             font = "italic " + font;
         }
         ctx.font = font;
 
         ctx.textBaseline = "top";
-        ctx.fillText(this.m_string, 0, 0);
+        ctx.fillText(this.string_, 0, 0);
 
         //Underline and strikethrough
-        var textWidth = ctx.measureText(this.m_string).width;
-        var lineHeight = this.m_characterSize / 15;
+        var textWidth = ctx.measureText(this.string_).width;
+        var lineHeight = this.characterSize_ / 15;
         var startX;
         var endX;
         if (ctx.textAlign == "center") {
@@ -164,8 +177,8 @@ sp.Text.prototype.updateTexture = function (context) {
             endX = textWidth;
         }
         var lineY;
-        if ((this.m_style & sp.TextStyle.UNDERLINE) != 0) {
-            lineY = this.m_characterSize;
+        if ((this.style_ & sp.TextStyle.UNDERLINE) != 0) {
+            lineY = this.characterSize_;
             ctx.beginPath();
             ctx.strokeStyle = ctx.fillStyle;
             ctx.lineWidth = lineHeight;
@@ -173,8 +186,8 @@ sp.Text.prototype.updateTexture = function (context) {
             ctx.lineTo(endX, lineY);
             ctx.stroke();
         }
-        if ((this.m_style & sp.TextStyle.STRIKETHROUGH) != 0) {
-            lineY = this.m_characterSize / 1.5;
+        if ((this.style_ & sp.TextStyle.STRIKETHROUGH) != 0) {
+            lineY = this.characterSize_ / 1.5;
             ctx.beginPath();
             ctx.strokeStyle = ctx.fillStyle;
             ctx.lineWidth = lineHeight;
@@ -183,19 +196,19 @@ sp.Text.prototype.updateTexture = function (context) {
             ctx.stroke();
         }
 
-        if (this.m_texture) {
-            gl.deleteTexture(this.m_texture.getTextureId());
+        if (this.texture_) {
+            gl.deleteTexture(this.texture_.getTextureId());
         }
-        this.m_texture = new sp.Texture(context);
-        this.m_texture.loadFromImage(ctx.canvas);
+        this.texture_ = new sp.Texture(context);
+        this.texture_.loadFromImage(ctx.canvas);
 
-        var size = this.m_texture.getSize();
-        this.m_vertexArray.getVertex(0).position = new sp.Vector2(0, 0);
-        this.m_vertexArray.getVertex(1).position = new sp.Vector2(size.x, 0);
-        this.m_vertexArray.getVertex(2).position = new sp.Vector2(size.x, size.y);
-        this.m_vertexArray.getVertex(3).position = new sp.Vector2(0, size.y);
+        var size = this.texture_.getSize();
+        this.vertexArray_.getVertex(0).position = new sp.Vector2(0, 0);
+        this.vertexArray_.getVertex(1).position = new sp.Vector2(size.x, 0);
+        this.vertexArray_.getVertex(2).position = new sp.Vector2(size.x, size.y);
+        this.vertexArray_.getVertex(3).position = new sp.Vector2(0, size.y);
 
-        this.m_needsTextureUpdate = false;
+        this.needsTextureUpdate_ = false;
     }
 };
 
@@ -207,14 +220,14 @@ sp.Text.prototype.updateTexture = function (context) {
 * @param {RenderOptions} renderOptions - Optional render options
 */
 sp.Text.prototype.draw = function (context, renderOptions) {
-    if (this.m_needsTextureUpdate) {
+    if (this.needsTextureUpdate_) {
         this.updateTexture(context);
     }
 
-    if (this.m_texture) {
+    if (this.texture_) {
         renderOptions.transform = this.getTransform();
-        renderOptions.texture = this.m_texture;
+        renderOptions.texture = this.texture_;
     
-        this.m_vertexArray.draw(context, renderOptions);
+        this.vertexArray_.draw(context, renderOptions);
     }
 };

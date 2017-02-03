@@ -11,11 +11,14 @@ goog.require('sp.Vertex');
 * @param {int} vertexCount - Initial number of vertices
 */
 sp.VertexArray = function(type, vertexCount) {
-	this.m_primitiveType = type || sp.PrimitiveType.POINTS;
-    this.m_vertices = [];
+    /** @private */
+	this.primitiveType_ = type || sp.PrimitiveType.POINTS;
+    /** @private */
+    this.vertices_ = [];
+    
     vertexCount = vertexCount || 0;
     for (var i = 0; i < vertexCount; i++) {
-    	this.m_vertices.push(new sp.Vertex());
+    	this.vertices_.push(new sp.Vertex());
     }
 };
 sp.extend(sp.VertexArray, sp.Drawable);
@@ -27,7 +30,7 @@ sp.extend(sp.VertexArray, sp.Drawable);
 * @return {int} Vertex count
 */
 sp.VertexArray.prototype.getVertexCount = function () {
-	return this.m_vertices.length;
+	return this.vertices_.length;
 };
 
 /**
@@ -38,7 +41,7 @@ sp.VertexArray.prototype.getVertexCount = function () {
 * @return {Vertex} Vertex at index
 */
 sp.VertexArray.prototype.getVertex = function (index) {
-	return this.m_vertices[index];
+	return this.vertices_[index];
 };
 
 /**
@@ -47,7 +50,7 @@ sp.VertexArray.prototype.getVertex = function (index) {
 * @method
 */
 sp.VertexArray.prototype.clear = function () {
-	return this.m_vertices.clear();
+	return this.vertices_.clear();
 };
 
 /**
@@ -57,7 +60,7 @@ sp.VertexArray.prototype.clear = function () {
 * @param {Vertex} vertex - Vertex object to add
 */
 sp.VertexArray.prototype.addVertex = function (vertex) {
-	return this.m_vertices.push(vertex);
+	return this.vertices_.push(vertex);
 };
 
 /**
@@ -67,14 +70,14 @@ sp.VertexArray.prototype.addVertex = function (vertex) {
 * @param {int} vertexCount - New length of the vertex list
 */
 sp.VertexArray.prototype.resize = function (vertexCount) {
-	var sub = vertexCount - this.m_vertices.length;
+	var sub = vertexCount - this.vertices_.length;
 	if (sub > 0) {
 		for (var i = 0; i < sub; i++) {
-    		this.m_vertices.push(new sp.Vertex());
+    		this.vertices_.push(new sp.Vertex());
     	}
 	}
 	else if (sub < 0) {
-		this.m_vertices = this.m_vertices.slice(0, vertexCount);
+		this.vertices_ = this.vertices_.slice(0, vertexCount);
 	}
 };
 
@@ -85,7 +88,7 @@ sp.VertexArray.prototype.resize = function (vertexCount) {
 * @return {PrimitiveType} Primitive type
 */
 sp.VertexArray.prototype.getPrimitiveType = function () {
-    return this.m_primitiveType;
+    return this.primitiveType_;
 };
 
 /**
@@ -95,7 +98,7 @@ sp.VertexArray.prototype.getPrimitiveType = function () {
 * @param {PrimitiveType} type - Primitive type
 */
 sp.VertexArray.prototype.setPrimitiveType = function (type) {
-    this.m_primitiveType = type;
+    this.primitiveType_ = type;
 };
 
 /**
@@ -105,7 +108,7 @@ sp.VertexArray.prototype.setPrimitiveType = function (type) {
 * @param {Context} context - Context
 */
 sp.VertexArray.prototype.draw = function (context, renderOptions) {
-    context.drawVertices(this.m_vertices, this.m_primitiveType, renderOptions);
+    context.drawVertices(this.vertices_, this.primitiveType_, renderOptions);
 };
 
 /**

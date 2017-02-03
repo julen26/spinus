@@ -5,6 +5,11 @@ goog.provide('sp.Sound');
 * @class Represents a Sound object
 */
 sp.Sound = function() {
+    /** @private */
+    this.audio_ = null;
+
+    /** @private */
+    this.callback_ = null;
 };
 
 /**
@@ -15,10 +20,10 @@ sp.Sound = function() {
 * @param {function} callback - Callback function
 */
 sp.Sound.prototype.loadFromFile = function (sourcePath, callback) {
-    this.m_audio = new Audio();
-	this.m_callback = callback;
-    this.m_audio.oncanplaythrough  = this.handleLoadedSound.bind(this);
-    this.m_audio.src = sourcePath;
+    this.audio_ = new Audio();
+	this.callback_ = callback;
+    this.audio_.oncanplaythrough  = this.handleLoadedSound.bind(this);
+    this.audio_.src = sourcePath;
 };
 
 /**
@@ -28,13 +33,14 @@ sp.Sound.prototype.loadFromFile = function (sourcePath, callback) {
 * @param {HTMLAudioElement} audio - HTML audio element
 */
 sp.Sound.prototype.loadFromAudio = function (audio) {
-    this.m_audio = audio;
+    this.audio_ = audio;
     this.handleLoadedSound();
 };
 
+/** @private */
 sp.Sound.prototype.handleLoadedSound = function () {
-    if (this.m_callback) {
-	   this.m_callback();
+    if (this.callback_) {
+	   this.callback_();
     }
 };
 
@@ -44,8 +50,8 @@ sp.Sound.prototype.handleLoadedSound = function () {
 * @method
 */
 sp.Sound.prototype.play = function () {
-    if (this.m_audio) {
-       this.m_audio.play();
+    if (this.audio_) {
+       this.audio_.play();
     }
 };
 
@@ -55,8 +61,8 @@ sp.Sound.prototype.play = function () {
 * @method
 */
 sp.Sound.prototype.pause = function () {
-    if (this.m_audio) {
-		this.m_audio.pause();
+    if (this.audio_) {
+		this.audio_.pause();
     }
 };
 
@@ -66,8 +72,8 @@ sp.Sound.prototype.pause = function () {
 * @method
 */
 sp.Sound.prototype.stop = function () {
-    if (this.m_audio) {
-       this.m_audio.pause();
+    if (this.audio_) {
+       this.audio_.pause();
        this.setOffset(0);
     }
 };
@@ -79,8 +85,8 @@ sp.Sound.prototype.stop = function () {
 * @param {bool} loop - Enable loop
 */
 sp.Sound.prototype.setLoop = function (loop) {
-    if (this.m_audio) {
-		this.m_audio.loop = loop;
+    if (this.audio_) {
+		this.audio_.loop = loop;
     }
 };
 
@@ -91,8 +97,8 @@ sp.Sound.prototype.setLoop = function (loop) {
 * @returns {bool} Returns whether or not loop is enabled.
 */
 sp.Sound.prototype.getLoop = function () {
-    if (this.m_audio) {
-		return this.m_audio.loop;
+    if (this.audio_) {
+		return this.audio_.loop;
     }
     return false;
 };
@@ -104,8 +110,8 @@ sp.Sound.prototype.getLoop = function () {
 * @param {float} sec - Offset in seconds
 */
 sp.Sound.prototype.setOffset = function (sec) {
-	if (this.m_audio) {
-		this.m_audio.currentTime = sec;
+	if (this.audio_) {
+		this.audio_.currentTime = sec;
 	}
 };
 
@@ -116,8 +122,8 @@ sp.Sound.prototype.setOffset = function (sec) {
 * @returns {float} Current offset in seconds
 */
 sp.Sound.prototype.getOffset = function () {
-    if (this.m_audio) {
-       return this.m_audio.currentTime;
+    if (this.audio_) {
+       return this.audio_.currentTime;
     }
     return 0;
 };
@@ -129,8 +135,8 @@ sp.Sound.prototype.getOffset = function () {
 * @param {float} speed - Relative speed
 */
 sp.Sound.prototype.setSpeed = function (speed) {
-    if (this.m_audio) {
-       this.m_audio.playbackRate = speed;
+    if (this.audio_) {
+       this.audio_.playbackRate = speed;
     }
 };
 
@@ -141,8 +147,8 @@ sp.Sound.prototype.setSpeed = function (speed) {
 * @returns {float} Current speed
 */
 sp.Sound.prototype.getSpeed = function () {
-    if (this.m_audio) {
-       return this.m_audio.playbackRate;
+    if (this.audio_) {
+       return this.audio_.playbackRate;
     }
     return 0;
 };
@@ -154,8 +160,8 @@ sp.Sound.prototype.getSpeed = function () {
 * @param {float} volume - Relative volume
 */
 sp.Sound.prototype.setVolume = function (volume) {
-    if (this.m_audio) {
-       this.m_audio.volume = volume;
+    if (this.audio_) {
+       this.audio_.volume = volume;
     }
 };
 
@@ -166,8 +172,8 @@ sp.Sound.prototype.setVolume = function (volume) {
 * @returns {float} Current volume
 */
 sp.Sound.prototype.getVolume = function () {
-    if (this.m_audio) {
-       return this.m_audio.volume;
+    if (this.audio_) {
+       return this.audio_.volume;
     }
     return 0;
 };
@@ -179,8 +185,8 @@ sp.Sound.prototype.getVolume = function () {
 * @returns {bool} True if sound is not playing
 */
 sp.Sound.prototype.isPaused = function () {
-    if (this.m_audio) {
-       return this.m_audio.paused;
+    if (this.audio_) {
+       return this.audio_.paused;
     }
     return false;
 };
@@ -192,8 +198,8 @@ sp.Sound.prototype.isPaused = function () {
 * @method
 */
 sp.Sound.prototype.playOnce = function () {
-    if (this.m_audio) {
-        var audio = this.m_audio.cloneNode();
+    if (this.audio_) {
+        var audio = this.audio_.cloneNode();
         audio.play();
     }
 };

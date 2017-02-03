@@ -10,11 +10,25 @@ goog.require('sp.Vector2');
 * @param {bool} [forcePOT=false] - Color
 */
 sp.Texture = function(context, smooth, repeat, forcePOT) {
-	this.m_context = context;
-    this.m_smooth = smooth || false;
-    this.m_repeat = repeat || false;
-    this.m_forcePOT = forcePOT || false;
-    this.m_image = null;
+    /** @private */
+	this.context_ = context;
+    /** @private */
+    this.smooth_ = smooth || false;
+    /** @private */
+    this.repeat_ = repeat || false;
+    /** @private */
+    this.forcePOT_ = forcePOT || false;
+
+    /** @private */
+    this.image_ = null;
+    /** @private */
+    this.textureId_ = null;
+
+    /** @private */
+    this.size_ = new sp.Vector2();
+
+    /** @private */
+    this.callback_ = null;
 };
 
 /**
@@ -25,10 +39,10 @@ sp.Texture = function(context, smooth, repeat, forcePOT) {
 * @param {function} callback - Callback function
 */
 sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
-    this.m_image = new Image();
-	this.m_callback = callback;
-    this.m_image.src = sourcePath;
-    this.m_image.onload = this.handleLoadedTexture.bind(this);
+    this.image_ = new Image();
+	this.callback_ = callback;
+    this.image_.src = sourcePath;
+    this.image_.onload = this.handleLoadedTexture.bind(this);
 };
 
 /**
@@ -38,47 +52,48 @@ sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
 * @param {HTMLImageElement} image - HTML image element
 */
 sp.Texture.prototype.loadFromImage = function (image) {
-    this.m_image = image;
+    this.image_ = image;
     this.handleLoadedTexture();
 };
 
+/** @private */
 sp.Texture.prototype.handleLoadedTexture = function () {
-		var gl = this.m_context.GL();
+		var gl = this.context_.GL();
 
-        this.m_size = new sp.Vector2(this.m_image.width, this.m_image.height);
+        this.size_ = new sp.Vector2(this.image_.width, this.image_.height);
 
-    	this.m_textureId = gl.createTexture();
-    	gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
+    	this.textureId_ = gl.createTexture();
+    	gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
 
-        if (this.m_forcePOT && !this.isPowerOfTwo()) {
+        if (this.forcePOT_ && !this.isPowerOfTwo()) {
             var ctx = document.createElement("canvas").getContext("2d");
-            ctx.canvas.width = this.nextHighestPowerOfTwo(this.m_size.x);
-            ctx.canvas.height = this.nextHighestPowerOfTwo(this.m_size.y);
-            ctx.drawImage(this.m_image, 0, 0, this.m_image.width, this.m_image.height);
-            this.m_size.x = ctx.canvas.width;
-            this.m_size.y = ctx.canvas.height;
-            this.m_image = ctx.canvas;
+            ctx.canvas.width = this.nextHighestPowerOfTwo(this.size_.x);
+            ctx.canvas.height = this.nextHighestPowerOfTwo(this.size_.y);
+            ctx.drawImage(this.image_, 0, 0, this.image_.width, this.image_.height);
+            this.size_.x = ctx.canvas.width;
+            this.size_.y = ctx.canvas.height;
+            this.image_ = ctx.canvas;
         }
 
-    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.m_image);
+    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image_);
         if (this.isPowerOfTwo()) {
             gl.generateMipmap(gl.TEXTURE_2D);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.m_smooth) ? gl.LINEAR_MIPMAP_NEAREST : gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, (this.m_repeat) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, (this.m_repeat) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.smooth_) ? gl.LINEAR_MIPMAP_NEAREST : gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, (this.repeat_) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, (this.repeat_) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
         }
         else {
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.m_smooth) ? gl.LINEAR : gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.smooth_) ? gl.LINEAR : gl.NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            this.m_repeat = false;
+            this.repeat_ = false;
         }
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, (this.m_smooth) ? gl.LINEAR : gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, (this.smooth_) ? gl.LINEAR : gl.NEAREST);
 
     	gl.bindTexture(gl.TEXTURE_2D, null);
 
-        if (this.m_callback) {
-    	   this.m_callback();
+        if (this.callback_) {
+    	   this.callback_();
         }
 };
 
@@ -89,7 +104,7 @@ sp.Texture.prototype.handleLoadedTexture = function () {
 * @returns {WebGLTexture} Internal WebGL texture
 */
 sp.Texture.prototype.getTextureId = function () {
-	return this.m_textureId;
+	return this.textureId_;
 };
 
 /**
@@ -99,7 +114,7 @@ sp.Texture.prototype.getTextureId = function () {
 * @returns {Vector2} image - HTML image element
 */
 sp.Texture.prototype.getSize = function () {
-    return this.m_size;
+    return this.size_;
 };
 
 /**
@@ -109,15 +124,15 @@ sp.Texture.prototype.getSize = function () {
 * @param {bool} smooth - Enable smooth mode
 */
 sp.Texture.prototype.setSmooth = function (smooth) {
-    gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
+    gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
     if (this.isPowerOfTwo()) {
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.m_smooth) ? gl.LINEAR_MIPMAP_NEAREST : gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.smooth_) ? gl.LINEAR_MIPMAP_NEAREST : gl.NEAREST);
     }
     else {
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.m_smooth) ? gl.LINEAR : gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, (this.smooth_) ? gl.LINEAR : gl.NEAREST);
     }
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, (this.m_smooth) ? gl.LINEAR : gl.NEAREST);
-    this.m_smooth = smooth;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, (this.smooth_) ? gl.LINEAR : gl.NEAREST);
+    this.smooth_ = smooth;
 };
 
 /**
@@ -127,16 +142,16 @@ sp.Texture.prototype.setSmooth = function (smooth) {
 * @param {bool} repeat - Enable repeat mode
 */
 sp.Texture.prototype.setRepeat = function (repeat) {
-    gl.bindTexture(gl.TEXTURE_2D, this.m_textureId);
+    gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
     if (this.isPowerOfTwo()) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, (repeat) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, (repeat) ? gl.REPEAT : gl.CLAMP_TO_EDGE);
-        this.m_repeat = repeat;
+        this.repeat_ = repeat;
     }
     else {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        this.m_repeat = false;
+        this.repeat_ = false;
     }
 };
 
@@ -147,8 +162,8 @@ sp.Texture.prototype.setRepeat = function (repeat) {
 * @returns {bool} True if texture size is power of two
 */
 sp.Texture.prototype.isPowerOfTwo = function () {
-    if (!this.m_size) return false;
-    return ((this.m_size.x & (this.m_size.x - 1)) == 0) && ((this.m_size.y & (this.m_size.y - 1)) == 0);
+    if (!this.size_) return false;
+    return ((this.size_.x & (this.size_.x - 1)) == 0) && ((this.size_.y & (this.size_.y - 1)) == 0);
 };
 
 //TODO: Move this to a math/tools module

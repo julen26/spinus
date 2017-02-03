@@ -7,13 +7,20 @@ goog.require('sp.Vector2');
 * @class Represents a Transformable object
 */
 sp.Transformable = function() {
-    this.m_transform = new sp.Transform();
-    this.m_scale = new sp.Vector2(1, 1);
-    this.m_origin = new sp.Vector2();
-    this.m_rotation = 0;
-    this.m_position = new sp.Vector2();
+    /** @private */
+    this.transform_ = new sp.Transform();
 
-    this.m_needsUpdate = false;
+    /** @private */
+    this.scale_ = new sp.Vector2(1, 1);
+    /** @private */
+    this.origin_ = new sp.Vector2();
+    /** @private */
+    this.rotation_ = 0;
+    /** @private */
+    this.position_ = new sp.Vector2();
+
+    /** @private */
+    this.needsUpdate_ = false;
 };
 
 /**
@@ -23,10 +30,10 @@ sp.Transformable = function() {
 * @returns {Transform} Transform matrix
 */
 sp.Transformable.prototype.getTransform = function () {
-    if (this.m_needsUpdate) {
+    if (this.needsUpdate_) {
         this.updateTransform();
     }
-    return this.m_transform;
+    return this.transform_;
 };
 
 /**
@@ -37,7 +44,7 @@ sp.Transformable.prototype.getTransform = function () {
 * @param {float} y - Y value
 */
 sp.Transformable.prototype.move = function (x, y) {
-    this.setPosition(this.m_position.x + x, this.m_position.y + y);
+    this.setPosition(this.position_.x + x, this.position_.y + y);
 };
 
 /**
@@ -48,7 +55,7 @@ sp.Transformable.prototype.move = function (x, y) {
 * @param {float} y - Y value
 */
 sp.Transformable.prototype.scale = function (x, y) {
-    this.setScale(this.m_scale.x * x, this.m_scale.y * y);
+    this.setScale(this.scale_.x * x, this.scale_.y * y);
 };
 
 /**
@@ -58,7 +65,7 @@ sp.Transformable.prototype.scale = function (x, y) {
 * @param {float} angle - Angle
 */
 sp.Transformable.prototype.rotate = function (angle) {
-    this.setRotation(this.m_rotation + angle);
+    this.setRotation(this.rotation_ + angle);
 };
 
 /**
@@ -69,9 +76,9 @@ sp.Transformable.prototype.rotate = function (angle) {
 * @param {float} y - Y value
 */
 sp.Transformable.prototype.setScale = function(x, y) {
-    this.m_scale.x = x;
-    this.m_scale.y = y;
-    this.m_needsUpdate = true;
+    this.scale_.x = x;
+    this.scale_.y = y;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -82,9 +89,9 @@ sp.Transformable.prototype.setScale = function(x, y) {
 * @param {float} y - Y value
 */
 sp.Transformable.prototype.setOrigin = function(x, y) {
-    this.m_origin.x = x;
-    this.m_origin.y = y;
-    this.m_needsUpdate = true;
+    this.origin_.x = x;
+    this.origin_.y = y;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -94,12 +101,12 @@ sp.Transformable.prototype.setOrigin = function(x, y) {
 * @param {float} angle - Angle
 */
 sp.Transformable.prototype.setRotation = function(angle) {
-    this.m_rotation = angle % 360;
-    if (this.m_rotation < 0) {
-        this.m_rotation += 360;
+    this.rotation_ = angle % 360;
+    if (this.rotation_ < 0) {
+        this.rotation_ += 360;
     }
-    this.m_rotation = angle;
-    this.m_needsUpdate = true;
+    this.rotation_ = angle;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -110,9 +117,9 @@ sp.Transformable.prototype.setRotation = function(angle) {
 * @param {float} y - Y value
 */
 sp.Transformable.prototype.setPosition = function(x, y) {
-    this.m_position.x = x;
-    this.m_position.y = y;
-    this.m_needsUpdate = true;
+    this.position_.x = x;
+    this.position_.y = y;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -122,7 +129,7 @@ sp.Transformable.prototype.setPosition = function(x, y) {
 * @returns {Vector2} Scale
 */
 sp.Transformable.prototype.getScale = function() {
-    return this.m_scale;
+    return this.scale_;
 };
 
 /**
@@ -132,7 +139,7 @@ sp.Transformable.prototype.getScale = function() {
 * @returns {Vector2} Scale
 */
 sp.Transformable.prototype.getOrigin = function() {
-    return this.m_origin;
+    return this.origin_;
 };
 
 /**
@@ -142,7 +149,7 @@ sp.Transformable.prototype.getOrigin = function() {
 * @returns {float} Angle
 */
 sp.Transformable.prototype.getRotation = function() {
-    return this.m_rotation;
+    return this.rotation_;
 };
 
 /**
@@ -152,7 +159,7 @@ sp.Transformable.prototype.getRotation = function() {
 * @returns {Vector2} Position
 */
 sp.Transformable.prototype.getPosition = function() {
-    return this.m_position;
+    return this.position_;
 };
 
 /**
@@ -161,9 +168,9 @@ sp.Transformable.prototype.getPosition = function() {
 * @method
 */
 sp.Transformable.prototype.updateTransform = function() {
-    this.m_transform.set(1, 0, 0,
+    this.transform_.set(1, 0, 0,
              0, 1, 0,
              0, 0, 1);
     //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
-    this.m_transform.translate(this.m_position.x, this.m_position.y).rotate(this.m_rotation).scale(this.m_scale.x, this.m_scale.y).translate(-this.m_origin.x, -this.m_origin.y);
+    this.transform_.translate(this.position_.x, this.position_.y).rotate(this.rotation_).scale(this.scale_.x, this.scale_.y).translate(-this.origin_.x, -this.origin_.y);
 };

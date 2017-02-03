@@ -18,15 +18,25 @@ sp.Shape = function(pointCount, texture) {
     //Call base constructor
     sp.Transformable.call(this);
 
-    this.m_outlineThickness = 0;
-    this.m_outlineColor = new sp.Color();
-    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, pointCount);
-    this.m_outlineVertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_STRIP, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
+    /** @private */
+    this.outlineThickness_ = 0;
+    /** @private */
+    this.outlineColor_ = new sp.Color();
 
-    this.m_needsUpdate = false;
-    this.m_needsColorUpdate = false;
-    this.m_needsTexCoordsUpdate = false;
+    /** @private */
+    this.vertexArray_ = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, pointCount);
+    /** @private */
+    this.outlineVertexArray_ = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_STRIP, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
 
+    /** @private */
+    this.needsUpdate_ = false;
+    /** @private */
+    this.needsColorUpdate_ = false;
+    /** @private */
+    this.needsTexCoordsUpdate_ = false;
+
+    /** @private */
+    this.texture_ = null;
     this.setTexture(texture);
 };
 sp.extend(sp.Shape, sp.Transformable);
@@ -39,10 +49,10 @@ sp.extend(sp.Shape, sp.Drawable);
 * @param {int} pointCount - New length of the point list
 */
 sp.Shape.prototype.setPointCount = function (pointCount) {
-    this.m_vertexArray.resize(pointCount);
-    this.m_needsUpdate = true;
-    this.m_needsColorUpdate = true;
-    this.m_needsTexCoordsUpdate = true;
+    this.vertexArray_.resize(pointCount);
+    this.needsUpdate_ = true;
+    this.needsColorUpdate_ = true;
+    this.needsTexCoordsUpdate_ = true;
 };
 
 /**
@@ -52,7 +62,7 @@ sp.Shape.prototype.setPointCount = function (pointCount) {
 * @returns {int} Length of point list
 */
 sp.Shape.prototype.getPointCount = function () {
-    return this.m_vertexArray.getVertexCount();
+    return this.vertexArray_.getVertexCount();
 };
 
 /**
@@ -63,10 +73,10 @@ sp.Shape.prototype.getPointCount = function () {
 * @param {Color} color - Color of the new point
 */
 sp.Shape.prototype.addPoint = function (position, color) {
-    this.m_vertexArray.addVertex(sp.Vertex(position, color));
-    this.m_needsUpdate = true;
-    this.m_needsColorUpdate = true;
-    this.m_needsTexCoordsUpdate = true;
+    this.vertexArray_.addVertex(sp.Vertex(position, color));
+    this.needsUpdate_ = true;
+    this.needsColorUpdate_ = true;
+    this.needsTexCoordsUpdate_ = true;
 };
 
 /**
@@ -77,11 +87,11 @@ sp.Shape.prototype.addPoint = function (position, color) {
 * @param {Vector2} position - New position of the point
 */
 sp.Shape.prototype.setPointPosition = function (index, position) {
-    if (index < this.m_vertexArray.getVertexCount()) {
-        var vertex = this.m_vertexArray.getVertex(index);
+    if (index < this.vertexArray_.getVertexCount()) {
+        var vertex = this.vertexArray_.getVertex(index);
         vertex.position = position;
-        this.m_needsUpdate = true;
-        this.m_needsTexCoordsUpdate = true;
+        this.needsUpdate_ = true;
+        this.needsTexCoordsUpdate_ = true;
     }
 };
 
@@ -93,8 +103,8 @@ sp.Shape.prototype.setPointPosition = function (index, position) {
 * @param {Color} position - New color of the point
 */
 sp.Shape.prototype.setPointColor = function (index, color) {
-    if (index < this.m_vertexArray.getVertexCount()) {
-        var vertex = this.m_vertexArray.getVertex(index);
+    if (index < this.vertexArray_.getVertexCount()) {
+        var vertex = this.vertexArray_.getVertex(index);
         vertex.color = color;
     }
 };
@@ -106,8 +116,8 @@ sp.Shape.prototype.setPointColor = function (index, color) {
 * @param {float} outlineThickness - Outline thickness
 */
 sp.Shape.prototype.setOutlineThickness = function (outlineThickness) {
-    this.m_outlineThickness = outlineThickness;
-    this.m_needsUpdate = true;
+    this.outlineThickness_ = outlineThickness;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -117,8 +127,8 @@ sp.Shape.prototype.setOutlineThickness = function (outlineThickness) {
 * @param {Color} color - Color of the outline
 */
 sp.Shape.prototype.setOutlineColor = function (color) {
-    this.m_outlineColor = color;
-    this.m_needsColorUpdate = true;
+    this.outlineColor_ = color;
+    this.needsColorUpdate_ = true;
 };
 
 /**
@@ -127,10 +137,10 @@ sp.Shape.prototype.setOutlineColor = function (color) {
 * @method
 */
 sp.Shape.prototype.updateOutlineColor = function () {
-    var count = this.m_outlineVertexArray.getVertexCount();
+    var count = this.outlineVertexArray_.getVertexCount();
 
     for (var i = 0; i < count; i++) {
-        this.m_outlineVertexArray.getVertex(i).color = this.m_outlineColor;
+        this.outlineVertexArray_.getVertex(i).color = this.outlineColor_;
     }
 };
 
@@ -140,22 +150,22 @@ sp.Shape.prototype.updateOutlineColor = function () {
 * @method
 */
 sp.Shape.prototype.updateOutline = function () {
-    var count = this.m_vertexArray.getVertexCount();
-    this.m_outlineVertexArray.resize((count * 2) + 2);
+    var count = this.vertexArray_.getVertexCount();
+    this.outlineVertexArray_.resize((count * 2) + 2);
 
     for (var i = 0; i < count; i++) {
 
-        var v = this.m_vertexArray.getVertex(i);
+        var v = this.vertexArray_.getVertex(i);
         //Get two nearest vertices
-        var vLeft = (i == 0) ? this.m_vertexArray.getVertex(count - 1) : this.m_vertexArray.getVertex(i - 1);
-        var vRight = (i == count - 1) ? this.m_vertexArray.getVertex(0) : this.m_vertexArray.getVertex(i + 1);
+        var vLeft = (i == 0) ? this.vertexArray_.getVertex(count - 1) : this.vertexArray_.getVertex(i - 1);
+        var vRight = (i == count - 1) ? this.vertexArray_.getVertex(0) : this.vertexArray_.getVertex(i + 1);
 
         //Compute segment normals
         var n1 = sp.Vector2.computeNormal(vLeft.position, v.position);
         var n2 = sp.Vector2.computeNormal(v.position, vRight.position);
 
         //Normals must point towards outside of the shape
-        var tmp = sp.Vector2.sub(this.m_vertexArray.getVertex(0).position, v.position);
+        var tmp = sp.Vector2.sub(this.vertexArray_.getVertex(0).position, v.position);
         if (sp.Vector2.dotProduct(n1, tmp) > 0) {
             n1.x = -n1.x;
             n1.y = -n1.y;
@@ -169,13 +179,13 @@ sp.Shape.prototype.updateOutline = function () {
         var factor = 1.0 + (n1.x * n2.x + n1.y * n2.y);
         var normal = new sp.Vector2((n1.x + n2.x) / factor, (n1.y + n2.y) / factor);
 
-        this.m_outlineVertexArray.getVertex(i * 2).position = v.position;
-        this.m_outlineVertexArray.getVertex(i * 2 + 1).position = new sp.Vector2(v.position.x + normal.x * this.m_outlineThickness, v.position.y + normal.y * this.m_outlineThickness);
+        this.outlineVertexArray_.getVertex(i * 2).position = v.position;
+        this.outlineVertexArray_.getVertex(i * 2 + 1).position = new sp.Vector2(v.position.x + normal.x * this.outlineThickness_, v.position.y + normal.y * this.outlineThickness_);
     }
 
     //The last point is the same as the first
-    this.m_outlineVertexArray.getVertex(count * 2).position = this.m_outlineVertexArray.getVertex(0).position;
-    this.m_outlineVertexArray.getVertex(count * 2 + 1).position = this.m_outlineVertexArray.getVertex(1).position;
+    this.outlineVertexArray_.getVertex(count * 2).position = this.outlineVertexArray_.getVertex(0).position;
+    this.outlineVertexArray_.getVertex(count * 2 + 1).position = this.outlineVertexArray_.getVertex(1).position;
 };
 
 /**
@@ -185,14 +195,14 @@ sp.Shape.prototype.updateOutline = function () {
 * @param {Texture} texture - Texture
 */
 sp.Shape.prototype.setTexture = function (texture) {
-    this.m_texture = texture;
+    this.texture_ = texture;
 
-    if (this.m_texture) {
-        this.m_needsTexCoordsUpdate = true;
-        var size = this.m_texture.getSize();
+    if (this.texture_) {
+        this.needsTexCoordsUpdate_ = true;
+        var size = this.texture_.getSize();
 
-        for (var i = 0; i < this.m_vertexArray.getVertexCount(); i++) {
-            var v = this.m_vertexArray.getVertex(i);
+        for (var i = 0; i < this.vertexArray_.getVertexCount(); i++) {
+            var v = this.vertexArray_.getVertex(i);
             v.texCoords = new sp.Vector2(v.position.x / size.x, v.position.y / size.y);
         }
     }
@@ -206,7 +216,7 @@ sp.Shape.prototype.setTexture = function (texture) {
 * @returns {Texture} Texture
 */
 sp.Shape.prototype.getTexture = function () {
-    return this.m_texture;
+    return this.texture_;
 };
 
 /**
@@ -215,11 +225,11 @@ sp.Shape.prototype.getTexture = function () {
 * @method
 */
 sp.Shape.prototype.updateTexCoords = function () {
-    if (this.m_texture) {
-        var size = this.m_texture.getSize();
+    if (this.texture_) {
+        var size = this.texture_.getSize();
 
-        for (var i = 0; i < this.m_vertexArray.getVertexCount(); i++) {
-            var v = this.m_vertexArray.getVertex(i);
+        for (var i = 0; i < this.vertexArray_.getVertexCount(); i++) {
+            var v = this.vertexArray_.getVertex(i);
             v.texCoords = new sp.Vector2(v.position.x / size.x, v.position.y / size.y);
         }
     }
@@ -234,25 +244,25 @@ sp.Shape.prototype.updateTexCoords = function () {
 */
 sp.Shape.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();
-    renderOptions.texture = this.m_texture;
+    renderOptions.texture = this.texture_;
 
-    if (this.m_needsTexCoordsUpdate) {
+    if (this.needsTexCoordsUpdate_) {
         this.updateTexCoords();
-        this.m_needsTexCoordsUpdate = false;
+        this.needsTexCoordsUpdate_ = false;
     }
     
-    this.m_vertexArray.draw(context, renderOptions);
-    if (this.m_outlineThickness > 0) {
+    this.vertexArray_.draw(context, renderOptions);
+    if (this.outlineThickness_ > 0) {
         renderOptions.texture = null;
         //TODO: May be done on an update step, not when drawing
-        if (this.m_needsUpdate) {
+        if (this.needsUpdate_) {
             this.updateOutline();
-            this.m_needsUpdate = false;
+            this.needsUpdate_ = false;
         }
-        if (this.m_needsColorUpdate) {
+        if (this.needsColorUpdate_) {
             this.updateOutlineColor();
-            this.m_needsColorUpdate = false;
+            this.needsColorUpdate_ = false;
         }
-        this.m_outlineVertexArray.draw(context, renderOptions);
+        this.outlineVertexArray_.draw(context, renderOptions);
     }
 };

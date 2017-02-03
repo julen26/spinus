@@ -7,12 +7,20 @@ goog.provide('sp.DefaultShader');
 * @param {Context} context - Context
 */
 sp.Shader = function(context) {
-    this.m_shaderProgram = null;
-    this.m_context = context;
-    //Hash of uniforms
-    this.m_uniforms = {};
-    //Hash of attributes
-    this.m_attributes = {};
+    /** @private */
+    this.shaderProgram_ = null;
+    /** @private */
+    this.context_ = context;
+    /**
+    * Hash of uniforms
+    * @private
+    */
+    this.uniforms_ = {};
+    /**
+    * Hash of attributes
+    * @private
+    */
+    this.attributes_ = {};
 };
 
 /**
@@ -22,7 +30,7 @@ sp.Shader = function(context) {
 * @returns {WebGLProgram} Internal WebGLProgram object
 */
 sp.Shader.prototype.getShaderProgram = function () {
-    return this.m_shaderProgram;
+    return this.shaderProgram_;
 };
 
 /**
@@ -33,28 +41,28 @@ sp.Shader.prototype.getShaderProgram = function () {
 * @param {string} fragmentShaderSource - Fragment shader source code
 */
 sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
 
-    if (this.m_shaderProgram) {
-        gl.deleteProgram(this.m_shaderProgram);
+    if (this.shaderProgram_) {
+        gl.deleteProgram(this.shaderProgram_);
     }
-    this.m_shaderProgram = gl.createProgram();
+    this.shaderProgram_ = gl.createProgram();
 
     if (vertexShaderSource) {
         var vertexShader = gl.createShader(gl.VERTEX_SHADER);
         gl.shaderSource(vertexShader, vertexShaderSource);
         gl.compileShader(vertexShader);
-        gl.attachShader(this.m_shaderProgram, vertexShader);
+        gl.attachShader(this.shaderProgram_, vertexShader);
     }
 
     if (fragmentShaderSource) {
         var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, fragmentShaderSource);
         gl.compileShader(fragmentShader);
-        gl.attachShader(this.m_shaderProgram, fragmentShader);
+        gl.attachShader(this.shaderProgram_, fragmentShader);
     }
 
-    gl.linkProgram(this.m_shaderProgram);
+    gl.linkProgram(this.shaderProgram_);
     //alert(gl.getShaderInfoLog(this.m_shaderId));
 };
 
@@ -66,7 +74,7 @@ sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource
 * @param {string} fragmentShaderScriptId - ID of the script tag that contains the fragment shader
 */
 sp.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
     
     var vertexShaderScript = document.getElementById(vertexShaderScriptId);
     var fragmentShaderScript = document.getElementById(fragmentShaderScriptId);
@@ -80,9 +88,9 @@ sp.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentSha
 * @method
 */
 sp.Shader.prototype.use = function () {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
 
-    gl.useProgram(this.m_shaderProgram);
+    gl.useProgram(this.shaderProgram_);
 };
 
 /**
@@ -93,13 +101,13 @@ sp.Shader.prototype.use = function () {
 * @return {WebGLUniformLocation} Location of the uniform
 */
 sp.Shader.prototype.getUniformLocation = function (parameter) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
 
-    if (this.m_uniforms[parameter]) {
-        return this.m_uniforms[parameter];
+    if (this.uniforms_[parameter]) {
+        return this.uniforms_[parameter];
     }
-    this.m_uniforms[parameter] = gl.getUniformLocation(this.m_shaderProgram, parameter);
-    return this.m_uniforms[parameter];
+    this.uniforms_[parameter] = gl.getUniformLocation(this.shaderProgram_, parameter);
+    return this.uniforms_[parameter];
 };
 
 /**
@@ -110,13 +118,13 @@ sp.Shader.prototype.getUniformLocation = function (parameter) {
 * @return {int} Location of the uniform
 */
 sp.Shader.prototype.getAttribLocation = function (parameter) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
 
-    if (this.m_attributes[parameter]) {
-        return this.m_attributes[parameter];
+    if (this.attributes_[parameter]) {
+        return this.attributes_[parameter];
     }
-    this.m_attributes[parameter] = gl.getAttribLocation(this.m_shaderProgram, parameter);
-    return this.m_attributes[parameter];
+    this.attributes_[parameter] = gl.getAttribLocation(this.shaderProgram_, parameter);
+    return this.attributes_[parameter];
 };
 
 //TODO: Possible improvement autochecking the uniform type
@@ -129,7 +137,7 @@ sp.Shader.prototype.getAttribLocation = function (parameter) {
 * @param {int[]} values - Array of integers
 */
 sp.Shader.prototype.uniformiv = function (parameter, values) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
     if (length > 0 && length < 5)
@@ -146,7 +154,7 @@ sp.Shader.prototype.uniformiv = function (parameter, values) {
 * @param {float[]} values - Array of floats
 */
 sp.Shader.prototype.uniformfv = function (parameter, values) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
     if (length > 0 && length < 5)
@@ -163,7 +171,7 @@ sp.Shader.prototype.uniformfv = function (parameter, values) {
 * @param {float[]} values - Array of floats that represents matrix content 
 */
 sp.Shader.prototype.uniformMatrixfv = function (parameter, values) {
-    var gl = this.m_context.GL();
+    var gl = this.context_.GL();
     var uniform = this.getUniformLocation(parameter);
     var length = values.length;
     if (length > 15) {

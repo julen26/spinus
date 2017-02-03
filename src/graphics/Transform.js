@@ -6,11 +6,13 @@ goog.require('sp.Vector2');
 * @class Represents a 4x4 matrix
 */
 sp.Transform = function() {
-    this.m_matrix = [];
-    this.m_matrix[0] = 1.0; this.m_matrix[4] = 0.0; this.m_matrix[8]  = 0.0; this.m_matrix[12] = 0.0;
-    this.m_matrix[1] = 0.0; this.m_matrix[5] = 1.0; this.m_matrix[9]  = 0.0; this.m_matrix[13] = 0.0;
-    this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
-    this.m_matrix[3] = 0.0; this.m_matrix[7] = 0.0; this.m_matrix[11] = 0.0; this.m_matrix[15] = 1.0;
+    /** @private */
+    this.matrix_ = [];
+    
+    this.matrix_[0] = 1.0; this.matrix_[4] = 0.0; this.matrix_[8]  = 0.0; this.matrix_[12] = 0.0;
+    this.matrix_[1] = 0.0; this.matrix_[5] = 1.0; this.matrix_[9]  = 0.0; this.matrix_[13] = 0.0;
+    this.matrix_[2] = 0.0; this.matrix_[6] = 0.0; this.matrix_[10] = 1.0; this.matrix_[14] = 0.0;
+    this.matrix_[3] = 0.0; this.matrix_[7] = 0.0; this.matrix_[11] = 0.0; this.matrix_[15] = 1.0;
 };
 
 /**
@@ -30,10 +32,10 @@ sp.Transform = function() {
 sp.Transform.prototype.set = function (a00, a01, a02,
                                         a10, a11, a12,
                                         a20, a21, a22) {
-    this.m_matrix[0] = a00; this.m_matrix[4] = a01; this.m_matrix[8]  = 0.0; this.m_matrix[12] = a02;
-    this.m_matrix[1] = a10; this.m_matrix[5] = a11; this.m_matrix[9]  = 0.0; this.m_matrix[13] = a12;
-    this.m_matrix[2] = 0.0; this.m_matrix[6] = 0.0; this.m_matrix[10] = 1.0; this.m_matrix[14] = 0.0;
-    this.m_matrix[3] = a20; this.m_matrix[7] = a21; this.m_matrix[11] = 0.0; this.m_matrix[15] = a22;
+    this.matrix_[0] = a00; this.matrix_[4] = a01; this.matrix_[8]  = 0.0; this.matrix_[12] = a02;
+    this.matrix_[1] = a10; this.matrix_[5] = a11; this.matrix_[9]  = 0.0; this.matrix_[13] = a12;
+    this.matrix_[2] = 0.0; this.matrix_[6] = 0.0; this.matrix_[10] = 1.0; this.matrix_[14] = 0.0;
+    this.matrix_[3] = a20; this.matrix_[7] = a21; this.matrix_[11] = 0.0; this.matrix_[15] = a22;
 };
 
 /**
@@ -43,7 +45,7 @@ sp.Transform.prototype.set = function (a00, a01, a02,
 * @returns {float[]} 4x4 matrix
 */
 sp.Transform.prototype.getMatrix = function () {
-    return this.m_matrix;
+    return this.matrix_;
 };
 
 /**
@@ -53,20 +55,20 @@ sp.Transform.prototype.getMatrix = function () {
 * @returns {Transform} Inverse transform or identity if determinant is zero
 */
 sp.Transform.prototype.getInverse = function () {
-    var det =   this.m_matrix[0] * (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) -
-                this.m_matrix[1] * (this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) +
-                this.m_matrix[3] * (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]);
+    var det =   this.matrix_[0] * (this.matrix_[15] * this.matrix_[5] - this.matrix_[7] * this.matrix_[13]) -
+                this.matrix_[1] * (this.matrix_[15] * this.matrix_[4] - this.matrix_[7] * this.matrix_[12]) +
+                this.matrix_[3] * (this.matrix_[13] * this.matrix_[4] - this.matrix_[5] * this.matrix_[12]);
     if (det != 0) {
         var inverse = new sp.Transform();
-        inverse.set(  (this.m_matrix[15] * this.m_matrix[5] - this.m_matrix[7] * this.m_matrix[13]) / det,
-                     -(this.m_matrix[15] * this.m_matrix[4] - this.m_matrix[7] * this.m_matrix[12]) / det,
-                      (this.m_matrix[13] * this.m_matrix[4] - this.m_matrix[5] * this.m_matrix[12]) / det,
-                     -(this.m_matrix[15] * this.m_matrix[1] - this.m_matrix[3] * this.m_matrix[13]) / det,
-                      (this.m_matrix[15] * this.m_matrix[0] - this.m_matrix[3] * this.m_matrix[12]) / det,
-                     -(this.m_matrix[13] * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[12]) / det,
-                      (this.m_matrix[7]  * this.m_matrix[1] - this.m_matrix[3] * this.m_matrix[5])  / det,
-                     -(this.m_matrix[7]  * this.m_matrix[0] - this.m_matrix[3] * this.m_matrix[4])  / det,
-                      (this.m_matrix[5]  * this.m_matrix[0] - this.m_matrix[1] * this.m_matrix[4])  / det);
+        inverse.set(  (this.matrix_[15] * this.matrix_[5] - this.matrix_[7] * this.matrix_[13]) / det,
+                     -(this.matrix_[15] * this.matrix_[4] - this.matrix_[7] * this.matrix_[12]) / det,
+                      (this.matrix_[13] * this.matrix_[4] - this.matrix_[5] * this.matrix_[12]) / det,
+                     -(this.matrix_[15] * this.matrix_[1] - this.matrix_[3] * this.matrix_[13]) / det,
+                      (this.matrix_[15] * this.matrix_[0] - this.matrix_[3] * this.matrix_[12]) / det,
+                     -(this.matrix_[13] * this.matrix_[0] - this.matrix_[1] * this.matrix_[12]) / det,
+                      (this.matrix_[7]  * this.matrix_[1] - this.matrix_[3] * this.matrix_[5])  / det,
+                     -(this.matrix_[7]  * this.matrix_[0] - this.matrix_[3] * this.matrix_[4])  / det,
+                      (this.matrix_[5]  * this.matrix_[0] - this.matrix_[1] * this.matrix_[4])  / det);
     }
     else {
         return new sp.Transform();
@@ -81,7 +83,7 @@ sp.Transform.prototype.getInverse = function () {
 * @returns {Transform} New combined transform
 */
 sp.Transform.prototype.combine = function (transform) {
-    var a = this.m_matrix;
+    var a = this.matrix_;
     var b = transform.getMatrix();
     var a00 = a[0] * b[0] + a[4] * b[1] + a[12] * b[3];
     var a01 = a[0] * b[4] + a[4] * b[5] + a[12] * b[7];
@@ -159,7 +161,7 @@ sp.Transform.prototype.rotate = function (angle) {
 */
 sp.Transform.prototype.transformPoint = function (x, y) {
     var vec = new Vector2();
-    vec.set(this.m_matrix[0] * x + this.m_matrix[4] * y + this.m_matrix[12],
-            this.m_matrix[1] * x + this.m_matrix[5] * y + this.m_matrix[13]);
+    vec.set(this.matrix_[0] * x + this.matrix_[4] * y + this.matrix_[12],
+            this.matrix_[1] * x + this.matrix_[5] * y + this.matrix_[13]);
     return vec;
 };

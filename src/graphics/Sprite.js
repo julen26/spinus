@@ -18,8 +18,11 @@ sp.Sprite = function(texture) {
 	//Call base constructor
     sp.Transformable.call(this);
 
-	this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
+    /** @private */
+	this.vertexArray_ = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
 
+	/** @private */
+	this.texture_ = null;
 	this.setTexture(texture);
 };
 sp.extend(sp.Sprite, sp.Transformable);
@@ -32,23 +35,23 @@ sp.extend(sp.Sprite, sp.Drawable);
 * @param {Texture} texture - Texture
 */
 sp.Sprite.prototype.setTexture = function (texture) {
-	this.m_texture = texture;
+	this.texture_ = texture;
 
-	if (this.m_texture) {
-		var size = this.m_texture.getSize();
+	if (this.texture_) {
+		var size = this.texture_.getSize();
 
-		this.m_vertexArray.getVertex(0).position = new sp.Vector2(0, 0);
-		this.m_vertexArray.getVertex(1).position = new sp.Vector2(size.x, 0);
-		this.m_vertexArray.getVertex(2).position = new sp.Vector2(size.x, size.y);
-		this.m_vertexArray.getVertex(3).position = new sp.Vector2(0, size.y);
+		this.vertexArray_.getVertex(0).position = new sp.Vector2(0, 0);
+		this.vertexArray_.getVertex(1).position = new sp.Vector2(size.x, 0);
+		this.vertexArray_.getVertex(2).position = new sp.Vector2(size.x, size.y);
+		this.vertexArray_.getVertex(3).position = new sp.Vector2(0, size.y);
 	}
 
-	this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
-    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(1, 0);
-    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(1, 1);
-    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(0, 1);
+	this.vertexArray_.getVertex(0).texCoords = new sp.Vector2(0, 0);
+    this.vertexArray_.getVertex(1).texCoords = new sp.Vector2(1, 0);
+    this.vertexArray_.getVertex(2).texCoords = new sp.Vector2(1, 1);
+    this.vertexArray_.getVertex(3).texCoords = new sp.Vector2(0, 1);
 
-    this.m_textureRect = new sp.Rect(0, 0, 1, 1);
+    this.textureRect_ = new sp.Rect(0, 0, 1, 1);
 };
 
 /**
@@ -58,7 +61,7 @@ sp.Sprite.prototype.setTexture = function (texture) {
 * @returns {Texture} Texture
 */
 sp.Sprite.prototype.getTexture = function () {
-	return this.m_texture;
+	return this.texture_;
 };
 
 /**
@@ -68,20 +71,20 @@ sp.Sprite.prototype.getTexture = function () {
 * @param {Rect} rect - Texture coordinates
 */
 sp.Sprite.prototype.setTextureRect = function (rect) {
-	if (this.m_texture) {
-		var size = this.m_texture.getSize();
+	if (this.texture_) {
+		var size = this.texture_.getSize();
 
-		this.m_vertexArray.getVertex(0).position = new sp.Vector2(0, 0);
-		this.m_vertexArray.getVertex(1).position = new sp.Vector2(size.x * rect.w, 0);
-		this.m_vertexArray.getVertex(2).position = new sp.Vector2(size.x * rect.w, size.y * rect.h);
-		this.m_vertexArray.getVertex(3).position = new sp.Vector2(0, size.y * rect.h);
+		this.vertexArray_.getVertex(0).position = new sp.Vector2(0, 0);
+		this.vertexArray_.getVertex(1).position = new sp.Vector2(size.x * rect.w, 0);
+		this.vertexArray_.getVertex(2).position = new sp.Vector2(size.x * rect.w, size.y * rect.h);
+		this.vertexArray_.getVertex(3).position = new sp.Vector2(0, size.y * rect.h);
 	}
 
-	this.m_textureRect = rect;
-	this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(rect.x, rect.y);
-    this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(rect.x + rect.w, rect.y);
-    this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(rect.x + rect.w, rect.y + rect.h);
-    this.m_vertexArray.getVertex(3).texCoords = new sp.Vector2(rect.x, rect.y + rect.h);
+	this.textureRect_ = rect;
+	this.vertexArray_.getVertex(0).texCoords = new sp.Vector2(rect.x, rect.y);
+    this.vertexArray_.getVertex(1).texCoords = new sp.Vector2(rect.x + rect.w, rect.y);
+    this.vertexArray_.getVertex(2).texCoords = new sp.Vector2(rect.x + rect.w, rect.y + rect.h);
+    this.vertexArray_.getVertex(3).texCoords = new sp.Vector2(rect.x, rect.y + rect.h);
 };
 
 /**
@@ -91,7 +94,7 @@ sp.Sprite.prototype.setTextureRect = function (rect) {
 * @returns {Rect} Texture coordinates
 */
 sp.Sprite.prototype.getTextureRect = function () {
-	return this.m_textureRect;
+	return this.textureRect_;
 };
 
 /**
@@ -103,10 +106,10 @@ sp.Sprite.prototype.getTextureRect = function () {
 sp.Sprite.prototype.setColor = function (color) {
     color = color || new sp.Color();
     
-    this.m_vertexArray.getVertex(0).color = color;
-    this.m_vertexArray.getVertex(1).color = color;
-    this.m_vertexArray.getVertex(2).color = color;
-    this.m_vertexArray.getVertex(3).color = color;
+    this.vertexArray_.getVertex(0).color = color;
+    this.vertexArray_.getVertex(1).color = color;
+    this.vertexArray_.getVertex(2).color = color;
+    this.vertexArray_.getVertex(3).color = color;
 };
 
 /**
@@ -118,7 +121,7 @@ sp.Sprite.prototype.setColor = function (color) {
 */
 sp.Sprite.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();
-    renderOptions.texture = this.m_texture;
+    renderOptions.texture = this.texture_;
     
-    this.m_vertexArray.draw(context, renderOptions);
+    this.vertexArray_.draw(context, renderOptions);
 };

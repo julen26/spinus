@@ -10,19 +10,28 @@ goog.require('sp.Rect');
 * @param {float} h - Height
 */
 sp.View = function(w, h) {
-    this.m_transform = new sp.Transform();
-    this.m_size = new sp.Vector2(w || 640, h || 480);
-    this.m_scale = new sp.Vector2(1, 1);
-    this.m_rotation = 0;
-    this.m_center = new sp.Vector2( this.m_size.x / 2, this.m_size.y / 2);
+    /** @private */
+    this.transform_ = new sp.Transform();
 
-    this.m_needsUpdate = true;
+    /** @private */
+    this.size_ = new sp.Vector2(w || 640, h || 480);
+    /** @private */
+    this.scale_ = new sp.Vector2(1, 1);
+    /** @private */
+    this.rotation_ = 0;
+    /** @private */
+    this.center_ = new sp.Vector2( this.size_.x / 2, this.size_.y / 2);
 
-    this.m_projection = new sp.Transform();
-    this.m_projection.set(  2.0 / this.m_size.x,    0,                      0,
-                            0,                      -2.0 / this.m_size.y,   0,
+    /** @private */
+    this.needsUpdate_ = true;
+
+    /** @private */
+    this.projection_ = new sp.Transform();
+    this.projection_.set(   2.0 / this.size_.x,     0,                      0,
+                            0,                      -2.0 / this.size_.y,    0,
                             -1,                     1,                      1);
-    this.m_viewport = new sp.Rect(0, 0, 1, 1);
+    /** @private */
+    this.viewport_ = new sp.Rect(0, 0, 1, 1);
 };
 
 /**
@@ -33,10 +42,10 @@ sp.View = function(w, h) {
 */
 sp.View.prototype.getTransform = function () {
     //TODO: Maybe precalculate once projection and view transforms instead of doing each time on shader
-    if (this.m_needsUpdate) {
+    if (this.needsUpdate_) {
         this.updateTransform();
     }
-    return this.m_transform;
+    return this.transform_;
 };
 
 /**
@@ -46,7 +55,7 @@ sp.View.prototype.getTransform = function () {
 * @returns {Transform} Projection matrix
 */
 sp.View.prototype.getProjection = function () {
-    return this.m_projection;
+    return this.projection_;
 };
 
 /**
@@ -57,7 +66,7 @@ sp.View.prototype.getProjection = function () {
 * @param {float} y - Y value
 */
 sp.View.prototype.move = function (x, y) {
-    this.setCenter(this.m_center.x + x, this.m_center.y + y);
+    this.setCenter(this.center_.x + x, this.center_.y + y);
 };
 
 /**
@@ -68,7 +77,7 @@ sp.View.prototype.move = function (x, y) {
 * @param {float} y - Y value
 */
 sp.View.prototype.scale = function (x, y) {
-    this.setScale(this.m_scale.x * x, this.m_scale.y * y);
+    this.setScale(this.scale_.x * x, this.scale_.y * y);
 };
 
 /**
@@ -78,7 +87,7 @@ sp.View.prototype.scale = function (x, y) {
 * @param {float} angle - Angle
 */
 sp.View.prototype.rotate = function (angle) {
-    this.setRotation(this.m_rotation + angle);
+    this.setRotation(this.rotation_ + angle);
 };
 
 /**
@@ -89,9 +98,9 @@ sp.View.prototype.rotate = function (angle) {
 * @param {float} y - Y value
 */
 sp.View.prototype.setScale = function(x, y) {
-    this.m_scale.x = x;
-    this.m_scale.y = y;
-    this.m_needsUpdate = true;
+    this.scale_.x = x;
+    this.scale_.y = y;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -101,12 +110,12 @@ sp.View.prototype.setScale = function(x, y) {
 * @param {float} angle - Angle
 */
 sp.View.prototype.setRotation = function(angle) {
-    this.m_rotation = angle % 360;
-    if (this.m_rotation < 0) {
-        this.m_rotation += 360;
+    this.rotation_ = angle % 360;
+    if (this.rotation_ < 0) {
+        this.rotation_ += 360;
     }
-    this.m_rotation = angle;
-    this.m_needsUpdate = true;
+    this.rotation_ = angle;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -117,9 +126,9 @@ sp.View.prototype.setRotation = function(angle) {
 * @param {float} y - Y value
 */
 sp.View.prototype.setCenter = function(x, y) {
-    this.m_center.x = x;
-    this.m_center.y = y;
-    this.m_needsUpdate = true;
+    this.center_.x = x;
+    this.center_.y = y;
+    this.needsUpdate_ = true;
 };
 
 /**
@@ -129,7 +138,7 @@ sp.View.prototype.setCenter = function(x, y) {
 * @param {Rect} rect - Viewport
 */
 sp.View.prototype.setViewport = function(rect) {
-    this.m_viewport = rect;
+    this.viewport_ = rect;
 };
 
 /**
@@ -139,7 +148,7 @@ sp.View.prototype.setViewport = function(rect) {
 * @returns {Vector2} Scale
 */
 sp.View.prototype.getScale = function() {
-    return this.m_scale;
+    return this.scale_;
 };
 
 /**
@@ -149,7 +158,7 @@ sp.View.prototype.getScale = function() {
 * @returns {float} Angle
 */
 sp.View.prototype.getRotation = function() {
-    return this.m_rotation;
+    return this.rotation_;
 };
 
 /**
@@ -159,7 +168,7 @@ sp.View.prototype.getRotation = function() {
 * @returns {Vector2} Center
 */
 sp.View.prototype.getCenter = function() {
-    return this.m_center;
+    return this.center_;
 };
 
 /**
@@ -169,7 +178,7 @@ sp.View.prototype.getCenter = function() {
 * @returns {Rect} Viewport
 */
 sp.View.prototype.getViewport = function() {
-    return this.m_viewport;
+    return this.viewport_;
 };
 
 /**
@@ -178,9 +187,9 @@ sp.View.prototype.getViewport = function() {
 * @method
 */
 sp.View.prototype.updateTransform = function() {
-    this.m_transform.set(1, 0, 0,
+    this.transform_.set(1, 0, 0,
              0, 1, 0,
              0, 0, 1);
     //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
-    this.m_transform.rotate(this.m_rotation).scale(this.m_scale.x, this.m_scale.y).translate(-this.m_center.x, -this.m_center.y);
+    this.transform_.rotate(this.rotation_).scale(this.scale_.x, this.scale_.y).translate(-this.center_.x, -this.center_.y);
 };

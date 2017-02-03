@@ -12,7 +12,8 @@ goog.require('sp.Shape');
 sp.CircleShape = function(radius, color) {
     sp.Shape.call(this, 30);
 
-    this.m_radius = radius || 0;
+    /** @private */
+    this.radius_ = radius || 0;
 
     this.update();
 
@@ -27,7 +28,7 @@ sp.extend(sp.CircleShape, sp.Shape);
 * @param {float} radius - Radius
 */
 sp.CircleShape.prototype.setRadius = function (radius) {
-    this.m_radius = radius;
+    this.radius_ = radius;
     this.update();
 };
 
@@ -54,7 +55,7 @@ sp.CircleShape.prototype.update = function () {
         var alfa = 2 * Math.PI / pointCount;
         for (var i = 0; i < pointCount; i++) {
             var angle = alfa * i;
-            var pos = new sp.Vector2(Math.cos(angle) * this.m_radius, Math.sin(angle) * this.m_radius);
+            var pos = new sp.Vector2(Math.cos(angle) * this.radius_, Math.sin(angle) * this.radius_);
             this.setPointPosition(i, pos);
         }
     }
