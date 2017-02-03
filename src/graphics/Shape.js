@@ -20,8 +20,8 @@ sp.Shape = function(pointCount, texture) {
 
     this.m_outlineThickness = 0;
     this.m_outlineColor = new sp.Color();
-    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, pointCount);
-    this.m_outlineVertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleStrip, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
+    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, pointCount);
+    this.m_outlineVertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_STRIP, (pointCount > 2) ? (pointCount * 2) + 2 : 0 );
 
     this.m_needsUpdate = false;
     this.m_needsColorUpdate = false;

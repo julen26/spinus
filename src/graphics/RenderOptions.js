@@ -11,7 +11,7 @@ sp.RenderOptions = function(transform, texture, shader, blendMode) {
     * Blend mode.
     * @type BlendMode
     */
-    this.blendMode = blendMode || sp.BlendMode.Alpha;
+    this.blendMode = blendMode || sp.BlendMode.ALPHA;
     /**
     * Transform matrix.
     * @type Transform

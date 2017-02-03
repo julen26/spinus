@@ -176,7 +176,7 @@ sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     //Set blend mode
     var blendMode = renderOptions.blendMode;
     if (!blendMode) {
-        blendMode = sp.BlendMode.Alpha;
+        blendMode = sp.BlendMode.ALPHA;
     }
     var factors = [gl.ZERO, gl.ONE, 
         gl.SRC_COLOR, gl.ONE_MINUS_SRC_COLOR, gl.DST_COLOR, gl.ONE_MINUS_DST_COLOR,

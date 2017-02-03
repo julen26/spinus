@@ -11,7 +11,7 @@ goog.require('sp.Vertex');
 * @param {int} vertexCount - Initial number of vertices
 */
 sp.VertexArray = function(type, vertexCount) {
-	this.m_primitiveType = type || sp.PrimitiveType.Points;
+	this.m_primitiveType = type || sp.PrimitiveType.POINTS;
     this.m_vertices = [];
     vertexCount = vertexCount || 0;
     for (var i = 0; i < vertexCount; i++) {

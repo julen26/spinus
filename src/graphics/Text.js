@@ -13,11 +13,11 @@ goog.require('sp.Color');
 * @enum {number}
 */
 sp.TextStyle = {
-    Normal : 0,
-    Bold : 1,
-    Italic : 2,
-    Underline : 4,
-    StrikeThrough : 8
+    NORMAL : 0,
+    BOLD : 1,
+    ITALIC : 2,
+    UNDERLINE : 4,
+    STRIKETHROUGH : 8
 };
 
 /**
@@ -43,10 +43,10 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     this.m_height = height || 100;
     this.m_font = font || "Arial";
     this.m_characterSize = characterSize || 12;
-    this.m_style = style || sp.TextStyle.Normal;
+    this.m_style = style || sp.TextStyle.NORMAL;
     this.m_color = color || new sp.Color();
 
-    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, 4);
+    this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
     this.m_vertexArray.getVertex(0).texCoords = new sp.Vector2(0, 0);
     this.m_vertexArray.getVertex(1).texCoords = new sp.Vector2(1, 0);
     this.m_vertexArray.getVertex(2).texCoords = new sp.Vector2(1, 1);
@@ -135,10 +135,10 @@ sp.Text.prototype.updateTexture = function (context) {
         ctx.fillStyle = "rgba(" + this.m_color.r + ", " + this.m_color.g + ", " + this.m_color.b + ", " + (this.m_color.a / 255) + ")";
 
         var font = this.m_characterSize + "px " + this.m_font;
-        if ((this.m_style & sp.TextStyle.Bold) != 0) {
+        if ((this.m_style & sp.TextStyle.BOLD) != 0) {
             font = "bold " + font;
         }
-        if ((this.m_style & sp.TextStyle.Italic) != 0) {
+        if ((this.m_style & sp.TextStyle.ITALIC) != 0) {
             font = "italic " + font;
         }
         ctx.font = font;
@@ -164,7 +164,7 @@ sp.Text.prototype.updateTexture = function (context) {
             endX = textWidth;
         }
         var lineY;
-        if ((this.m_style & sp.TextStyle.Underline) != 0) {
+        if ((this.m_style & sp.TextStyle.UNDERLINE) != 0) {
             lineY = this.m_characterSize;
             ctx.beginPath();
             ctx.strokeStyle = ctx.fillStyle;
@@ -173,7 +173,7 @@ sp.Text.prototype.updateTexture = function (context) {
             ctx.lineTo(endX, lineY);
             ctx.stroke();
         }
-        if ((this.m_style & sp.TextStyle.StrikeThrough) != 0) {
+        if ((this.m_style & sp.TextStyle.STRIKETHROUGH) != 0) {
             lineY = this.m_characterSize / 1.5;
             ctx.beginPath();
             ctx.strokeStyle = ctx.fillStyle;

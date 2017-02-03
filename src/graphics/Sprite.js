@@ -18,7 +18,7 @@ sp.Sprite = function(texture) {
 	//Call base constructor
     sp.Transformable.call(this);
 
-	this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TriangleFan, 4);
+	this.m_vertexArray = new sp.VertexArray(sp.PrimitiveType.TRIANGLE_FAN, 4);
 
 	this.setTexture(texture);
 };
