@@ -142,7 +142,7 @@ sp.Shader.prototype.uniformiv = function (parameter, values) {
     var length = values.length;
     if (length > 0 && length < 5)
     {
-        gl["uniform" + length + "iv"](uniform, new int32Array(values));
+        gl['uniform' + length + 'iv'](uniform, new int32Array(values));
     }
 };
 
@@ -159,7 +159,7 @@ sp.Shader.prototype.uniformfv = function (parameter, values) {
     var length = values.length;
     if (length > 0 && length < 5)
     {
-        gl["uniform" + length + "fv"](uniform, new Float32Array(values));
+        gl['uniform' + length + 'fv'](uniform, new Float32Array(values));
     }
 };
 
@@ -195,41 +195,41 @@ sp.DefaultShader = function (context, hasTexture) {
     hasTexture = hasTexture || false;
     var shader = new sp.Shader(context);
     shader.compile(
-            "\n#define hasTexture " + ((hasTexture == true) ? "1" : "0") + "\n"
-        +   "\n#if hasTexture\n"
-        +      "attribute vec2 a_texCoord;"
-        +      "varying vec2 v_texCoord;"
-        +   "\n#endif\n"
-        +   "attribute vec2 a_position;"
-        +   "attribute vec4 a_color;"
-        +   "uniform vec2 u_resolution;"
-        +   "uniform mat4 u_transform;"
-        +   "uniform mat4 u_view;"
-        +   "uniform mat4 u_projection;"
-        +   "varying vec4 v_color;"
-        +   "void main() {"
-        +       "\n#if hasTexture\n"
-        +          "v_texCoord = a_texCoord;"
-        +       "\n#endif\n"
-        +       "gl_Position = vec4( (u_projection * u_view * u_transform * vec4(a_position, 0, 1)).xy, 0, 1);"
-        +       "v_color = a_color;"
-        +   "}"
+            '\n#define hasTexture ' + ((hasTexture == true) ? '1' : '0') + '\n'
+        +   '\n#if hasTexture\n'
+        +      'attribute vec2 a_texCoord;'
+        +      'varying vec2 v_texCoord;'
+        +   '\n#endif\n'
+        +   'attribute vec2 a_position;'
+        +   'attribute vec4 a_color;'
+        +   'uniform vec2 u_resolution;'
+        +   'uniform mat4 u_transform;'
+        +   'uniform mat4 u_view;'
+        +   'uniform mat4 u_projection;'
+        +   'varying vec4 v_color;'
+        +   'void main() {'
+        +       '\n#if hasTexture\n'
+        +          'v_texCoord = a_texCoord;'
+        +       '\n#endif\n'
+        +       'gl_Position = vec4( (u_projection * u_view * u_transform * vec4(a_position, 0, 1)).xy, 0, 1);'
+        +       'v_color = a_color;'
+        +   '}'
         ,
-            "precision mediump float;"
-        +   "\n#define hasTexture " + ((hasTexture  == true) ? "1" : "0") + "\n"
-        +   "\n#if hasTexture\n"
-        +       "uniform sampler2D u_image;"
-        +       "varying vec2 v_texCoord;"
-        +   "\n#endif\n"
-        +   "varying vec4 v_color;"
-        +   "void main() {"
-        +       "\n#if hasTexture\n"
-        +           "vec4 tex = texture2D(u_image, v_texCoord);"
-        +           "gl_FragColor = tex * v_color;"
-        +       "\n#else\n"
-        +           "gl_FragColor = v_color;"
-        +       "\n#endif\n"
-        +   "}"
+            'precision mediump float;'
+        +   '\n#define hasTexture ' + ((hasTexture  == true) ? '1' : '0') + '\n'
+        +   '\n#if hasTexture\n'
+        +       'uniform sampler2D u_image;'
+        +       'varying vec2 v_texCoord;'
+        +   '\n#endif\n'
+        +   'varying vec4 v_color;'
+        +   'void main() {'
+        +       '\n#if hasTexture\n'
+        +           'vec4 tex = texture2D(u_image, v_texCoord);'
+        +           'gl_FragColor = tex * v_color;'
+        +       '\n#else\n'
+        +           'gl_FragColor = v_color;'
+        +       '\n#endif\n'
+        +   '}'
         );
     return shader;
 };

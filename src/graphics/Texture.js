@@ -66,7 +66,7 @@ sp.Texture.prototype.handleLoadedTexture = function () {
     	gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
 
         if (this.forcePOT_ && !this.isPowerOfTwo()) {
-            var ctx = document.createElement("canvas").getContext("2d");
+            var ctx = document.createElement('canvas').getContext('2d');
             ctx.canvas.width = this.nextHighestPowerOfTwo(this.size_.x);
             ctx.canvas.height = this.nextHighestPowerOfTwo(this.size_.y);
             ctx.drawImage(this.image_, 0, 0, this.image_.width, this.image_.height);

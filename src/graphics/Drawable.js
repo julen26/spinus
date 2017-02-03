@@ -15,5 +15,5 @@ sp.Drawable = function() {
 * @param {RenderOptions} renderOptions - Render options
 */
 sp.Drawable.prototype.draw = function (context, renderOptions) {
-    throw "Drawable object must implement the method: draw";
+    throw 'Drawable object must implement the method: draw';
 };

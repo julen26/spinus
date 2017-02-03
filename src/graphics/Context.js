@@ -18,18 +18,18 @@ sp.Context = function(canvasId) {
     this.gl_ = null;
 
     if (!this.canvas_) {
-        throw "Specified canvas element is missing.";
+        throw 'Specified canvas element is missing.';
     }
 
     if (window.WebGLRenderingContext) {
-        this.gl_ = this.canvas_.getContext("webgl") || this.canvas_.getContext("experimental-webgl");   
+        this.gl_ = this.canvas_.getContext('webgl') || this.canvas_.getContext('experimental-webgl');   
     }
     else {
-        throw "WebGL context is required and it's not supported by the browser."
+        throw 'WebGL context is required and it\'s not supported by the browser.'
     }
 
     if (!this.gl_) {
-        throw "Unable to initialize a valid context. Your browser may not support it."
+        throw 'Unable to initialize a valid context. Your browser may not support it.'
     }
 
     /** @protected */
@@ -223,29 +223,29 @@ sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
 
     //Bind buffer to attributes
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    var positionAttribute = renderOptions.shader.getAttribLocation("a_position");
+    var positionAttribute = renderOptions.shader.getAttribLocation('a_position');
     gl.enableVertexAttribArray(positionAttribute);
     gl.vertexAttribPointer(positionAttribute, 2, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexColorBuffer);
-    var colorAttribute = renderOptions.shader.getAttribLocation("a_color");
+    var colorAttribute = renderOptions.shader.getAttribLocation('a_color');
     gl.enableVertexAttribArray(colorAttribute);
     gl.vertexAttribPointer(colorAttribute, 4, gl.FLOAT, false, 0, 0);
 
     if (renderOptions.texture) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTexCoordsBuffer);
-        var texCoordsAttribute = renderOptions.shader.getAttribLocation("a_texCoord");
+        var texCoordsAttribute = renderOptions.shader.getAttribLocation('a_texCoord');
         gl.enableVertexAttribArray(texCoordsAttribute);
         gl.vertexAttribPointer(texCoordsAttribute, 2, gl.FLOAT, false, 0, 0);
     }
 
-    renderOptions.shader.uniformfv("u_resolution", [this.viewportWidth_, this.viewportHeight_]);
+    renderOptions.shader.uniformfv('u_resolution', [this.viewportWidth_, this.viewportHeight_]);
     var transformMatrix = renderOptions.transform.getMatrix();
-    renderOptions.shader.uniformMatrixfv("u_transform", transformMatrix);
+    renderOptions.shader.uniformMatrixfv('u_transform', transformMatrix);
     var viewMatrix = this.currentView_.getTransform().getMatrix();
-    renderOptions.shader.uniformMatrixfv("u_view", viewMatrix);
+    renderOptions.shader.uniformMatrixfv('u_view', viewMatrix);
     var projectionMatrix = this.currentView_.getProjection().getMatrix();
-    renderOptions.shader.uniformMatrixfv("u_projection", projectionMatrix);
+    renderOptions.shader.uniformMatrixfv('u_projection', projectionMatrix);
 
     var viewport = this.currentView_.getViewport();
     gl.viewport(viewport.x * this.viewportWidth_, this.viewportHeight_ - (viewport.y + viewport.h) * this.viewportHeight_, viewport.w * this.viewportWidth_, viewport.h * this.viewportHeight_);

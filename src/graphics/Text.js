@@ -25,10 +25,10 @@ sp.TextStyle = {
 * @class Represents a Text object
 * @extends Transformable
 * @extends Drawable
-* @param {string} [str=""] - Text's string
+* @param {string} [str=''] - Text's string
 * @param {string} [width=100] - Width
 * @param {string} [height=100] - Height
-* @param {string} [font="Arial"] - Font
+* @param {string} [font='Arial'] - Font
 * @param {string} [characterSize=12] - Character size
 * @param {string} [style=TextStyle.Normal] - Text style
 * @param {string} [color=Black] - Color
@@ -41,7 +41,7 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     this.texture_ = null;
 
     /** @private */
-    this.string_ = "";
+    this.string_ = '';
 
     /** @private */
     this.width_ = width || 100;
@@ -49,7 +49,7 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     this.height_ = height || 100;
 
     /** @private */
-    this.font_ = font || "Arial";
+    this.font_ = font || 'Arial';
     /** @private */
     this.characterSize_ = characterSize || 12;
     /** @private */
@@ -79,7 +79,7 @@ sp.extend(sp.Text, sp.Drawable);
 * @param {string} str - Text content
 */
 sp.Text.prototype.setString = function (str) {
-    str = str || "";
+    str = str || '';
     if (str != this.string_) {
         this.string_ = str;
         this.needsTextureUpdate_ = true;
@@ -138,25 +138,25 @@ sp.Text.prototype.setColor = function (color) {
 */
 sp.Text.prototype.updateTexture = function (context) {
     var gl = context.GL();
-    var ctx = document.createElement("canvas").getContext("2d");
+    var ctx = document.createElement('canvas').getContext('2d');
 
     if (ctx) {
         ctx.width = this.width_;
         ctx.height = this.height_;
         ctx.canvas.width = this.width_;
         ctx.canvas.height = this.height_;
-        ctx.fillStyle = "rgba(" + this.color_.r + ", " + this.color_.g + ", " + this.color_.b + ", " + (this.color_.a / 255) + ")";
+        ctx.fillStyle = 'rgba(' + this.color_.r + ', ' + this.color_.g + ', ' + this.color_.b + ', ' + (this.color_.a / 255) + ')';
 
-        var font = this.characterSize_ + "px " + this.font_;
+        var font = this.characterSize_ + 'px ' + this.font_;
         if ((this.style_ & sp.TextStyle.BOLD) != 0) {
-            font = "bold " + font;
+            font = 'bold ' + font;
         }
         if ((this.style_ & sp.TextStyle.ITALIC) != 0) {
-            font = "italic " + font;
+            font = 'italic ' + font;
         }
         ctx.font = font;
 
-        ctx.textBaseline = "top";
+        ctx.textBaseline = 'top';
         ctx.fillText(this.string_, 0, 0);
 
         //Underline and strikethrough
@@ -164,11 +164,11 @@ sp.Text.prototype.updateTexture = function (context) {
         var lineHeight = this.characterSize_ / 15;
         var startX;
         var endX;
-        if (ctx.textAlign == "center") {
+        if (ctx.textAlign == 'center') {
             startX = -textWidth / 2;
             endX = textWidth / 2;
         }
-        else if (ctx.textAlign == "right") {
+        else if (ctx.textAlign == 'right') {
             startX = -textWidth;
             endX = 0;
         }
