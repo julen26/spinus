@@ -5,9 +5,9 @@ goog.require('sp.Shape');
 /**
 * Constructs CircleShape objects
 * @class Represents a CircleShape object
-* @extends Shape
-* @param {float} radius - Radius
-* @param {Color} color - Color
+* @extends sp.Shape
+* @param {float} radius Radius
+* @param {sp.Color} color Color
 */
 sp.CircleShape = function(radius, color) {
     sp.Shape.call(this, 30);
@@ -25,7 +25,7 @@ sp.extend(sp.CircleShape, sp.Shape);
 * Sets radius of the circle
 *
 * @method
-* @param {float} radius - Radius
+* @param {float} radius Radius
 */
 sp.CircleShape.prototype.setRadius = function (radius) {
     this.radius_ = radius;
@@ -37,7 +37,7 @@ sp.CircleShape.prototype.setRadius = function (radius) {
 * Default value is 30.
 *
 * @method
-* @param {int} pointCount - Points
+* @param {int} pointCount Points
 */
 sp.CircleShape.prototype.setPointCount = function (pointCount) {
     sp.Shape.prototype.setPointCount.call(this, pointCount);
@@ -65,7 +65,7 @@ sp.CircleShape.prototype.update = function () {
 * Sets an uniform fill color
 *
 * @method
-* @param {Color} color - Fill color
+* @param {sp.Color} color Fill color
 */
 sp.CircleShape.prototype.setColor = function (color) {
     color = color || new sp.Color();

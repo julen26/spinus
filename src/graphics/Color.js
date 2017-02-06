@@ -3,10 +3,10 @@ goog.provide('sp.Color');
 /**
 * Constructs Color objects
 * @class Represents a Color object
-* @param {int} r - Red component
-* @param {int} g - Green component
-* @param {int} b - Blue component
-* @param {int} a - Alpha component
+* @param {int} r Red component
+* @param {int} g Green component
+* @param {int} b Blue component
+* @param {int} a Alpha component
 */
 sp.Color = function(r, g, b, a) {
     /**
@@ -71,11 +71,11 @@ sp.Color.prototype.getHexString = function () {
 * Creates a new Color object from normalized color components (in range 0.0-1.0)
 *
 * @method
-* @param {float} r - Red component
-* @param {float} g - Green component
-* @param {float} b - Blue component
-* @param {float} a - Alpha component
-* @return {Color} New color object
+* @param {float} r Red component
+* @param {float} g Green component
+* @param {float} b Blue component
+* @param {float} a Alpha component
+* @return {sp.Color} New color object
 */
 sp.Color.fromNormalized = function (r, g, b, a) {
     return new sp.Color(r * 255, g * 255, b * 255, a * 255);
@@ -85,7 +85,7 @@ sp.Color.fromNormalized = function (r, g, b, a) {
 * Creates a new Color object randomly
 *
 * @method
-* @return {Color} New color object
+* @return {sp.Color} New color object
 */
 sp.Color.random = function () {
     return sp.Color.fromNormalized(Math.random(), Math.random(), Math.random(), Math.random());
@@ -95,8 +95,8 @@ sp.Color.random = function () {
 * Creates a new Color from a hexadecimal format
 *
 * @method
-* @param {string} hex - Color in hex format
-* @return {Color} New color object
+* @param {string} hex Color in hex format
+* @return {sp.Color} New color object
 */
 sp.Color.fromHex = function (hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -107,8 +107,8 @@ sp.Color.fromHex = function (hex) {
 * Creates a new Color from a given HTML color name
 *
 * @method
-* @param {string} colorName - Color name
-* @return {Color} New color object
+* @param {string} colorName Color name
+* @return {sp.Color} New color object
 */
 sp.Color.fromName = function (colorName) {
     var colors = {'aliceblue':'#f0f8ff','antiquewhite':'#faebd7','aqua':'#00ffff','aquamarine':'#7fffd4','azure':'#f0ffff',

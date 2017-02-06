@@ -4,10 +4,10 @@ goog.require('sp.Vector2');
 /**
 * Constructs Texture objects
 * @class Represents a Texture object
-* @param {Context} context - Context
-* @param {bool} [smooth=false] - Color
-* @param {bool} [repeat=false] - Color
-* @param {bool} [forcePOT=false] - Color
+* @param {sp.Context} context Context
+* @param {bool} [smooth=false] Color
+* @param {bool} [repeat=false] Color
+* @param {bool} [forcePOT=false] Color
 */
 sp.Texture = function(context, smooth, repeat, forcePOT) {
     /** @private */
@@ -35,8 +35,8 @@ sp.Texture = function(context, smooth, repeat, forcePOT) {
 * Loads the image from file
 *
 * @method
-* @param {string} sourcePath - Path of the image file must be in the same domain
-* @param {function} callback - Callback function
+* @param {string} sourcePath Path of the image file must be in the same domain
+* @param {function} callback Callback function
 */
 sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
     this.image_ = new Image();
@@ -49,7 +49,7 @@ sp.Texture.prototype.loadFromFile = function (sourcePath, callback) {
 * Loads the image from HTML image element
 *
 * @method
-* @param {HTMLImageElement} image - HTML image element
+* @param {HTMLImageElement} image HTML image element
 */
 sp.Texture.prototype.loadFromImage = function (image) {
     this.image_ = image;
@@ -111,7 +111,7 @@ sp.Texture.prototype.getTextureId = function () {
 * Get texture size
 *
 * @method
-* @returns {Vector2} image - HTML image element
+* @returns {sp.Vector2} image HTML image element
 */
 sp.Texture.prototype.getSize = function () {
     return this.size_;
@@ -121,7 +121,7 @@ sp.Texture.prototype.getSize = function () {
 * Enable or disable smooth mode.
 *
 * @method
-* @param {bool} smooth - Enable smooth mode
+* @param {bool} smooth Enable smooth mode
 */
 sp.Texture.prototype.setSmooth = function (smooth) {
     gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
@@ -139,7 +139,7 @@ sp.Texture.prototype.setSmooth = function (smooth) {
 * Enable or disable repeat mode.
 *
 * @method
-* @param {bool} repeat - Enable repeat mode
+* @param {bool} repeat Enable repeat mode
 */
 sp.Texture.prototype.setRepeat = function (repeat) {
     gl.bindTexture(gl.TEXTURE_2D, this.textureId_);
@@ -171,7 +171,7 @@ sp.Texture.prototype.isPowerOfTwo = function () {
 * Get next highest power of two
 *
 * @method
-* @param {int} p - Integer
+* @param {int} p Integer
 * @returns {int} Next highest power of two
 */
 sp.Texture.prototype.nextHighestPowerOfTwo = function (p) {

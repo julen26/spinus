@@ -5,24 +5,24 @@ goog.require('sp.Color');
 /**
 * Constructs Vertex objects
 * @class Represents a Vertex object
-* @param {Vector2} position - Position
-* @param {Color} color - Color
-* @param {Vector2} texCoords - Texture coordinates
+* @param {sp.Vector2} position Position
+* @param {sp.Color} color Color
+* @param {sp.Vector2} texCoords Texture coordinates
 */
 sp.Vertex = function(position, color, texCoords) {
     /**
     * Position
-    * @type Vector2
+    * @type sp.Vector2
     */
     this.position = position || new sp.Vector2(0, 0);
     /**
     * Color
-    * @type Color
+    * @type sp.Color
     */
     this.color = color || new sp.Color(255, 255, 255);
     /**
     * Texture coordinates
-    * @type Float
+    * @type sp.Vector2
     */
     this.texCoords = texCoords || new sp.Vector2(0, 0);
 };
@@ -30,9 +30,9 @@ sp.Vertex = function(position, color, texCoords) {
 /**
 * Sets vertex components
 * @method
-* @param {Vector2} position - Position
-* @param {Color} color - Color
-* @param {Vector2} texCoords - Texture coordinates
+* @param {sp.Vector2} position Position
+* @param {sp.Color} color Color
+* @param {sp.Vector2} texCoords Texture coordinates
 */
 sp.Vertex.prototype.set = function (position, color, texCoords) {
     this.position = position;

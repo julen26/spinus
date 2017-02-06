@@ -19,15 +19,15 @@ sp.Transform = function() {
 * Sets the matrix
 *
 * @method
-* @param {float} a00 - 0,0 component
-* @param {float} a01 - 0,1 component
-* @param {float} a02 - 0,2 component
-* @param {float} a10 - 1,0 component
-* @param {float} a11 - 1,1 component
-* @param {float} a12 - 1,2 component
-* @param {float} a20 - 2,0 component
-* @param {float} a21 - 2,1 component
-* @param {float} a22 - 2,2 component
+* @param {float} a00 0,0 component
+* @param {float} a01 0,1 component
+* @param {float} a02 0,2 component
+* @param {float} a10 1,0 component
+* @param {float} a11 1,1 component
+* @param {float} a12 1,2 component
+* @param {float} a20 2,0 component
+* @param {float} a21 2,1 component
+* @param {float} a22 2,2 component
 */
 sp.Transform.prototype.set = function (a00, a01, a02,
                                         a10, a11, a12,
@@ -52,7 +52,7 @@ sp.Transform.prototype.getMatrix = function () {
 * Gets new inverse transform
 *
 * @method
-* @returns {Transform} Inverse transform or identity if determinant is zero
+* @returns {sp.Transform} Inverse transform or identity if determinant is zero
 */
 sp.Transform.prototype.getInverse = function () {
     var det =   this.matrix_[0] * (this.matrix_[15] * this.matrix_[5] - this.matrix_[7] * this.matrix_[13]) -
@@ -79,8 +79,8 @@ sp.Transform.prototype.getInverse = function () {
 * Combines the given transform
 *
 * @method
-* @param {Transform} transform - Transform to combine
-* @returns {Transform} New combined transform
+* @param {sp.Transform} transform Transform to combine
+* @returns {sp.Transform} New combined transform
 */
 sp.Transform.prototype.combine = function (transform) {
     var a = this.matrix_;
@@ -104,9 +104,9 @@ sp.Transform.prototype.combine = function (transform) {
 * Translates the transform
 *
 * @method
-* @param {float} x - X translation
-* @param {float} y - Y translation
-* @returns {Transform} New translated transform
+* @param {float} x X translation
+* @param {float} y Y translation
+* @returns {sp.Transform} New translated transform
 */
 sp.Transform.prototype.translate = function (x, y) {
     var translation = new sp.Transform();
@@ -120,9 +120,9 @@ sp.Transform.prototype.translate = function (x, y) {
 * Scales the transform
 *
 * @method
-* @param {float} x - X scale factor
-* @param {float} y - Y scale factor
-* @returns {Transform} New scaled transform
+* @param {float} x X scale factor
+* @param {float} y Y scale factor
+* @returns {sp.Transform} New scaled transform
 */
 sp.Transform.prototype.scale = function (x, y) {
     var scaling = new sp.Transform();
@@ -136,8 +136,8 @@ sp.Transform.prototype.scale = function (x, y) {
 * Rotates the transform
 *
 * @method
-* @param {float} angle - Rotation angle in degrees
-* @returns {Transform} New rotated transform
+* @param {float} angle Rotation angle in degrees
+* @returns {sp.Transform} New rotated transform
 */
 sp.Transform.prototype.rotate = function (angle) {
     var rad = angle * Math.PI / 180.0;
@@ -155,9 +155,9 @@ sp.Transform.prototype.rotate = function (angle) {
 * Transforms a 2D point
 *
 * @method
-* @param {float} x - X coordinate
-* @param {float} y - Y coordinate
-* @returns {Vector2} New transformed point
+* @param {float} x X coordinate
+* @param {float} y Y coordinate
+* @returns {sp.Vector2} New transformed point
 */
 sp.Transform.prototype.transformPoint = function (x, y) {
     var vec = new Vector2();

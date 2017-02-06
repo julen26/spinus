@@ -8,7 +8,7 @@ goog.require('sp.BlendMode');
 /**
 * Constructs Context objects
 * @class Represents a Context object
-* @param {string} canvasId - ID of the canvas element
+* @param {string} canvasId ID of the canvas element
 */
 sp.Context = function(canvasId) {
     /** @protected */
@@ -105,7 +105,7 @@ sp.Context.prototype.getViewportHeight = function() {
 * Get current active view
 *
 * @method
-* @returns {View} Current view
+* @returns {sp.View} Current view
 */
 sp.Context.prototype.getView = function() {
     return this.currentView_;
@@ -115,7 +115,7 @@ sp.Context.prototype.getView = function() {
 * Set current view
 *
 * @method
-* @param {View} view - View
+* @param {sp.View} view View
 */
 sp.Context.prototype.setView = function(view) {
     return this.currentView_ = view;
@@ -125,7 +125,7 @@ sp.Context.prototype.setView = function(view) {
 * Get default shader
 *
 * @method
-* @returns {Shader} Default shader
+* @returns {sp.Shader} Default shader
 */
 sp.Context.prototype.getDefaultShader = function() {
     return this.defaultShader_;
@@ -135,7 +135,7 @@ sp.Context.prototype.getDefaultShader = function() {
 * Get default textured shader
 *
 * @method
-* @returns {Shader} Default textured shader
+* @returns {sp.Shader} Default textured shader
 */
 sp.Context.prototype.getDefaultShaderTextured = function() {
     return this.defaultShaderTextured_;
@@ -145,7 +145,7 @@ sp.Context.prototype.getDefaultShaderTextured = function() {
 * Clear the context with an optional color
 *
 * @method
-* @param {Color} color - Clear color
+* @param {sp.Color} color Clear color
 */
 sp.Context.prototype.clear = function(color) {
     color = color || new sp.Color();
@@ -157,8 +157,8 @@ sp.Context.prototype.clear = function(color) {
 * Draws a drawable object
 *
 * @method
-* @param {Drawable} drawable - Drawable object
-* @param {RenderOptions} renderOptions - Optional render options
+* @param {sp.Drawable} drawable Drawable object
+* @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Context.prototype.draw = function(drawable, renderOptions) {
     drawable.draw(this, renderOptions || new sp.RenderOptions());
@@ -168,9 +168,9 @@ sp.Context.prototype.draw = function(drawable, renderOptions) {
 * Draws vertices
 *
 * @method
-* @param {List} vertices - Vertices list
-* @param {PrimitiveType} type - Primitive type
-* @param {RenderOptions} renderOptions - Optional render options
+* @param {List} vertices Vertices list
+* @param {sp.PrimitiveType} type Primitive type
+* @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     var gl = this.GL();

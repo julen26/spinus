@@ -10,9 +10,9 @@ goog.require('sp.Rect');
 /**
 * Constructs Sprite objects
 * @class Represents a Sprite object
-* @extends Transformable
-* @extends Drawable
-* @param {Texture} texture - Texture
+* @extends sp.Transformable
+* @extends sp.Drawable
+* @param {sp.Texture} texture Texture
 */
 sp.Sprite = function(texture) {
 	//Call base constructor
@@ -32,7 +32,7 @@ sp.extend(sp.Sprite, sp.Drawable);
 * Set a new texture.
 *
 * @method
-* @param {Texture} texture - Texture
+* @param {sp.Texture} texture Texture
 */
 sp.Sprite.prototype.setTexture = function (texture) {
 	this.texture_ = texture;
@@ -58,7 +58,7 @@ sp.Sprite.prototype.setTexture = function (texture) {
 * Get the texture of the Sprite
 *
 * @method
-* @returns {Texture} Texture
+* @returns {sp.Texture} Texture
 */
 sp.Sprite.prototype.getTexture = function () {
 	return this.texture_;
@@ -68,7 +68,7 @@ sp.Sprite.prototype.getTexture = function () {
 * Set texture coordinates
 *
 * @method
-* @param {Rect} rect - Texture coordinates
+* @param {sp.Rect} rect Texture coordinates
 */
 sp.Sprite.prototype.setTextureRect = function (rect) {
 	if (this.texture_) {
@@ -91,7 +91,7 @@ sp.Sprite.prototype.setTextureRect = function (rect) {
 * Get the texture coordinates.
 *
 * @method
-* @returns {Rect} Texture coordinates
+* @returns {sp.Rect} Texture coordinates
 */
 sp.Sprite.prototype.getTextureRect = function () {
 	return this.textureRect_;
@@ -101,7 +101,7 @@ sp.Sprite.prototype.getTextureRect = function () {
 * Set sprite color.
 *
 * @method
-* @param {Color} color - Color
+* @param {sp.Color} color Color
 */
 sp.Sprite.prototype.setColor = function (color) {
     color = color || new sp.Color();
@@ -116,8 +116,8 @@ sp.Sprite.prototype.setColor = function (color) {
 * Draws the sprite in the given context with optional render options.
 *
 * @method
-* @param {Context} context - Context
-* @param {RenderOptions} renderOptions - Optional render options
+* @param {sp.Context} context Context
+* @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Sprite.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();

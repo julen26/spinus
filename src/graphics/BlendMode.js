@@ -3,42 +3,42 @@ goog.provide('sp.BlendMode');
 /**
 * Constructs BlendMode objects
 * @class Represents a BlendMode object
-* @param {BlendMode.Factor} srcColorFactor - Factor for the source color
-* @param {BlendMode.Factor} dstColorFactor - Factor for the destination color
-* @param {BlendMode.Equation} colorEquation - Color equation
-* @param {BlendMode.Factor} srcAlphaFactor - Factor for the source alpha
-* @param {BlendMode.Factor} dstAlphaFactor - Factor for the destination alpha
-* @param {BlendMode.Equation} alphaEquation - Alpha equation
+* @param {sp.BlendMode.Factor} srcColorFactor Factor for the source color
+* @param {sp.BlendMode.Factor} dstColorFactor Factor for the destination color
+* @param {sp.BlendMode.Equation} colorEquation Color equation
+* @param {sp.BlendMode.Factor} srcAlphaFactor Factor for the source alpha
+* @param {sp.BlendMode.Factor} dstAlphaFactor Factor for the destination alpha
+* @param {sp.BlendMode.Equation} alphaEquation Alpha equation
 */
 sp.BlendMode = function(srcColorFactor, dstColorFactor, colorEquation, srcAlphaFactor, dstAlphaFactor, alphaEquation) {
     /**
     * Factor for the source color
-    * @type BlendMode.Factor
+    * @type sp.BlendMode.Factor
     */
 	this.srcColorFactor = srcColorFactor;
     /**
     * Factor for the destination color
-    * @type BlendMode.Factor
+    * @type sp.BlendMode.Factor
     */
 	this.dstColorFactor = dstColorFactor;
     /**
     * Color equation
-    * @type BlendMode.Equation
+    * @type sp.BlendMode.Equation
     */
 	this.colorEquation = colorEquation = sp.BlendMode.Equation.Add;
     /**
     * Factor for the source alpha
-    * @type BlendMode.Factor
+    * @type sp.BlendMode.Factor
     */
 	this.srcAlphaFactor = srcAlphaFactor || srcColorFactor;
     /**
     * Factor for the destination alpha
-    * @type BlendMode.Factor
+    * @type sp.BlendMode.Factor
     */
 	this.dstAlphaFactor = dstAlphaFactor || dstColorFactor;
     /**
     * Alpha equation
-    * @type BlendMode.Equation
+    * @type sp.BlendMode.Equation
     */
 	this.alphaEquation = alphaEquation || colorEquation;
 };
@@ -74,21 +74,21 @@ sp.BlendMode.Equation = {
 /**
 * Alpha blend mode
 * Note: These are the predefined blend modes assuming that alpha is not premultiplied.
-* @type BlendMode
+* @type sp.BlendMode
 * @const
 */
 sp.BlendMode.ALPHA = new sp.BlendMode(sp.BlendMode.Factor.SRC_ALPHA, sp.BlendMode.Factor.ONE_MINUS_SRC_ALPHA, sp.BlendMode.Equation.ADD,
                                         sp.BlendMode.Factor.ONE, sp.BlendMode.Factor.ONE_MINUS_SRC_ALPHA, sp.BlendMode.Equation.ADD);
 /**
 * Add blend mode
-* @type BlendMode
+* @type sp.BlendMode
 * @const
 */
 sp.BlendMode.ADD = new sp.BlendMode(sp.BlendMode.Factor.SRC_ALPHA, sp.BlendMode.Factor.ONE, sp.BlendMode.Equation.ADD,
                                       sp.BlendMode.Factor.ONE, sp.BlendMode.Factor.ONE, sp.BlendMode.Equation.ADD);
 /**
 * Multiply blend mode
-* @type BlendMode
+* @type sp.BlendMode
 * @const
 */
 sp.BlendMode.MULTIPLY = new sp.BlendMode(sp.BlendMode.Factor.DST_COLOR, sp.BlendMode.Factor.ZERO, sp.BlendMode.Equation.ADD);

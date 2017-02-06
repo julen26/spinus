@@ -6,8 +6,8 @@ goog.require('sp.Rect');
 /**
 * Constructs View objects
 * @class Represents a View object
-* @param {float} w - Width
-* @param {float} h - Height
+* @param {float} w Width
+* @param {float} h Height
 */
 sp.View = function(w, h) {
     /** @private */
@@ -38,7 +38,7 @@ sp.View = function(w, h) {
 * Get the transform matrix.
 *
 * @method
-* @returns {Transform} Transform matrix
+* @returns {sp.Transform} Transform matrix
 */
 sp.View.prototype.getTransform = function () {
     //TODO: Maybe precalculate once projection and view transforms instead of doing each time on shader
@@ -52,7 +52,7 @@ sp.View.prototype.getTransform = function () {
 * Get the projection matrix.
 *
 * @method
-* @returns {Transform} Projection matrix
+* @returns {sp.Transform} Projection matrix
 */
 sp.View.prototype.getProjection = function () {
     return this.projection_;
@@ -62,8 +62,8 @@ sp.View.prototype.getProjection = function () {
 * Changes the center by adding the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.View.prototype.move = function (x, y) {
     this.setCenter(this.center_.x + x, this.center_.y + y);
@@ -73,8 +73,8 @@ sp.View.prototype.move = function (x, y) {
 * Changes the scale by multiplying with given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.View.prototype.scale = function (x, y) {
     this.setScale(this.scale_.x * x, this.scale_.y * y);
@@ -84,7 +84,7 @@ sp.View.prototype.scale = function (x, y) {
 * Changes the rotation by adding the given angle.
 *
 * @method
-* @param {float} angle - Angle
+* @param {float} angle Angle
 */
 sp.View.prototype.rotate = function (angle) {
     this.setRotation(this.rotation_ + angle);
@@ -94,8 +94,8 @@ sp.View.prototype.rotate = function (angle) {
 * Overwrites the scale with the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.View.prototype.setScale = function(x, y) {
     this.scale_.x = x;
@@ -107,7 +107,7 @@ sp.View.prototype.setScale = function(x, y) {
 * Overwrites the rotation with the given angle.
 *
 * @method
-* @param {float} angle - Angle
+* @param {float} angle Angle
 */
 sp.View.prototype.setRotation = function(angle) {
     this.rotation_ = angle % 360;
@@ -122,8 +122,8 @@ sp.View.prototype.setRotation = function(angle) {
 * Overwrites the center with the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.View.prototype.setCenter = function(x, y) {
     this.center_.x = x;
@@ -135,7 +135,7 @@ sp.View.prototype.setCenter = function(x, y) {
 * Sets the viewport.
 *
 * @method
-* @param {Rect} rect - Viewport
+* @param {sp.Rect} rect Viewport
 */
 sp.View.prototype.setViewport = function(rect) {
     this.viewport_ = rect;
@@ -145,7 +145,7 @@ sp.View.prototype.setViewport = function(rect) {
 * Get the scale.
 *
 * @method
-* @returns {Vector2} Scale
+* @returns {sp.Vector2} Scale
 */
 sp.View.prototype.getScale = function() {
     return this.scale_;
@@ -165,7 +165,7 @@ sp.View.prototype.getRotation = function() {
 * Get the center.
 *
 * @method
-* @returns {Vector2} Center
+* @returns {sp.Vector2} Center
 */
 sp.View.prototype.getCenter = function() {
     return this.center_;
@@ -175,7 +175,7 @@ sp.View.prototype.getCenter = function() {
 * Get the viewport.
 *
 * @method
-* @returns {Rect} Viewport
+* @returns {sp.Rect} Viewport
 */
 sp.View.prototype.getViewport = function() {
     return this.viewport_;

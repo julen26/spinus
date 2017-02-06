@@ -3,10 +3,10 @@ goog.provide('sp.Rect');
 /**
 * Constructs Rect objects
 * @class Represents a Rect object
-* @param {float} x - Left
-* @param {float} y - Top
-* @param {float} w - Width
-* @param {float} h - Height
+* @param {float} x Left
+* @param {float} y Top
+* @param {float} w Width
+* @param {float} h Height
 */
 sp.Rect = function(x, y, w, h) {
     /**
@@ -35,10 +35,10 @@ sp.Rect = function(x, y, w, h) {
 * Sets Rect properties
 *
 * @method
-* @param {float} x - Left
-* @param {float} y - Top
-* @param {float} w - Width
-* @param {float} h - Height
+* @param {float} x Left
+* @param {float} y Top
+* @param {float} w Width
+* @param {float} h Height
 */
 sp.Rect.prototype.set = function (x, y, w, h) {
     this.x = x;
@@ -51,7 +51,7 @@ sp.Rect.prototype.set = function (x, y, w, h) {
 * Compares Rect objects and checks if they are equal
 * 
 * @method
-* @param {Rect} rect - Rect to compare with
+* @param {sp.Rect} rect Rect to compare with
 * @return {bool} True if they are equal
 */
 sp.Rect.prototype.equals = function (rect) {

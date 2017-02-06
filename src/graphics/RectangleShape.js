@@ -7,10 +7,10 @@ goog.require('sp.Color');
 /**
 * Constructs RectangleShape objects
 * @class Represents a RectangleShape object
-* @extends Shape
-* @param {float} w - Width
-* @param {float} h - Height
-* @param {Color} color - Color
+* @extends sp.Shape
+* @param {float} w Width
+* @param {float} h Height
+* @param {sp.Color} color Color
 */
 sp.RectangleShape = function(w, h, color) {
     sp.Shape.call(this, 4);
@@ -27,8 +27,8 @@ sp.extend(sp.RectangleShape, sp.Shape);
 * Sets rectangle size
 *
 * @method
-* @param {float} w - Width
-* @param {float} h - Height
+* @param {float} w Width
+* @param {float} h Height
 */
 sp.RectangleShape.prototype.setSize = function (w, h) {
     this.size_ = new sp.Vector2(w, h);
@@ -43,7 +43,7 @@ sp.RectangleShape.prototype.setSize = function (w, h) {
 * Sets an uniform fill color
 *
 * @method
-* @param {Color} color - Fill color
+* @param {sp.Color} color Fill color
 */
 sp.RectangleShape.prototype.setColor = function (color) {
     color = color || new sp.Color();
@@ -58,7 +58,7 @@ sp.RectangleShape.prototype.setColor = function (color) {
 * Gets rectangle size
 *
 * @method
-* @returns {Vector2} Rectangle size
+* @returns {sp.Vector2} Rectangle size
 */
 sp.RectangleShape.prototype.getSize = function () {
     return this.size_;
@@ -68,10 +68,10 @@ sp.RectangleShape.prototype.getSize = function () {
 * Sets a color for each vertex
 *
 * @method
-* @param {Color} color1 - Top-left color
-* @param {Color} color2 - Top-right color
-* @param {Color} color3 - Bottom-right color
-* @param {Color} color4 - Bottom-left color
+* @param {sp.Color} color1 Top-left color
+* @param {sp.Color} color2 Top-right color
+* @param {sp.Color} color3 Bottom-right color
+* @param {sp.Color} color4 Bottom-left color
 */
 sp.RectangleShape.prototype.setColors = function (color1, color2, color3, color4) {
     color1 = color1 || new sp.Color();

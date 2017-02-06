@@ -9,22 +9,22 @@ goog.require('sp.Transform');
 sp.RenderOptions = function(transform, texture, shader, blendMode) {
     /**
     * Blend mode.
-    * @type BlendMode
+    * @type sp.BlendMode
     */
     this.blendMode = blendMode || sp.BlendMode.ALPHA;
     /**
     * Transform matrix.
-    * @type Transform
+    * @type sp.Transform
     */
     this.transform = transform || new sp.Transform();
     /**
     * Texture.
-    * @type Texture
+    * @type sp.Texture
     */
     this.texture = texture;
     /**
     * Shader.
-    * @type Shader
+    * @type sp.Shader
     */
     this.shader = shader;
 };

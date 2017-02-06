@@ -4,7 +4,7 @@ goog.provide('sp.DefaultShader');
 /**
 * Constructs Shader objects
 * @class Represents a Shader object
-* @param {Context} context - Context
+* @param {sp.Context} context Context
 */
 sp.Shader = function(context) {
     /** @private */
@@ -37,8 +37,8 @@ sp.Shader.prototype.getShaderProgram = function () {
 * Compiles the shader source codes
 *
 * @method
-* @param {string} vertexShaderSource - Vertex shader source code
-* @param {string} fragmentShaderSource - Fragment shader source code
+* @param {string} vertexShaderSource Vertex shader source code
+* @param {string} fragmentShaderSource Fragment shader source code
 */
 sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource) {
     var gl = this.context_.GL();
@@ -70,8 +70,8 @@ sp.Shader.prototype.compile = function (vertexShaderSource, fragmentShaderSource
 * Loads and compiles the shader from scripts in HTML
 *
 * @method
-* @param {string} vertexShaderScriptId - ID of the script tag that contains the vertex shader
-* @param {string} fragmentShaderScriptId - ID of the script tag that contains the fragment shader
+* @param {string} vertexShaderScriptId ID of the script tag that contains the vertex shader
+* @param {string} fragmentShaderScriptId ID of the script tag that contains the fragment shader
 */
 sp.Shader.prototype.loadFromScript = function (vertexShaderScriptId, fragmentShaderScriptId) {
     var gl = this.context_.GL();
@@ -97,7 +97,7 @@ sp.Shader.prototype.use = function () {
 * Gets the location of the uniform mapped to a parameter. Creates and maps a new one if it doesn't exist.
 *
 * @method
-* @param {string} parameter - Parameter name
+* @param {string} parameter Parameter name
 * @return {WebGLUniformLocation} Location of the uniform
 */
 sp.Shader.prototype.getUniformLocation = function (parameter) {
@@ -114,7 +114,7 @@ sp.Shader.prototype.getUniformLocation = function (parameter) {
 * Gets the location of the attribute mapped to a parameter. Creates and maps a new one if it doesn't exist.
 *
 * @method
-* @param {string} parameter - Parameter name
+* @param {string} parameter Parameter name
 * @return {int} Location of the uniform
 */
 sp.Shader.prototype.getAttribLocation = function (parameter) {
@@ -133,8 +133,8 @@ sp.Shader.prototype.getAttribLocation = function (parameter) {
 * Set values for an integer parameter of the shader
 *
 * @method
-* @param {string} parameter - Parameter name
-* @param {int[]} values - Array of integers
+* @param {string} parameter Parameter name
+* @param {int[]} values Array of integers
 */
 sp.Shader.prototype.uniformiv = function (parameter, values) {
     var gl = this.context_.GL();
@@ -150,8 +150,8 @@ sp.Shader.prototype.uniformiv = function (parameter, values) {
 * Set values for a float parameter of the shader
 *
 * @method
-* @param {string} parameter - Parameter name
-* @param {float[]} values - Array of floats
+* @param {string} parameter Parameter name
+* @param {float[]} values Array of floats
 */
 sp.Shader.prototype.uniformfv = function (parameter, values) {
     var gl = this.context_.GL();
@@ -167,8 +167,8 @@ sp.Shader.prototype.uniformfv = function (parameter, values) {
 * Set values for a matrix parameter of the shader
 *
 * @method
-* @param {string} parameter - Parameter name
-* @param {float[]} values - Array of floats that represents matrix content 
+* @param {string} parameter Parameter name
+* @param {float[]} values Array of floats that represents matrix content 
 */
 sp.Shader.prototype.uniformMatrixfv = function (parameter, values) {
     var gl = this.context_.GL();
@@ -188,8 +188,8 @@ sp.Shader.prototype.uniformMatrixfv = function (parameter, values) {
 /**
 * Constructs a DefaultShader object
 * @class Represents a shader for 2D games
-* @param {Context} context - Context
-* @param {bool} hasTexture - If the shader has texture
+* @param {sp.Context} context Context
+* @param {bool} hasTexture If the shader has texture
 */
 sp.DefaultShader = function (context, hasTexture) {
     hasTexture = hasTexture || false;

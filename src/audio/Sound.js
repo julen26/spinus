@@ -16,8 +16,8 @@ sp.Sound = function() {
 * Loads the sound from file
 *
 * @method
-* @param {string} sourcePath - Path of the sound file must be in the same domain
-* @param {function} callback - Callback function
+* @param {string} sourcePath Path of the sound file must be in the same domain
+* @param {function} callback Callback function
 */
 sp.Sound.prototype.loadFromFile = function (sourcePath, callback) {
     this.audio_ = new Audio();
@@ -30,7 +30,7 @@ sp.Sound.prototype.loadFromFile = function (sourcePath, callback) {
 * Loads the audio from HTML audio element
 *
 * @method
-* @param {HTMLAudioElement} audio - HTML audio element
+* @param {HTMLAudioElement} audio HTML audio element
 */
 sp.Sound.prototype.loadFromAudio = function (audio) {
     this.audio_ = audio;
@@ -82,7 +82,7 @@ sp.Sound.prototype.stop = function () {
 * Enables or disables the loop.
 *
 * @method
-* @param {bool} loop - Enable loop
+* @param {bool} loop Enable loop
 */
 sp.Sound.prototype.setLoop = function (loop) {
     if (this.audio_) {
@@ -107,7 +107,7 @@ sp.Sound.prototype.getLoop = function () {
 * Set current offset.
 *
 * @method
-* @param {float} sec - Offset in seconds
+* @param {float} sec Offset in seconds
 */
 sp.Sound.prototype.setOffset = function (sec) {
 	if (this.audio_) {
@@ -132,7 +132,7 @@ sp.Sound.prototype.getOffset = function () {
 * Set the speed. It is used to generate what is known as pitch.
 *
 * @method
-* @param {float} speed - Relative speed
+* @param {float} speed Relative speed
 */
 sp.Sound.prototype.setSpeed = function (speed) {
     if (this.audio_) {
@@ -157,7 +157,7 @@ sp.Sound.prototype.getSpeed = function () {
 * Set the volume.
 *
 * @method
-* @param {float} volume - Relative volume
+* @param {float} volume Relative volume
 */
 sp.Sound.prototype.setVolume = function (volume) {
     if (this.audio_) {

@@ -27,7 +27,7 @@ sp.Transformable = function() {
 * Get the transform matrix.
 *
 * @method
-* @returns {Transform} Transform matrix
+* @returns {sp.Transform} Transform matrix
 */
 sp.Transformable.prototype.getTransform = function () {
     if (this.needsUpdate_) {
@@ -40,8 +40,8 @@ sp.Transformable.prototype.getTransform = function () {
 * Changes the position by adding the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.Transformable.prototype.move = function (x, y) {
     this.setPosition(this.position_.x + x, this.position_.y + y);
@@ -51,8 +51,8 @@ sp.Transformable.prototype.move = function (x, y) {
 * Changes the scale by multiplying with given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.Transformable.prototype.scale = function (x, y) {
     this.setScale(this.scale_.x * x, this.scale_.y * y);
@@ -62,7 +62,7 @@ sp.Transformable.prototype.scale = function (x, y) {
 * Changes the rotation by adding the given angle.
 *
 * @method
-* @param {float} angle - Angle
+* @param {float} angle Angle
 */
 sp.Transformable.prototype.rotate = function (angle) {
     this.setRotation(this.rotation_ + angle);
@@ -72,8 +72,8 @@ sp.Transformable.prototype.rotate = function (angle) {
 * Overwrites the scale with the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.Transformable.prototype.setScale = function(x, y) {
     this.scale_.x = x;
@@ -85,8 +85,8 @@ sp.Transformable.prototype.setScale = function(x, y) {
 * Overwrites the origin with the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.Transformable.prototype.setOrigin = function(x, y) {
     this.origin_.x = x;
@@ -98,7 +98,7 @@ sp.Transformable.prototype.setOrigin = function(x, y) {
 * Overwrites the rotation with the given angle.
 *
 * @method
-* @param {float} angle - Angle
+* @param {float} angle Angle
 */
 sp.Transformable.prototype.setRotation = function(angle) {
     this.rotation_ = angle % 360;
@@ -113,8 +113,8 @@ sp.Transformable.prototype.setRotation = function(angle) {
 * Overwrites the position with the given values.
 *
 * @method
-* @param {float} x - X value
-* @param {float} y - Y value
+* @param {float} x X value
+* @param {float} y Y value
 */
 sp.Transformable.prototype.setPosition = function(x, y) {
     this.position_.x = x;
@@ -126,7 +126,7 @@ sp.Transformable.prototype.setPosition = function(x, y) {
 * Get the scale.
 *
 * @method
-* @returns {Vector2} Scale
+* @returns {sp.Vector2} Scale
 */
 sp.Transformable.prototype.getScale = function() {
     return this.scale_;
@@ -136,7 +136,7 @@ sp.Transformable.prototype.getScale = function() {
 * Get the origin.
 *
 * @method
-* @returns {Vector2} Scale
+* @returns {sp.Vector2} Scale
 */
 sp.Transformable.prototype.getOrigin = function() {
     return this.origin_;
@@ -156,7 +156,7 @@ sp.Transformable.prototype.getRotation = function() {
 * Get the position.
 *
 * @method
-* @returns {Vector2} Position
+* @returns {sp.Vector2} Position
 */
 sp.Transformable.prototype.getPosition = function() {
     return this.position_;

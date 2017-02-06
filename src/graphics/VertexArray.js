@@ -6,9 +6,9 @@ goog.require('sp.Vertex');
 /**
 * Constructs VertexArray objects
 * @class Represents a list of vertices and a primitive type
-* @extends Drawable
-* @param {PrimitiveType} type - Primitive type
-* @param {int} vertexCount - Initial number of vertices
+* @extends sp.Drawable
+* @param {sp.PrimitiveType} type Primitive type
+* @param {int} vertexCount Initial number of vertices
 */
 sp.VertexArray = function(type, vertexCount) {
     /** @private */
@@ -37,8 +37,8 @@ sp.VertexArray.prototype.getVertexCount = function () {
 * Gets the vertex in the given position
 *
 * @method
-* @param {int} index - Vertex position in the list
-* @return {Vertex} Vertex at index
+* @param {int} index Vertex position in the list
+* @return {sp.Vertex} Vertex at index
 */
 sp.VertexArray.prototype.getVertex = function (index) {
 	return this.vertices_[index];
@@ -57,7 +57,7 @@ sp.VertexArray.prototype.clear = function () {
 * Adds a new vertex
 *
 * @method
-* @param {Vertex} vertex - Vertex object to add
+* @param {sp.Vertex} vertex Vertex object to add
 */
 sp.VertexArray.prototype.addVertex = function (vertex) {
 	return this.vertices_.push(vertex);
@@ -67,7 +67,7 @@ sp.VertexArray.prototype.addVertex = function (vertex) {
 * Resizes the vertex list, adding default vertices or removing existing ones to match the new length
 *
 * @method
-* @param {int} vertexCount - New length of the vertex list
+* @param {int} vertexCount New length of the vertex list
 */
 sp.VertexArray.prototype.resize = function (vertexCount) {
 	var sub = vertexCount - this.vertices_.length;
@@ -85,7 +85,7 @@ sp.VertexArray.prototype.resize = function (vertexCount) {
 * Gets the primitive type
 *
 * @method
-* @return {PrimitiveType} Primitive type
+* @return {sp.PrimitiveType} Primitive type
 */
 sp.VertexArray.prototype.getPrimitiveType = function () {
     return this.primitiveType_;
@@ -95,7 +95,7 @@ sp.VertexArray.prototype.getPrimitiveType = function () {
 * Sets the primitive type
 *
 * @method
-* @param {PrimitiveType} type - Primitive type
+* @param {sp.PrimitiveType} type Primitive type
 */
 sp.VertexArray.prototype.setPrimitiveType = function (type) {
     this.primitiveType_ = type;
@@ -105,7 +105,7 @@ sp.VertexArray.prototype.setPrimitiveType = function (type) {
 * Draws the primitive in the given context
 *
 * @method
-* @param {Context} context - Context
+* @param {sp.Context} context Context
 */
 sp.VertexArray.prototype.draw = function (context, renderOptions) {
     context.drawVertices(this.vertices_, this.primitiveType_, renderOptions);
@@ -115,7 +115,7 @@ sp.VertexArray.prototype.draw = function (context, renderOptions) {
 * Gets an array with only the position components of given vertices
 *
 * @method
-* @param {Vertex[]} vertices - Vertex array
+* @param {sp.Vertex[]} vertices Vertex array
 * @returns {float[]} Vertex position array
 */
 sp.VertexArray.getPositionArray = function (vertices) {
@@ -131,7 +131,7 @@ sp.VertexArray.getPositionArray = function (vertices) {
 * Gets an array with only the color components of given vertices
 *
 * @method
-* @param {Vertex[]} vertices - Vertex array
+* @param {sp.Vertex[]} vertices Vertex array
 * @returns {float[]} Vertex color array
 */
 sp.VertexArray.getColorArray = function (vertices) {
@@ -149,7 +149,7 @@ sp.VertexArray.getColorArray = function (vertices) {
 * Gets an array with only the texture coordinates of given vertices
 *
 * @method
-* @param {Vertex[]} vertices - Vertex array
+* @param {sp.Vertex[]} vertices Vertex array
 * @returns {float[]} Vertex texture coordinates array
 */
 sp.VertexArray.getTexCoordsArray = function (vertices) {

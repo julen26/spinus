@@ -9,10 +9,10 @@ goog.require('sp.Vector2');
 /**
 * Constructs Shape objects
 * @class Represents a Shape object
-* @extends Transformable
-* @extends Drawable
-* @param {int} pointCount - New length of the point list
-* @param {Texture} texture - Texture
+* @extends sp.Transformable
+* @extends sp.Drawable
+* @param {int} pointCount New length of the point list
+* @param {sp.Texture} texture Texture
 */
 sp.Shape = function(pointCount, texture) {
     //Call base constructor
@@ -46,7 +46,7 @@ sp.extend(sp.Shape, sp.Drawable);
 * Resizes the point list, adding default points or removing existing ones to match the new length.
 *
 * @method
-* @param {int} pointCount - New length of the point list
+* @param {int} pointCount New length of the point list
 */
 sp.Shape.prototype.setPointCount = function (pointCount) {
     this.vertexArray_.resize(pointCount);
@@ -69,8 +69,8 @@ sp.Shape.prototype.getPointCount = function () {
 * Adds a new point to the shape
 *
 * @method
-* @param {Vector2} position - Position of the new point
-* @param {Color} color - Color of the new point
+* @param {sp.Vector2} position Position of the new point
+* @param {sp.Color} color Color of the new point
 */
 sp.Shape.prototype.addPoint = function (position, color) {
     this.vertexArray_.addVertex(sp.Vertex(position, color));
@@ -83,8 +83,8 @@ sp.Shape.prototype.addPoint = function (position, color) {
 * Sets the position of a point
 *
 * @method
-* @param {int} index - Index of the point
-* @param {Vector2} position - New position of the point
+* @param {int} index Index of the point
+* @param {sp.Vector2} position New position of the point
 */
 sp.Shape.prototype.setPointPosition = function (index, position) {
     if (index < this.vertexArray_.getVertexCount()) {
@@ -99,8 +99,8 @@ sp.Shape.prototype.setPointPosition = function (index, position) {
 * Sets the color of a point
 *
 * @method
-* @param {int} index - Index of the point
-* @param {Color} position - New color of the point
+* @param {int} index Index of the point
+* @param {sp.Color} position New color of the point
 */
 sp.Shape.prototype.setPointColor = function (index, color) {
     if (index < this.vertexArray_.getVertexCount()) {
@@ -113,7 +113,7 @@ sp.Shape.prototype.setPointColor = function (index, color) {
 * Sets the outline thickness
 *
 * @method
-* @param {float} outlineThickness - Outline thickness
+* @param {float} outlineThickness Outline thickness
 */
 sp.Shape.prototype.setOutlineThickness = function (outlineThickness) {
     this.outlineThickness_ = outlineThickness;
@@ -124,7 +124,7 @@ sp.Shape.prototype.setOutlineThickness = function (outlineThickness) {
 * Sets the outline color
 *
 * @method
-* @param {Color} color - Color of the outline
+* @param {sp.Color} color Color of the outline
 */
 sp.Shape.prototype.setOutlineColor = function (color) {
     this.outlineColor_ = color;
@@ -192,7 +192,7 @@ sp.Shape.prototype.updateOutline = function () {
 * Sets a texture to the shape.
 *
 * @method
-* @param {Texture} texture - Texture
+* @param {sp.Texture} texture Texture
 */
 sp.Shape.prototype.setTexture = function (texture) {
     this.texture_ = texture;
@@ -213,7 +213,7 @@ sp.Shape.prototype.setTexture = function (texture) {
 * Get the texture of the shape.
 *
 * @method
-* @returns {Texture} Texture
+* @returns {sp.Texture} Texture
 */
 sp.Shape.prototype.getTexture = function () {
     return this.texture_;
@@ -239,8 +239,8 @@ sp.Shape.prototype.updateTexCoords = function () {
 * Draws the shape in the given context.
 *
 * @method
-* @param {Context} context - Context
-/ @param {RenderOptions} renderOptions - Optional render options
+* @param {sp.Context} context Context
+/ @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Shape.prototype.draw = function (context, renderOptions) {
     renderOptions.transform = this.getTransform();

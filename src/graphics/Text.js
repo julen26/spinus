@@ -23,15 +23,15 @@ sp.TextStyle = {
 /**
 * Constructs Text objects
 * @class Represents a Text object
-* @extends Transformable
-* @extends Drawable
-* @param {string} [str=''] - Text's string
-* @param {string} [width=100] - Width
-* @param {string} [height=100] - Height
-* @param {string} [font='Arial'] - Font
-* @param {string} [characterSize=12] - Character size
-* @param {string} [style=TextStyle.Normal] - Text style
-* @param {string} [color=Black] - Color
+* @extends sp.Transformable
+* @extends sp.Drawable
+* @param {string} [str=''] Text's string
+* @param {float} [width=100] Width
+* @param {float} [height=100] Height
+* @param {string} [font='Arial'] Font
+* @param {float} [characterSize=12] Character size
+* @param {sp.TextStyle} [style=sp.TextStyle.Normal] Text style
+* @param {string} [color=Black] Color
 */
 sp.Text = function(str, width, height, font, characterSize, style, color) {
     //Call base constructor
@@ -76,7 +76,7 @@ sp.extend(sp.Text, sp.Drawable);
 * Set text content.
 *
 * @method
-* @param {string} str - Text content
+* @param {string} str Text content
 */
 sp.Text.prototype.setString = function (str) {
     str = str || '';
@@ -90,7 +90,7 @@ sp.Text.prototype.setString = function (str) {
 * Set font.
 *
 * @method
-* @param {string} font - Font name
+* @param {string} font Font name
 */
 sp.Text.prototype.setFont = function (font) {
     this.font_ = font;
@@ -101,7 +101,7 @@ sp.Text.prototype.setFont = function (font) {
 * Set character size.
 *
 * @method
-* @param {float} characterSize - Character size
+* @param {float} characterSize Character size
 */
 sp.Text.prototype.setCharacterSize = function (characterSize) {
     this.characterSize_ = characterSize;
@@ -112,7 +112,7 @@ sp.Text.prototype.setCharacterSize = function (characterSize) {
 * Set text style.
 *
 * @method
-* @param {TextStyle} style - Text style
+* @param {sp.TextStyle} style Text style
 */
 sp.Text.prototype.setStyle = function (style) {
     this.style_ = style;
@@ -123,7 +123,7 @@ sp.Text.prototype.setStyle = function (style) {
 * Set text color.
 *
 * @method
-* @param {Color} color - Text color
+* @param {sp.Color} color Text color
 */
 sp.Text.prototype.setColor = function (color) {
     this.color_ = color || new sp.Color();
@@ -134,7 +134,7 @@ sp.Text.prototype.setColor = function (color) {
 * Updates the texture that contains the text.
 *
 * @method
-* @param {Context} context - Context
+* @param {sp.Context} context Context
 */
 sp.Text.prototype.updateTexture = function (context) {
     var gl = context.GL();
@@ -216,8 +216,8 @@ sp.Text.prototype.updateTexture = function (context) {
 * Draws the text to the context. First updates the texture if needed.
 *
 * @method
-* @param {Context} context - Context
-* @param {RenderOptions} renderOptions - Optional render options
+* @param {sp.Context} context Context
+* @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Text.prototype.draw = function (context, renderOptions) {
     if (this.needsTextureUpdate_) {
