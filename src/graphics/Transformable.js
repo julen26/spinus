@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Base transformable class implementation
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.Transformable');
 goog.require('sp.Transform');
 goog.require('sp.Vector2');

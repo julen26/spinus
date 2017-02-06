@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview A transformable view class implementation
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.View');
 goog.require('sp.Transform');
 goog.require('sp.Vector2');

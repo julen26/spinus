@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Texture class imlpementation
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.Texture');
 goog.require('sp.Vector2');
 

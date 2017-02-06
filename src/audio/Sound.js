@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Sound class imlpementation
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.Sound');
 
 /**

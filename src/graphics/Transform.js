@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Basic transform class implementation, represented as a 4x4 matrix
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.Transform');
 goog.require('sp.Vector2');
 

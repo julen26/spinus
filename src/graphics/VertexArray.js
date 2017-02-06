@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Implementation of a drawable array of vertices
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.VertexArray');
 goog.require('sp.extend');
 goog.require('sp.Drawable');

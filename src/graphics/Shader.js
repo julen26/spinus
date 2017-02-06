@@ -1,3 +1,10 @@
+// Copyright (c) 2017 Julen Salgado. All rights reserved.
+
+/**
+ * @fileoverview Implementation of shader sources and shader programs unified in one shader class
+ * @author Julen Salgado (julensalgado@gmail.com)
+ */
+
 goog.provide('sp.Shader');
 goog.provide('sp.DefaultShader');
 
