@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Framework test</title>
+    
+    <script src="../release/spinus.js"></script>
+
+    <script>
+    function loadScript_() {
+        var client = new XMLHttpRequest();
+        client.open('GET', './scripts/' + cmbScript.value);
+        client.onreadystatechange = function() {
+            var txtSource = document.getElementById('txtSource');
+            txtSource.value = client.responseText;
+        }
+        client.send();
+    }
+
+    function runScript_() {
+        eval(txtSource.value);
+    }
+    </script>
+  </head>
+<body onload="loadScript_();">
+    <div style="float:left;width:50%;height:90vh;overflow-x:hidden;">
+        <select id="cmbScript" onchange="loadScript_();">
+            <option value="vertexarray.js/">VertexArray</option>
+            <option value="texts.js">Texts</option>
+            <option value="demo.js">Demo</option>
+        </select>
+        <button onclick="runScript_();">Run</button>
+        <br />
+        <textarea id="txtSource" wrap="soft" style="white-space:nowrap;width:100%;height:100%;overflow-x:scroll;overflow-y:scroll;"></textarea>
+    </div>
+    <div style="float:left;">
+        <canvas id="canvas1" width="640" height="480"></canvas>
+    </div>
+</body>
+</html>
