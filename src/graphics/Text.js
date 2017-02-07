@@ -1,12 +1,13 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Text rendering class implementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Text rendering class implementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Text');
 goog.provide('sp.TextStyle');
+goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
 goog.require('sp.Drawable');

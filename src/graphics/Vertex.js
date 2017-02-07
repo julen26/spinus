@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Basic vertex class implementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Basic vertex class implementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Vertex');
+goog.require('sp');
 goog.require('sp.Vector2');
 goog.require('sp.Color');
 

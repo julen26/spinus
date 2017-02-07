@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Basic sprite class implementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Basic sprite class implementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Sprite');
+goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
 goog.require('sp.Drawable');
@@ -13,6 +14,7 @@ goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Color');
 goog.require('sp.Rect');
+goog.require('sp.Texture');
 
 /**
 * Constructs Sprite objects

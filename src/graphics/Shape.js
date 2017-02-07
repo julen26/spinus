@@ -1,17 +1,19 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Base shape class implementation. Used to create other particular drawable shapes, such us circles and rectangles
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Base shape class implementation. Used to create other particular drawable shapes, such us circles and rectangles
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Shape');
+goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
 goog.require('sp.Drawable');
 goog.require('sp.Color');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
+goog.require('sp.Texture');
 
 /**
 * Constructs Shape objects

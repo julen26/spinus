@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Render options class imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Render options class imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.RenderOptions');
+goog.require('sp');
 goog.require('sp.BlendMode');
 goog.require('sp.Transform');
 

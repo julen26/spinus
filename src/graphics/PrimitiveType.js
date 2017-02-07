@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Primitive types definition
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Primitive types definition
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.PrimitiveType');
+goog.require('sp');
 
 /** 
 * Enum for primitive types

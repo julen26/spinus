@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Drawable interface definition
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Drawable interface definition
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Drawable');
+goog.require('sp');
 
 /**
 * Constructs Drawable objects

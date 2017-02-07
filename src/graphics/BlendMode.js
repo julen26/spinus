@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Blend modes imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Blend modes imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.BlendMode');
+goog.require('sp');
 
 /**
 * Constructs BlendMode objects

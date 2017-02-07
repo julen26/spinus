@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Global declarations
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Global declarations
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
- goog.provide('sp');
+goog.provide('sp');
 
- /**
- * @namespace Main Spinus 2D framework namespace
- */
- var sp = sp || {};
+/**
+* @namespace Main Spinus 2D framework namespace
+*/
+var sp = sp || {};

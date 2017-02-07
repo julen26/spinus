@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview A drawable rectangle shape imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview A drawable rectangle shape imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.RectangleShape');
+goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Shape');
 goog.require('sp.Vector2');

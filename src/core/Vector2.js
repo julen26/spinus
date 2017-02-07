@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview 2D vector class imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview 2D vector class imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Vector2');
+goog.require('sp');
 
 /**
 * Constructs Vector2 objects

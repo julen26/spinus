@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Rectangle class imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Rectangle class imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Rect');
+goog.require('sp');
 
 /**
 * Constructs Rect objects

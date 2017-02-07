@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Implementation of inheritance functionalities
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Implementation of inheritance functionalities
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.extend');
+goog.require('sp');
 
 /*
 * Extends the prototype of derived objects with the prototype of base object.

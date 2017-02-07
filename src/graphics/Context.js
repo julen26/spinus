@@ -1,11 +1,12 @@
 // Copyright (c) 2017 Julen Salgado. All rights reserved.
 
 /**
- * @fileoverview Main 2D context imlpementation
- * @author Julen Salgado (julensalgado@gmail.com)
- */
+* @fileoverview Main 2D context imlpementation
+* @author Julen Salgado (julensalgado@gmail.com)
+*/
 
 goog.provide('sp.Context');
+goog.require('sp');
 goog.require('sp.RenderOptions');
 goog.require('sp.DefaultShader');
 goog.require('sp.View');
