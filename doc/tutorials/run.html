@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Framework test</title>
+    
+    <script src="../../release/spinus.js"></script>
+
+    <script>
+		function run_() {
+			var source = sessionStorage.source;
+			var canvas = document.getElementById('canvas1');
+			var mainDiv = document.getElementById('mainDiv');
+			canvas.width = sessionStorage.w;
+			canvas.height = sessionStorage.h;
+			mainDiv.style.width = sessionStorage.w + 'px';
+			mainDiv.style.height = sessionStorage.h + 'px';
+			
+			eval(source);
+			
+			sessionStorage.w = '';
+			sessionStorage.h = '';
+			sessionStorage.source = ''
+		}
+    </script>
+  </head>
+<body onload="run_();">
+	<div id="mainDiv" style="margin:auto;">
+		<canvas id="canvas1" width="640" height="480"></canvas>
+	</div>
+</body>
+</html>

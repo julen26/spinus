@@ -5,37 +5,44 @@
     <meta charset="utf-8">
     <title>Framework test</title>
     
-    <script src="../release/spinus.js"></script>
+    <script src="../../release/spinus.js"></script>
 
     <script>
-    function loadScript_() {
-        var client = new XMLHttpRequest();
-        client.open('GET', './scripts/' + cmbScript.value);
-        client.onreadystatechange = function() {
-            var txtSource = document.getElementById('txtSource');
-            txtSource.value = client.responseText;
-        }
-        client.send();
-    }
+		function loadScript_() {
+			var client = new XMLHttpRequest();
+			client.open('GET', './scripts/' + cmbScript.value);
+			client.onreadystatechange = function() {
+				var txtSource = document.getElementById('txtSource');
+				txtSource.value = client.responseText;
+			}
+			client.send();
+		}
 
-    function runScript_() {
-        eval(txtSource.value);
-    }
+		function runScript_() {
+			sessionStorage.w = document.getElementById('txtWidth').value;
+			sessionStorage.h = document.getElementById('txtHeight').value;
+			sessionStorage.source = document.getElementById('txtSource').value
+			window.open('run.html', '_blank');
+		}
     </script>
   </head>
 <body onload="loadScript_();">
-    <div style="float:left;width:50%;height:90vh;overflow-x:hidden;">
-        <select id="cmbScript" onchange="loadScript_();">
-            <option value="vertexarray.js/">VertexArray</option>
-            <option value="texts.js">Texts</option>
-            <option value="demo.js">Demo</option>
-        </select>
-        <button onclick="runScript_();">Run</button>
-        <br />
-        <textarea id="txtSource" wrap="soft" style="white-space:nowrap;width:100%;height:100%;overflow-x:scroll;overflow-y:scroll;"></textarea>
-    </div>
-    <div style="float:left;">
-        <canvas id="canvas1" width="640" height="480"></canvas>
-    </div>
+	<input id="txtWidth" type="number" value="640" min="0" style="width:64px;" />
+	<input id="txtHeight" type="number" value="480" min="0" style="width:64px;" />
+	<select id="cmbScript" onchange="loadScript_();">
+		<option value="vertexarray.js/">VertexArray</option>
+		<option value="texts.js">Texts</option>
+		<option value="demo.js">Demo</option>
+	</select>
+	<button onclick="runScript_();">Run</button>
+	<br />
+	<div style="width:100%;">
+		<div style="float:left;width:50%;height:90vh">
+			<textarea id="txtSource" wrap="soft" style="white-space:nowrap;overflow-x:scroll;overflow-y:scroll;width:100%;height:100%;"></textarea>
+		</div>
+		<div style="width:50%;height:90vh;float:left;">
+			<iframe style="width:100%;height:100%;" src="../api/index.html"></iframe>
+		</div>
+	</div>
 </body>
 </html>
