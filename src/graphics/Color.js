@@ -56,7 +56,7 @@ sp.Color.prototype.equals = function (color) {
 * @return {string} rgba string
 */
 sp.Color.prototype.getRGBAString = function () {
-    return 'gba(' + Math.floor(this.r) + ',' + Math.floor(this.g) + ',' + Math.floor(this.b) + ',' + this.a/255 +')';
+    return 'rgba(' + Math.floor(this.r) + ',' + Math.floor(this.g) + ',' + Math.floor(this.b) + ',' + (this.a / 255) +')';
 };
 
 /**
@@ -86,7 +86,7 @@ sp.Color.prototype.getHexString = function () {
 * @return {sp.Color} New color object
 */
 sp.Color.fromNormalized = function (r, g, b, a) {
-    return new sp.Color(r * 255, g * 255, b * 255, a * 255);
+    return new sp.Color(Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255), Math.floor(a * 255));
 };
 
 /**

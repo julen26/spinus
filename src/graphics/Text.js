@@ -153,7 +153,7 @@ sp.Text.prototype.updateTexture = function (context) {
         ctx.height = this.height_;
         ctx.canvas.width = this.width_;
         ctx.canvas.height = this.height_;
-        ctx.fillStyle = 'rgba(' + this.color_.r + ', ' + this.color_.g + ', ' + this.color_.b + ', ' + (this.color_.a / 255) + ')';
+        ctx.fillStyle = this.color_.getRGBAString();
 
         var font = this.characterSize_ + 'px ' + this.font_;
         if ((this.style_ & sp.TextStyle.BOLD) != 0) {
