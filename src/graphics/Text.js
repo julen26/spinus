@@ -10,7 +10,6 @@ goog.provide('sp.TextStyle');
 goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
-goog.require('sp.Drawable');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Texture');
@@ -78,7 +77,6 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     this.setString(str);
 };
 sp.extend(sp.Text, sp.Transformable);
-sp.extend(sp.Text, sp.Drawable);
 
 /**
 * Set text content.

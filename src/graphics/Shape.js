@@ -9,7 +9,6 @@ goog.provide('sp.Shape');
 goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
-goog.require('sp.Drawable');
 goog.require('sp.Color');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
@@ -49,7 +48,6 @@ sp.Shape = function(pointCount, texture) {
     this.setTexture(texture);
 };
 sp.extend(sp.Shape, sp.Transformable);
-sp.extend(sp.Shape, sp.Drawable);
 
 /**
 * Resizes the point list, adding default points or removing existing ones to match the new length.
