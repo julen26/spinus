@@ -8,6 +8,7 @@
 goog.provide('sp.VertexArray');
 goog.require('sp');
 goog.require('sp.extend');
+goog.require('sp.Drawable');
 goog.require('sp.Vertex');
 goog.require('sp.PrimitiveType');
 
@@ -29,6 +30,7 @@ sp.VertexArray = function(type, vertexCount) {
     	this.vertices_.push(new sp.Vertex());
     }
 };
+sp.extend(sp.VertexArray, sp.Drawable);
 
 /**
 * Gets the number of vertices

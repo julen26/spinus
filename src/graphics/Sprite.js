@@ -9,6 +9,7 @@ goog.provide('sp.Sprite');
 goog.require('sp');
 goog.require('sp.extend');
 goog.require('sp.Transformable');
+goog.require('sp.Drawable');
 goog.require('sp.VertexArray');
 goog.require('sp.Vector2');
 goog.require('sp.Color');
@@ -34,6 +35,7 @@ sp.Sprite = function(texture) {
 	this.setTexture(texture);
 };
 sp.extend(sp.Sprite, sp.Transformable);
+sp.extend(sp.Sprite, sp.Drawable);
 
 /**
 * Set a new texture.
