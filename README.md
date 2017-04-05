@@ -9,5 +9,8 @@ Contents
 
 Release Notes
 ----
+#### 1.0.1 - 5 Apr 2017 ####
+- Fix compiler warnings
+
 #### 1.0 - 4 Apr 2017 ####
 - First public release
