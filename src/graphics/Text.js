@@ -71,6 +71,11 @@ sp.Text = function(str, width, height, font, characterSize, style, color) {
     this.vertexArray_.getVertex(1).texCoords = new sp.Vector2(1, 0);
     this.vertexArray_.getVertex(2).texCoords = new sp.Vector2(1, 1);
     this.vertexArray_.getVertex(3).texCoords = new sp.Vector2(0, 1);
+    
+    this.vertexArray_.getVertex(0).color = this.color_;
+    this.vertexArray_.getVertex(1).color = this.color_;
+    this.vertexArray_.getVertex(2).color = this.color_;
+    this.vertexArray_.getVertex(3).color = this.color_;
 
     /** @private */
     this.needsTextureUpdate_ = true;
@@ -135,7 +140,11 @@ sp.Text.prototype.setStyle = function (style) {
 */
 sp.Text.prototype.setColor = function (color) {
     this.color_ = color || new sp.Color();
-    this.needsTextureUpdate_ = true;
+
+    this.vertexArray_.getVertex(0).color = this.color_;
+    this.vertexArray_.getVertex(1).color = this.color_;
+    this.vertexArray_.getVertex(2).color = this.color_;
+    this.vertexArray_.getVertex(3).color = this.color_;
 };
 
 /**
@@ -153,7 +162,7 @@ sp.Text.prototype.updateTexture = function (context) {
         ctx.height = this.height_;
         ctx.canvas.width = this.width_;
         ctx.canvas.height = this.height_;
-        ctx.fillStyle = this.color_.getRGBAString();
+        ctx.fillStyle = '#ffffff';
 
         var font = this.characterSize_ + 'px ' + this.font_;
         if ((this.style_ & sp.TextStyle.BOLD) != 0) {
