@@ -1,3 +1,3 @@
-rmdir /s /q ..\doc\api
-java -jar ..\tools\jsdoc-toolkit\jsrun.jar ..\tools\jsdoc-toolkit\app\run.js ..\src\* -t=..\tools\jsdoc-toolkit\templates\bluelabel-jsdoc -d=..\doc\api
+rmdir /s /q ..\docs\api
+java -jar ..\tools\jsdoc-toolkit\jsrun.jar ..\tools\jsdoc-toolkit\app\run.js ..\src\* -t=..\tools\jsdoc-toolkit\templates\bluelabel-jsdoc -d=..\docs\api
 pause
