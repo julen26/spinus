@@ -8,6 +8,30 @@
     <script src="./spinus/spinus.js"></script>
 
     <script>
+		function init_() {
+			var txtSource = document.getElementById('txtSource');
+			txtSource.onkeydown = function(e) {
+				var keyCode = e.keyCode || e.which;
+				if (keyCode == 9) {
+					e.preventDefault();
+
+					var start = txtSource.selectionStart;
+					var end = txtSource.selectionEnd;
+
+					txtSource.value = txtSource.value.substring(0, start) + '\t' + txtSource.value.substring(end);
+
+					txtSource.selectionStart = txtSource.selectionEnd = start + 1;
+				}
+			};
+		
+			var selectedSrc = readParam('src');
+			if (!selectedSrc) {
+				selectedSrc = 'demo.js';
+			}
+			cmbScript.value = selectedSrc;
+			loadScript_();
+		}
+		
 		function loadScript_() {
 			var client = new XMLHttpRequest();
 			client.open('GET', './scripts/' + cmbScript.value);
@@ -24,26 +48,60 @@
 			sessionStorage.source = document.getElementById('txtSource').value
 			window.open('run.html', '_blank');
 		}
+		
+		function readParam(prmName){
+			var remplaza = "/+/gi";  
+			var url = window.location.href; 
+			var variable; 
+			url = unescape(url); 
+			url = url.replace(remplaza, " "); 
+			url = url.toLowerCase();
+			
+			var prmUpper = prmName.toLowerCase(); 
+			var prmPosic = url.indexOf(prmUpper); 
+			var sepPos; 
+			if (prmPosic != -1){ 
+				var sepPos = url.indexOf("&", prmPosic); 
+				if (sepPos != -1){ 
+					return url.substring(prmPosic + prmUpper.length + 1, sepPos); 
+				}
+				else { 
+					return url.substring(prmPosic + prmUpper.length + 1, url.length); 
+				} 
+			}
+			else { 
+				return ""; 
+			} 
+		}
     </script>
   </head>
-<body onload="loadScript_();">
+<body onload="init_();">
 	<input id="txtWidth" type="number" value="640" min="0" style="width:64px;" />
 	<input id="txtHeight" type="number" value="480" min="0" style="width:64px;" />
 	<select id="cmbScript" onchange="loadScript_();">
-		<option value="blendmodes.js">Blend modes</option>
-		<option value="circles.js">Circles</option>
-		<option value="demo.js">Demo</option>
-		<option value="fillrectangles.js">Fill rectangles</option>
-		<option value="mipmapping.js">Mipmapping</option>
-		<option value="outlinerectangles.js">Outline rectangles</option>
-		<option value="sounds.js">Sounds</option>
-		<option value="sprites.js">Sprites</option>
-		<option value="texts.js">Texts</option>
-		<option value="texturedshapes.js">Textured shapes</option>
-		<option value="textures.js">Textures</option>
-		<option value="tiling.js">Tiling</option>
-		<option value="vertexarray.js">VertexArray</option>
-		<option value="views.js">Views</option>
+		<optgroup label="Getting started">
+			<option value="helloworld.js">Hello world</option>
+		</optgroup>
+		<optgroup label="Graphics">
+			<option value="blendmodes.js">Blend modes</option>
+			<option value="circles.js">Circles</option>
+			<option value="fillrectangles.js">Fill rectangles</option>
+			<option value="mipmapping.js">Mipmapping</option>
+			<option value="outlinerectangles.js">Outline rectangles</option>
+			<option value="sprites.js">Sprites</option>
+			<option value="texts.js">Texts</option>
+			<option value="texturedshapes.js">Textured shapes</option>
+			<option value="textures.js">Textures</option>
+			<option value="tiling.js">Tiling</option>
+			<option value="vertexarray.js">VertexArray</option>
+			<option value="views.js">Views</option>
+		</optgroup>
+		<optgroup label="Audio">
+			<option value="sounds.js">Sounds</option>
+		</optgroup>
+		<optgroup label="Demos">
+			<option value="demo.js">Demo</option>
+		</optgroup>
 	</select>
 	<button onclick="runScript_();">Run</button>
 	<br />
