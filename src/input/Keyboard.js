@@ -9,7 +9,7 @@ goog.provide('sp.Keyboard');
 goog.require('sp');
 
 sp.Keyboard = {
-    pressed_ = [];
+    pressed_ : []
 };
 
 sp.Keyboard.isKeyPressed = function (key) {
