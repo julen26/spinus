@@ -200,4 +200,6 @@ sp.View.prototype.updateTransform = function() {
              0, 0, 1);
     //Scale, translate origin, rotate, translate position. Mathematically matrix operations must be applied right to left.
     this.transform_.rotate(this.rotation_).scale(this.scale_.x, this.scale_.y).translate(-this.center_.x, -this.center_.y);
+
+    this.needsUpdate_ = false;
 };
