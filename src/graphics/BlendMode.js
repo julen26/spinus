@@ -33,7 +33,7 @@ sp.BlendMode = function(srcColorFactor, dstColorFactor, colorEquation, srcAlphaF
     * Color equation
     * @type sp.BlendMode.Equation
     */
-	this.colorEquation = colorEquation = sp.BlendMode.Equation.Add;
+	this.colorEquation = colorEquation || sp.BlendMode.Equation.ADD;
     /**
     * Factor for the source alpha
     * @type sp.BlendMode.Factor
