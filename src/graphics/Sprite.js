@@ -129,7 +129,7 @@ sp.Sprite.prototype.setColor = function (color) {
 * @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Sprite.prototype.draw = function (context, renderOptions) {
-    renderOptions.transform = this.getTransform();
+    renderOptions.transforms = this.getTransforms();
     renderOptions.texture = this.texture_;
     
     this.vertexArray_.draw(context, renderOptions);

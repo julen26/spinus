@@ -36,11 +36,33 @@ sp.Transformable = function() {
 * @method
 * @returns {sp.Transform} Transform matrix
 */
-sp.Transformable.prototype.getTransform = function () {
-    if (this.needsUpdate_) {
+sp.Transformable.prototype.getTransforms = function () {
+    var translationTransform = new sp.Transform();
+    translationTransform.set(1, 0, this.position_.x,
+                             0, 1, this.position_.y,
+                             0, 0, 1);
+    var rad = this.rotation_ * Math.PI / 180.0;
+    var cos = Math.cos(rad);
+    var sin = Math.sin(rad);
+    var rotationTransform = new sp.Transform();
+    rotationTransform.set(cos,   -sin,   0,
+                          sin,    cos,   0,
+                          0,      0,     1);
+    var scalingTransform = new sp.Transform();
+    scalingTransform.set(this.scale_.x, 0, 0,
+                         0, this.scale_.y, 0,
+                         0, 0, 1);
+    var originTransform = new sp.Transform();
+    originTransform.set(1, 0, -this.origin_.x,
+                        0, 1, -this.origin_.y,
+                        0, 0, 1);
+
+    return [originTransform, scalingTransform, rotationTransform, translationTransform];
+
+    /*if (this.needsUpdate_) {
         this.updateTransform();
     }
-    return this.transform_;
+    return this.transform_;*/
 };
 
 /**

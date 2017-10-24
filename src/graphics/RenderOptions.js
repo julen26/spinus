@@ -14,7 +14,7 @@ goog.require('sp.Transform');
 * Constructs RenderOptions objects
 * @class Represents a RenderOptions object
 */
-sp.RenderOptions = function(transform, texture, shader, blendMode) {
+sp.RenderOptions = function(transforms, texture, shader, blendMode) {
     /**
     * Blend mode.
     * @type sp.BlendMode
@@ -24,7 +24,7 @@ sp.RenderOptions = function(transform, texture, shader, blendMode) {
     * Transform matrix.
     * @type sp.Transform
     */
-    this.transform = transform || new sp.Transform();
+    this.transforms = transforms || [new sp.Transform()];
     /**
     * Texture.
     * @type sp.Texture

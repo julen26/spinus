@@ -242,7 +242,7 @@ sp.Text.prototype.draw = function (context, renderOptions) {
     }
 
     if (this.texture_) {
-        renderOptions.transform = this.getTransform();
+        renderOptions.transforms = this.getTransforms();
         renderOptions.texture = this.texture_;
     
         this.vertexArray_.draw(context, renderOptions);

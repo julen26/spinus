@@ -252,7 +252,7 @@ sp.Shape.prototype.updateTexCoords = function () {
 / @param {sp.RenderOptions} renderOptions Optional render options
 */
 sp.Shape.prototype.draw = function (context, renderOptions) {
-    renderOptions.transform = this.getTransform();
+    renderOptions.transforms = this.getTransforms();
     renderOptions.texture = this.texture_;
 
     if (this.needsTexCoordsUpdate_) {

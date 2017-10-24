@@ -248,8 +248,9 @@ sp.Context.prototype.drawVertices = function(vertices, type, renderOptions) {
     }
 
     renderOptions.shader.uniformfv('u_resolution', [this.viewportWidth_, this.viewportHeight_]);
-    var transformMatrix = renderOptions.transform.getMatrix();
-    renderOptions.shader.uniformMatrixfv('u_transform', transformMatrix);
+    for (var i = 0; i < 4; i++) {
+        renderOptions.shader.uniformMatrixfv('u_transforms['+ i +']', renderOptions.transforms[i].getMatrix());
+    }
     var viewMatrix = this.currentView_.getTransform().getMatrix();
     renderOptions.shader.uniformMatrixfv('u_view', viewMatrix);
     var projectionMatrix = this.currentView_.getProjection().getMatrix();
