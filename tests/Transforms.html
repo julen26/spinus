@@ -8,14 +8,71 @@
     <script src="../release/spinus-graphics.js"></script>
 
     <script>
+
+    var sprites = [];
+    var fps = 0;
+    var lastTime = new Date();
+    var currentTime = new Date();
+    var text;
+    var rectangle;
+
     function onload() {
 
-        var transform = new sp.Transform();
-        transform.scale(2, 2);
-        transform.rotate(45);
-        transform.translate(100, 100);
+        var context = new sp.Context("canvas1");
+
+        text = new sp.Text("FPS", 200, 64);
+        text.setColor(new sp.Color(255, 0, 0, 128));
+        text.setCharacterSize(24);
+
+        rectangle = new sp.RectangleShape(200, 24, new sp.Color(255, 255, 255))
+
+        var texture = new sp.Texture(context);
+        texture.loadFromFile('picture.png',  function() {
+
+            var origX = texture.getSize().x / 2;
+            var origY = texture.getSize().y / 2;
+
+            for (var i = 0; i < 100; i++) {
+                var x = Math.random() * context.getViewportWidth();
+                var y = Math.random() * context.getViewportHeight();
+
+                var sprite = new sp.Sprite(texture);
+                sprite.setPosition(x, y);
+                sprite.setOrigin(origX, origY);
+                sprite.setColor(sp.Color.random());
+                sprite.setRotation(Math.random() * 360);
+                sprites.push(sprite);
+            }
+
+            setInterval(function() {
+                currentTime = new Date();
+                fps = 1000 / (currentTime - lastTime);
+                lastTime = currentTime;
+                update();
+                draw(context);
+            }, 1000 / 60);
+        });
 
     }
+
+    function update() {
+        for (var i = 0; i < sprites.length; i++) {
+            sprites[i].rotate(1);
+        }
+    }
+
+    function draw(context) {
+        context.clear(new sp.Color(255, 255, 255));
+
+        for (var i = 0; i < sprites.length; i++) {
+            context.draw(sprites[i]);
+        }
+
+        context.draw(rectangle);
+        text.setString("FPS: " + fps);
+        context.draw(text);
+    }
+
     </script>
 
   </head>
