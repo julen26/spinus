@@ -13,7 +13,7 @@ sp.Keyboard = {
 };
 
 sp.Keyboard.isKeyPressed = function (key) {
-    return sp.Keyboard.pressed_[key];
+    return !!sp.Keyboard.pressed_[key];
 };
 
 sp.Keyboard.pressKey = function (key) {
@@ -38,6 +38,7 @@ sp.Keyboard.Key = {
     PAUSE : 19,
     CAPS_LOCK : 20,
     ESCAPE : 27,
+    SPACE : 32,
     PAGE_UP : 33,
     PAGE_DOWN : 34,
     END : 35,
@@ -129,9 +130,9 @@ sp.Keyboard.Key = {
     SINGLE_QUOTE : 222
 };
 
-window.addEventListener('keyup', function(event) {
+window.addEventListener('keydown', function(event) {
     sp.Keyboard.pressKey(event.keyCode);
 });
-window.addEventListener('keydown', function(event) {
+window.addEventListener('keyup', function(event) {
     sp.Keyboard.releaseKey(event.keyCode);
 });

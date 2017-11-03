@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Keyboard</title>
+    
+    <script src="../release/spinus.js"></script>
+
+    <script>
+    var text;
+
+    function onload() {
+
+        var context = new sp.Context("canvas1");
+
+        text = new sp.Text("Is SPACE pressed?", 300, 64);
+        text.setColor(new sp.Color(0, 0, 0));
+        text.setCharacterSize(24);
+
+        setInterval(function() {
+            update();
+            draw(context);
+        }, 1000 / 60);
+    }
+
+    function update() {
+        text.setString("Is SPACE pressed? " + sp.Keyboard.isKeyPressed(sp.Keyboard.Key.SPACE));
+    }
+
+    function draw(context) {
+        context.clear(new sp.Color(255, 255, 255));
+        context.draw(text);
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Mouse</title>
+    
+    <script src="../release/spinus.js"></script>
+
+    <script>
+    var text1, text2, text3;
+
+    function onload() {
+
+        var context = new sp.Context("canvas1");
+
+        text1 = new sp.Text("", 500, 64);
+        text1.setColor(new sp.Color(0, 0, 0));
+        text1.setCharacterSize(24);
+        text2 = new sp.Text("", 500, 64);
+        text2.setColor(new sp.Color(0, 0, 0));
+        text2.setCharacterSize(24);
+        text2.setPosition(0, 50);
+        text3 = new sp.Text("", 500, 64);
+        text3.setColor(new sp.Color(0, 0, 0));
+        text3.setCharacterSize(24);
+        text3.setPosition(0, 100);
+
+        setInterval(function() {
+            update();
+            draw(context);
+        }, 1000 / 60);
+    }
+
+    function update() {
+        text1.setString("Is LEFT BUTTON pressed? " + sp.Mouse.isButtonPressed(sp.Mouse.Button.LEFT));
+        text2.setString("Is MIDDLE BUTTON pressed? " + sp.Mouse.isButtonPressed(sp.Mouse.Button.MIDDLE));
+        text3.setString("Is RIGHT BUTTON pressed? " + sp.Mouse.isButtonPressed(sp.Mouse.Button.RIGHT));
+    }
+
+    function draw(context) {
+        context.clear(new sp.Color(255, 255, 255));
+        context.draw(text1);
+        context.draw(text2);
+        context.draw(text3);
+    }
+    </script>
+
+  </head>
+<body onload="onload();">
+    <canvas id="canvas1" width="640" height="480"></canvas>
+</body>
+</html>

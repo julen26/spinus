@@ -2,5 +2,6 @@
 sh build.sh
 sh build-core.sh
 sh build-graphics.sh
+sh build-input.sh
 sh build-audio.sh
 sh build-doc.sh
